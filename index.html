@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="style.css">
+		<script src="math.js"></script>
+		<script src="generator.js"></script>
+		<script src="titlegen.js"></script>
+	</head>
+	<body>
+		<div style="height:95%;width:100%;overflow:scroll;">
+			<h1 id="title" style="position:absolute;">title</h1>
+			<canvas id="canvas"></canvas>
+		</div>
+		<div>
+			<label for="trackLength">Length:</label>
+			<input id="trackLength" type="number" value="15" min="1" max="999" size="3" />
+			<label for="trackCheckpoints">Checkpoints:</label>
+			<input id="trackCheckpoints" type="number" value="3" min="0" max="10" size="2" />
+			<label for="trackSeed">Seed:</label>
+			<input id="trackSeed" type="text" value="" maxlength="10" size="10" />
+			<button id="generateButton">Generate</button>
+			<button id="zoomButton">Zoom Out</button>
+		</div>
+		<script type="text/javascript">
+			let gCanvas = document.getElementById("canvas");
+			let gCtx = gCanvas.getContext("2d", { alpha: false, desynchronized: true });
+			gCtx.fillStyle = "#247A27";
+			gCtx.fillRect(0, 0, gCanvas.width, gCanvas.height);
+			
+			document.body.onload = function(e) { OnPageLoaded(e); };
+		</script>
+	</body>
+</html>
