@@ -149,7 +149,7 @@ let gPieceTypes =
 	},
 };
 
-let FindAllSuitablePieceTypes = function(translation, rotation, tagWhitelist, tagBlacklist, pieceTypeBlacklist)
+let FindAllSuitablePieceTypes = function(translation, rotation, tagWhitelist, tagBlacklist, pieceTypeBlacklist, forcePlacement)
 {
 	let suitablePieceTypes = [];
 	
@@ -173,7 +173,7 @@ let FindAllSuitablePieceTypes = function(translation, rotation, tagWhitelist, ta
 		}
 		
 		//Check if the piece fits.
-		if (!CanPlacePiece(translation, rotation, pieceType))
+		if (!forcePlacement && !CanPlacePiece(translation, rotation, pieceType))
 			return;
 		
 		suitablePieceTypes.push(pieceType);
@@ -182,8 +182,8 @@ let FindAllSuitablePieceTypes = function(translation, rotation, tagWhitelist, ta
 	return suitablePieceTypes;
 }
 
-let SelectSuitablePieceType = function(translation, rotation, tagWhitelist, tagBlacklist, pieceTypeBlacklist)
+let SelectSuitablePieceType = function(translation, rotation, tagWhitelist, tagBlacklist, pieceTypeBlacklist, forcePlacement)
 {
-	let allSuitablePieceTypes = FindAllSuitablePieceTypes(translation, rotation, tagWhitelist, tagBlacklist, pieceTypeBlacklist);
+	let allSuitablePieceTypes = FindAllSuitablePieceTypes(translation, rotation, tagWhitelist, tagBlacklist, pieceTypeBlacklist, forcePlacement);
 	return allSuitablePieceTypes.length > 0 ? allSuitablePieceTypes[Math.floor(gRandom() * allSuitablePieceTypes.length)] : null;
 }

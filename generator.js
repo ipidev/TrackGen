@@ -184,7 +184,7 @@ let GenerateTrack = function(length, checkpointCount, seed)
 		}
 	}
 	
-	PlacePiece(currentTranslation, currentRotation, SelectSuitablePieceType(currentTranslation, currentRotation, pieceTagWhitelist.concat(["finishLine"]), [], []));
+	PlacePiece(currentTranslation, currentRotation, SelectSuitablePieceType(currentTranslation, currentRotation, pieceTagWhitelist.concat(["finishLine"]), [], [], true));
 }
 
 let RenderTrack = function(ctx)
