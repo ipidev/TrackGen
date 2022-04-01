@@ -5,7 +5,6 @@ gTrackPiecesImage.src = "images/trackmaniaPieces.png";
 
 let gPlacedPieces = [];
 let gRandom = null;
-let gZoomScale = 1;
 
 let PlacePiece = function(translation, rotation, trackPieceType)
 {
@@ -186,87 +185,3 @@ let GenerateTrack = function(length, checkpointCount, seed)
 	
 	PlacePiece(currentTranslation, currentRotation, SelectSuitablePieceType(currentTranslation, currentRotation, pieceTagWhitelist.concat(["finishLine"]), [], [], true));
 }
-
-let RenderTrack = function(ctx)
-{
-	let priorCtxTransform = ctx.getTransform();
-	
-	ctx.setTransform(new DOMMatrix());
-	ctx.fillStyle = "#247A27";
-	ctx.fillRect(0, 0, gCanvas.width, gCanvas.height);
-	
-	ctx.setTransform(priorCtxTransform);
-
-	for (let i = 0; i < gPlacedPieces.length; ++i)
-	{
-		let placedPiece = gPlacedPieces[i];
-		
-		ctx.translate(placedPiece.translation.x * 32, placedPiece.translation.y * 32);
-		ctx.rotate(placedPiece.rotation);
-		
-		let renderOffset = Vector2DStatic.CreateZeroVector();
-		if (placedPiece.trackPieceType.collisionOffset)
-		{
-			renderOffset.x = placedPiece.trackPieceType.collisionOffset.x * 32;
-			renderOffset.y = placedPiece.trackPieceType.collisionOffset.y * 32;
-		}
-
-		ctx.drawImage(gTrackPiecesImage,
-			placedPiece.trackPieceType.imageOffset.x, placedPiece.trackPieceType.imageOffset.y, placedPiece.trackPieceType.imageDimensions.x, placedPiece.trackPieceType.imageDimensions.y,
-			(placedPiece.trackPieceType.imageDimensions.x * -0.5) + renderOffset.x, (placedPiece.trackPieceType.imageDimensions.y * -0.5) + renderOffset.y,
-			placedPiece.trackPieceType.imageDimensions.x, placedPiece.trackPieceType.imageDimensions.y);
-		
-		ctx.setTransform(priorCtxTransform);
-	}
-}
-
-let SetCanvasZoom = function(scale)
-{
-	gZoomScale = scale;
-	gCanvas.width = 1536 * scale;
-	gCanvas.height = 1536 * scale;
-	
-	let canvasTransform = new DOMMatrix();
-	canvasTransform.a = scale;
-	canvasTransform.d = scale;
-	canvasTransform.e = gCanvas.width * 0.5;
-	canvasTransform.f = gCanvas.height * 0.5;
-	gCtx.setTransform(canvasTransform);
-}
-
-let OnGenerateButtonPressed = function()
-{
-	let trackLength = parseFloat(document.getElementById("trackLength").value);
-	let trackCheckpoints = parseFloat(document.getElementById("trackCheckpoints").value);
-	let trackSeed = document.getElementById("trackSeed").value ? crc32(document.getElementById("trackSeed").value) : null;
-	
-	GenerateTrack(trackLength, trackCheckpoints, trackSeed);
-	RenderTrack(gCtx);
-	
-	GenerateNewTitle();
-}
-
-let OnZoomButtonPressed = function(e)
-{
-	if (gZoomScale != 1)
-	{
-		SetCanvasZoom(1);
-		e.target.innerHTML = "Zoom Out";
-	}
-	else
-	{
-		SetCanvasZoom(0.5);
-		e.target.innerHTML = "Zoom In";
-	}
-	
-	RenderTrack(gCtx);
-}
-
-let OnPageLoaded = function(e)
-{
-	SetCanvasZoom(1);
-	OnGenerateButtonPressed();
-	
-	document.getElementById("generateButton").addEventListener("click", OnGenerateButtonPressed);
-	document.getElementById("zoomButton").addEventListener("click", OnZoomButtonPressed);
-};
