@@ -8,6 +8,7 @@ let gTrackPieceTemplates =
 {
 	straight:
 	{
+		tags: [ "straight" ],
 		imageOffset: new Vector2D(0, 0),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector2D(0, -1),
@@ -125,7 +126,7 @@ let gTrackPieceTemplates =
 	},
 	turbo:
 	{
-		tags: [ "engineBlock" ],
+		tags: [ "straight", "engineBlock" ],
 		imageOffset: new Vector2D(0, 64),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector2D(0, -1),
@@ -134,7 +135,7 @@ let gTrackPieceTemplates =
 	},
 	superTurbo:
 	{
-		tags: [ "engineBlock" ],
+		tags: [ "straight", "engineBlock" ],
 		imageOffset: new Vector2D(32, 64),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector2D(0, -1),
@@ -150,60 +151,75 @@ let gPieceTypes =
 	{
 		toDirt:
 		{
+			tags: [ "straight" ],
 			imageOffset: new Vector2D(224, 96),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector2D(0, -1),
 			exitAngle: 0,
-			transitionTo: "dirtFlat",
+			transitionTo: { material: "dirtFlat" },
 		},
 		toIce:
 		{
+			tags: [ "straight" ],
 			imageOffset: new Vector2D(256, 96),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector2D(0, -1),
 			exitAngle: 0,
-			transitionTo: "iceFlat",
+			transitionTo: { material: "iceFlat" },
 		},
 		toSausage:
 		{
+			tags: [ "straight" ],
 			imageOffset: new Vector2D(288, 96),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector2D(0, -1),
 			exitAngle: 0,
-			transitionTo: "sausageFlat",
+			transitionTo: { material: "sausageFlat" },
+		},
+		jump:
+		{
+			tags: [ "jump" ],
+			imageOffset: new Vector2D(64, 64),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector2D(0, -2),
+			exitAngle: 0,
+			transitionTo: { material: "any", tag: "straight" },
 		},
 	},
 	dirtFlat:
 	{
 		toRoad:
 		{
+			tags: [ "straight" ],
 			imageOffset: new Vector2D(0, 192),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector2D(0, -1),
 			exitAngle: 0,
-			transitionTo: "roadFlat",
+			transitionTo: { material: "roadFlat" },
 		}
 	},
 	iceFlat:
 	{
 		toRoad:
 		{
+			tags: [ "straight" ],
 			imageOffset: new Vector2D(0, 320),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector2D(0, -1),
 			exitAngle: 0,
-			transitionTo: "roadFlat",
+			transitionTo: { material: "roadFlat" },
 		}
 	},
 	sausageFlat:
 	{
 		toRoad:
 		{
+			tags: [ "straight" ],
 			imageOffset: new Vector2D(0, 448),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector2D(0, -1),
 			exitAngle: 0,
-			transitionTo: "roadFlat",
+			transitionTo: { material: "roadFlat" },
 		}
 	},
 };
@@ -263,6 +279,11 @@ let InitialisePieceTypes = function()
 // Finding appropriate pieces
 ////////////////////////////////////////////////////////////////////////////////
 
+let GetPieceMaterials = function()
+{
+	return Object.getOwnPropertyNames(gPieceTypes);
+}
+
 let SelectPieceMaterialFromTag = function(tagToFind, materialBlacklist)
 {
 	let suitablePieceMaterials = [];
@@ -312,7 +333,10 @@ let FindAllSuitablePieceTypes = function(translation, rotation, pieceMaterial, t
 		if (pieceType.transitionTo)
 		{
 			//Does the piece transition to a piece in the blacklist?
-			if (tagBlacklist.includes(pieceType.transitionTo))
+			if (pieceType.transitionTo.material && tagBlacklist.includes(pieceType.transitionTo.material))
+				return;
+
+			if (pieceType.transitionTo.material && tagBlacklist.includes(pieceType.transitionTo.tag))
 				return;
 		}
 		

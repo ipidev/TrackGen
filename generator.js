@@ -121,7 +121,7 @@ let GenerateTrack = function(length, checkpointCount, seed, materialWhitelist)
 	let currentRotation = 0;
 	
 	//Setup the tags that will be used to place pieces.
-	let materialBlacklist = ["roadFlat", "dirtFlat", "iceFlat", "sausageFlat" ].filter(material => !materialWhitelist.includes(material));
+	let materialBlacklist = GetPieceMaterials().filter(material => !materialWhitelist.includes(material));
 
 	let pieceTagWhitelist = [];
 	let pieceTagBlacklist = [].concat(materialBlacklist);
@@ -166,6 +166,9 @@ let GenerateTrack = function(length, checkpointCount, seed, materialWhitelist)
 				pieceMaterial, pieceTagWhitelist, pieceTagBlacklist.concat([ "startLine", "checkpoint", "finishLine" ]), [ lastDeadEndPieceType ]);
 		}
 		
+		//Clear the whitelist each time (might need more flexible solution)
+		pieceTagWhitelist.length = 0;
+
 		//Place the piece (if we have one).
 		if (nextPieceType !== null)
 		{
@@ -180,7 +183,22 @@ let GenerateTrack = function(length, checkpointCount, seed, materialWhitelist)
 			//If this piece causes a transition, alter the whitelist.
 			if (nextPieceType.transitionTo)
 			{
-				pieceMaterial = nextPieceType.transitionTo;
+				if (nextPieceType.transitionTo.material)
+				{
+					if (nextPieceType.transitionTo.material == "any")
+					{
+						pieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
+					}
+					else
+					{
+						pieceMaterial = nextPieceType.transitionTo.material;
+					}
+				}
+				
+				if (nextPieceType.transitionTo.tag)
+				{
+					pieceTagWhitelist.push(nextPieceType.transitionTo.tag);
+				}
 			}
 		}
 		//Can't place the piece - back up
