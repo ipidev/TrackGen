@@ -131,7 +131,7 @@ let gPostpositionsList =
 	"passage", "line", "aqueduct", "conduit", "lap", "run", "series", "round",
 	"freeway", "pike", "promenade", "development", "movement", "trajectory",
 	"direction", "canal", "aisle", "twist", "turn", "straightaway", "stunt",
-	"stadium", "colloseum", "amphitheater", "gymnasium", "field", "gridiron",
+	"stadium", "colosseum", "amphitheatre", "gymnasium", "field", "gridiron",
 	"diamond", "ring", "bowl", "pit", "rallycross", "crossroads", "roundabout",
 	"competition", "endurance", "playground", "assault course", "test",
 ];
