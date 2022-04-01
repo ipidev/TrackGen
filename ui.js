@@ -115,6 +115,8 @@ let OnZoomButtonPressed = function(e)
 let OnPageLoaded = function(e)
 {
 	SetCanvasZoom(1);
+	InitialisePieceTypes();
+
 	OnGenerateButtonPressed();
 	
 	document.getElementById("generateButton").addEventListener("click", OnGenerateButtonPressed);

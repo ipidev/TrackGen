@@ -108,7 +108,7 @@ let CanPlacePiece = function(translation, rotation, trackPieceType)
 {
 	let offsetPositions = ApplyPieceOffset(translation, rotation, trackPieceType);
 	return !DoesPieceCollide(translation, rotation, trackPieceType) && !IsOutOfBounds(translation) &&
-		!DoesPieceCollide(offsetPositions.translation, offsetPositions.rotation, gPieceTypes.roadFlatStraight) && !IsOutOfBounds(offsetPositions.translation);
+		!DoesPieceCollide(offsetPositions.translation, offsetPositions.rotation, gPieceTypes.roadFlat.straight) && !IsOutOfBounds(offsetPositions.translation);
 }
 
 let GenerateTrack = function(length, checkpointCount, seed)
@@ -116,15 +116,25 @@ let GenerateTrack = function(length, checkpointCount, seed)
 	gPlacedPieces.length = 0;
 	gRandom = seed ? mulberry32(seed) : mulberry32(Math.floor(Math.random() * 4294967296));
 
-	//Setup the tags that will be used to place pieces.
-	let pieceTagWhitelist = [ "road", "flat" ];
-
 	//Set starting position and create the start line.
 	let currentTranslation = new Vector2D(Math.floor(gRandom() * 24) - 12, Math.floor(gRandom() * 24) - 12);
 	let currentRotation = 0;
 	
-	PlacePiece(currentTranslation, currentRotation, SelectSuitablePieceType(currentTranslation, currentRotation, pieceTagWhitelist.concat(["startLine"]), [], []));
-	currentTranslation.y -= 1;
+	//Setup the tags that will be used to place pieces.
+	let pieceTagWhitelist = [];
+	let pieceTagBlacklist = [];
+
+	let pieceMaterial = SelectPieceMaterialFromTag("startLine", []);
+
+	//Place the start line.
+	{
+		let startLinePieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceMaterial, ["startLine"], pieceTagBlacklist, [], true);
+		if (!startLinePieceType)
+			return;	//Oh dear.
+		
+		PlacePiece(currentTranslation, currentRotation, startLinePieceType);
+		currentTranslation.y -= 1;
+	}
 
 	let nextCheckpointIndex = checkpointCount > 0 ? length / (checkpointCount + 1) : -1;
 	
@@ -138,7 +148,8 @@ let GenerateTrack = function(length, checkpointCount, seed)
 		//See if we need to place a checkpoint.
 		if (nextCheckpointIndex >= 0 && i >= Math.floor(nextCheckpointIndex))
 		{
-			let checkpointPieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceTagWhitelist.concat(["checkpoint"]), [], []);
+			let checkpointPieceType = SelectSuitablePieceType(currentTranslation, currentRotation,
+				pieceMaterial, pieceTagWhitelist.concat(["checkpoint"]), pieceTagBlacklist, []);
 			if (checkpointPieceType)
 			{
 				nextPieceType = checkpointPieceType;
@@ -149,7 +160,8 @@ let GenerateTrack = function(length, checkpointCount, seed)
 		//Randomly select a piece.
 		if (nextPieceType === null)
 		{
-			nextPieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceTagWhitelist, [ "startLine", "checkpoint", "finishLine" ], [ lastDeadEndPieceType ]);
+			nextPieceType = SelectSuitablePieceType(currentTranslation, currentRotation,
+				pieceMaterial, pieceTagWhitelist, pieceTagBlacklist.concat([ "startLine", "checkpoint", "finishLine" ]), [ lastDeadEndPieceType ]);
 		}
 		
 		//Place the piece (if we have one).
@@ -162,6 +174,12 @@ let GenerateTrack = function(length, checkpointCount, seed)
 			currentRotation = offsetPositions.rotation;
 			
 			lastDeadEndPieceType = null;
+
+			//If this piece causes a transition, alter the whitelist.
+			if (nextPieceType.transitionTo)
+			{
+				pieceMaterial = nextPieceType.transitionTo;
+			}
 		}
 		//Can't place the piece - back up
 		else
@@ -179,9 +197,16 @@ let GenerateTrack = function(length, checkpointCount, seed)
 				//Step backwards
 				currentTranslation = deadEndPiece.translation;
 				currentRotation = deadEndPiece.rotation;
+				pieceMaterial = lastDeadEndPieceType.pieceMaterial;
 			}
 		}
 	}
 	
-	PlacePiece(currentTranslation, currentRotation, SelectSuitablePieceType(currentTranslation, currentRotation, pieceTagWhitelist.concat(["finishLine"]), [], [], true));
+	//Place the finish line.
+	{
+		let finishLinePieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceMaterial, ["finishLine"], pieceTagBlacklist, [], true);
+		if (!finishLinePieceType)
+			return;	//Oh dear.
+		PlacePiece(currentTranslation, currentRotation, finishLinePieceType);
+	}
 }
