@@ -71,6 +71,26 @@ let gPieceTypes =
 		collisionOffset: new Vector2D(-0.5, -0.5),
 		collisionExtents: new Vector2D(1, 1),
 	},
+	roadFlatBigCurveRight:
+	{
+		tags: [ "road", "flat" ],
+		imageOffset: new Vector2D(224, 0),
+		imageDimensions: new Vector2D(96, 96),
+		exitOffset: new Vector2D(3, -2),
+		exitAngle: Math.PI * 0.5,
+		collisionOffset: new Vector2D(1, -1),
+		collisionExtents: new Vector2D(1.5, 1.5),
+	},
+	roadFlatBigCurveLeft:
+	{
+		tags: [ "road", "flat" ],
+		imageOffset: new Vector2D(320, 0),
+		imageDimensions: new Vector2D(96, 96),
+		exitOffset: new Vector2D(-3, -2),
+		exitAngle: Math.PI * -0.5,
+		collisionOffset: new Vector2D(-1, -1),
+		collisionExtents: new Vector2D(1.5, 1.5),
+	},
 	roadFlatSBendLeft:
 	{
 		tags: [ "road", "flat" ],
@@ -90,6 +110,26 @@ let gPieceTypes =
 		exitAngle: 0,
 		collisionOffset: new Vector2D(0.5, -0.5),
 		collisionExtents: new Vector2D(1, 1),
+	},
+	roadFlatBigSBendLeft:
+	{
+		tags: [ "road", "flat" ],
+		imageOffset: new Vector2D(416, 0),
+		imageDimensions: new Vector2D(64, 96),
+		exitOffset: new Vector2D(-1, -3),
+		exitAngle: 0,
+		collisionOffset: new Vector2D(-0.5, -1),
+		collisionExtents: new Vector2D(1, 1.5),
+	},
+	roadFlatBigSBendRight:
+	{
+		tags: [ "road", "flat" ],
+		imageOffset: new Vector2D(480, 0),
+		imageDimensions: new Vector2D(64, 96),
+		exitOffset: new Vector2D(1, -3),
+		exitAngle: 0,
+		collisionOffset: new Vector2D(0.5, -1),
+		collisionExtents: new Vector2D(1, 1.5),
 	},
 	roadFlatTurbo:
 	{
