@@ -90,7 +90,18 @@ let OnGenerateButtonPressed = function()
 	let trackCheckpoints = parseFloat(document.getElementById("trackCheckpoints").value);
 	let trackSeed = document.getElementById("trackSeed").value ? crc32(document.getElementById("trackSeed").value) : null;
 	
-	GenerateTrack(trackLength, trackCheckpoints, trackSeed);
+	let trackMaterialWhitelist = [];
+	let trackMaterialsElement = document.getElementById("trackMaterials");
+
+	for (let i = 0; i < trackMaterialsElement.options.length; ++i)
+	{
+		if (trackMaterialsElement.options[i].selected)
+		{
+			trackMaterialWhitelist.push(trackMaterialsElement.options[i].value);
+		}
+	}
+
+	GenerateTrack(trackLength, trackCheckpoints, trackSeed, trackMaterialWhitelist);
 	RenderAll(gCtx);
 	
 	GenerateNewTitle();

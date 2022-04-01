@@ -154,7 +154,7 @@ let GenerateTitle = function()
 	let randomAdjective = SelectRandomElement(DeterminePossibleAdjectives());
 	let randomNoun = SelectRandomElement(gNounsList);
 	let randomPostpositon = SelectRandomElement(gPostpositionsList);
-	return "&nbsp;" + randomAdjective + " " + randomNoun + " " + randomPostpositon;
+	return randomAdjective + " " + randomNoun + " " + randomPostpositon;
 }
 
 let GenerateNewTitle = function()

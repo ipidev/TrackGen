@@ -111,7 +111,7 @@ let CanPlacePiece = function(translation, rotation, trackPieceType)
 		!DoesPieceCollide(offsetPositions.translation, offsetPositions.rotation, gPieceTypes.roadFlat.straight) && !IsOutOfBounds(offsetPositions.translation);
 }
 
-let GenerateTrack = function(length, checkpointCount, seed)
+let GenerateTrack = function(length, checkpointCount, seed, materialWhitelist)
 {
 	gPlacedPieces.length = 0;
 	gRandom = seed ? mulberry32(seed) : mulberry32(Math.floor(Math.random() * 4294967296));
@@ -121,10 +121,12 @@ let GenerateTrack = function(length, checkpointCount, seed)
 	let currentRotation = 0;
 	
 	//Setup the tags that will be used to place pieces.
-	let pieceTagWhitelist = [];
-	let pieceTagBlacklist = [];
+	let materialBlacklist = ["roadFlat", "dirtFlat", "iceFlat", "sausageFlat" ].filter(material => !materialWhitelist.includes(material));
 
-	let pieceMaterial = SelectPieceMaterialFromTag("startLine", []);
+	let pieceTagWhitelist = [];
+	let pieceTagBlacklist = [].concat(materialBlacklist);
+
+	let pieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
 
 	//Place the start line.
 	{

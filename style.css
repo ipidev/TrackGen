@@ -1,6 +1,108 @@
 body
 {
-	background: #111;
-	color: #eee;
+	margin: 0;
+
+	background: #09060C;
+	color: #E0E0FF;
 	font-family: "Trebuchet MS", sans-serif
+}
+
+#canvasContainer
+{
+	height: 100%;
+	width: 100%;
+	overflow: scroll;
+}
+
+#canvasContainer #title
+{
+	position: absolute;
+	left: 1em;
+
+	color: #F0F0FF;
+	text-shadow: #08030F 2px 2px 0;
+
+	opacity: 50%;
+	transition: opacity 0.25s;
+
+	user-select: all;
+}
+
+#canvasContainer #title:hover
+{
+	opacity: 100%;
+	transition: opacity 0.25s;
+}
+
+#canvasContainer .overlay
+{
+	position: absolute;
+	padding: 0.75em;
+	border-radius: 0.75em;
+	bottom: 2em;
+	
+	background: #131116;
+	opacity: 50%;
+	transition: opacity 0.25s;
+
+	background: #131116;
+}
+
+#canvasContainer #optionsContainer
+{
+	left: 1em;
+}
+
+#canvasContainer .overlay:hover
+{
+	opacity: 100%;
+	transition: opacity 0.25s;
+}
+
+#canvasContainer .overlay .table
+{
+	display: table;
+}
+
+#canvasContainer .overlay .table .row
+{
+	display: table-row;
+}
+
+#canvasContainer .overlay .table .row .label
+{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: right;
+}
+
+#canvasContainer .overlay .table .row .label label
+{
+	display: inline-block;
+	margin: 1px 5px 1px 0px;
+}
+
+#canvasContainer .overlay .table .row .option
+{
+	display: table-cell;
+}
+
+#canvasContainer .overlay .table .row .option input
+{
+	margin-bottom: 3px;
+}
+
+#canvasContainer .overlay .table .row .option select
+{
+	margin-bottom: 3px;
+}
+
+#canvasContainer #generateButton
+{
+	width: 100%;
+	padding: 0.5em;
+	margin: 2px 0px 2px 0px;
+
+	font-size: 1.5em;
+	font-weight: bold;
 }

@@ -8,19 +8,42 @@
 		<script src="ui.js"></script>
 	</head>
 	<body>
-		<div style="height:95%;width:100%;overflow:scroll;">
-			<h1 id="title" style="position:absolute;">title</h1>
+		<div id="canvasContainer">
+			<h1 id="title">title</h1>
 			<canvas id="canvas"></canvas>
-		</div>
-		<div>
-			<label for="trackLength">Length:</label>
-			<input id="trackLength" type="number" value="15" min="1" max="999" size="3" />
-			<label for="trackCheckpoints">Checkpoints:</label>
-			<input id="trackCheckpoints" type="number" value="3" min="0" max="10" size="2" />
-			<label for="trackSeed">Seed:</label>
-			<input id="trackSeed" type="text" value="" maxlength="10" size="10" />
-			<button id="generateButton">Generate</button>
-			<button id="zoomButton">Zoom Out</button>
+			<div class="overlay" id="optionsContainer">
+				<div class="table">
+					<div class="row">
+						<div class="label"><label for="trackLength">Length:</label></div>
+						<div class="option"><input id="trackLength" type="number" value="15" min="1" max="999" size="3" /></div>
+					</div>
+					<div class="row">
+						<div class="label"><label for="trackCheckpoints">Checkpoints:</label></div>
+						<div class="option"><input id="trackCheckpoints" type="number" value="3" min="0" max="20" size="2" /></div>
+					</div>
+					<div class="row">
+						<div class="label"><label for="trackMaterials">Materials:</label></div>
+						<div class="option">
+							<select id="trackMaterials" multiple size="2">
+								<option value="roadFlat" selected>Road</option>
+								<option value="dirtFlat" selected>Dirt</option>
+								<option value="iceFlat" selected>Ice</option>
+								<option value="sausageFlat" selected>Sausage</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="label"><label for="trackSeed">Seed:</label></div>
+						<div class="option"><input id="trackSeed" type="text" value="" maxlength="10" size="10" /></div>
+					</div>
+				</div>
+				<div class="row">
+					<button id="generateButton">Generate</button>
+				</div>
+				<div class="row">
+					<button id="zoomButton">Zoom Out</button>
+				</div>
+			</div>
 		</div>
 		<script type="text/javascript">
 			let gCanvas = document.getElementById("canvas");
