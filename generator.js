@@ -205,19 +205,22 @@ let GenerateTrack = function(length, checkpointCount, seed, materialWhitelist)
 		else
 		{
 			//Reduce index and count dead-ends hit
-			--i;
 			++deadEndsHit;
-
-			//Don't select this piece again
-			if (gPlacedPieces.length > 0)
+			for (let j = 0; j < deadEndsHit && i > 0; ++j)
 			{
-				let deadEndPiece = gPlacedPieces.pop();
-				lastDeadEndPieceType = deadEndPiece.trackPieceType;
-				
-				//Step backwards
-				currentTranslation = deadEndPiece.translation;
-				currentRotation = deadEndPiece.rotation;
-				pieceMaterial = lastDeadEndPieceType.pieceMaterial;
+				--i;
+
+				//Don't select this piece again
+				if (gPlacedPieces.length > 0)
+				{
+					let deadEndPiece = gPlacedPieces.pop();
+					lastDeadEndPieceType = deadEndPiece.trackPieceType;
+					
+					//Step backwards
+					currentTranslation = deadEndPiece.translation;
+					currentRotation = deadEndPiece.rotation;
+					pieceMaterial = lastDeadEndPieceType.pieceMaterial;
+				}
 			}
 		}
 	}
