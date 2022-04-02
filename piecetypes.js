@@ -190,6 +190,72 @@ let gTrackPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.5,
 	},
+	rampUpLevelGentle:
+	{
+		tags: [ "ramp" ],
+		imageOffset: new Vector2D(544, 0),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		useCollisionForRender: true,
+	},
+	rampDownLevelGentle:
+	{
+		tags: [ "ramp" ],
+		imageOffset: new Vector2D(576, 0),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, -1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, -1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		useCollisionForRender: true,
+	},
+	rampUpLevelSteep:
+	{
+		tags: [ "ramp" ],
+		imageOffset: new Vector2D(544, 32),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		useCollisionForRender: true,
+	},
+	rampDownLevelSteep:
+	{
+		tags: [ "ramp" ],
+		imageOffset: new Vector2D(576, 32),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, -2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, -1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		useCollisionForRender: true,
+	},
+	rampUpLevelLong:
+	{
+		tags: [ "ramp" ],
+		imageOffset: new Vector2D(544, 64),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, 1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 1),
+		collisionExtents: new Vector3D(0.5, 1, 1),
+		useCollisionForRender: true,
+	},
+	rampDownLevelSteep:
+	{
+		tags: [ "ramp" ],
+		imageOffset: new Vector2D(576, 64),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, -1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, -1),
+		collisionExtents: new Vector3D(0.5, 1, 1),
+		useCollisionForRender: true,
+	},
 };
 
 //Piece types object.

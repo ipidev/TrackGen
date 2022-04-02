@@ -79,13 +79,21 @@ let RenderTrack = function(ctx, viewZ)
 		let compositionPasses = [ "source-over" ];
 		let alphaPasses = [];
 
-		let deltaZ = Math.floor(Math.abs(placedPiece.translation.z - viewZ));
+		let nearestZWithinCollision = placedPiece.translation.z;
+		if (placedPieceType.useCollisionForRender && placedPieceType.collisionOffset && placedPieceType.collisionExtents)
+		{
+			let minimumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z - placedPieceType.collisionExtents.z;
+			let maximumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z + placedPieceType.collisionExtents.z - 1;
+			nearestZWithinCollision = Math.max(minimumZCollision, Math.min(viewZ, maximumZCollision));
+		}
+
+		let deltaZ = Math.floor(Math.abs(nearestZWithinCollision - viewZ));
 		switch (deltaZ)
 		{
 			case 0:		alphaPasses.push(1);	break;
 			case 1:		alphaPasses.push(0.4);	break;
 			case 2:		alphaPasses.push(0.3);	break;
-			default:	alphaPasses.push(0.15);	break;
+			default:	alphaPasses.push(0.1);	break;
 		}
 
 		//Darken or lighten the image if it's below or above the current layer.
