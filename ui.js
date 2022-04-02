@@ -10,6 +10,11 @@ gUI.trackPiecesImage.src = "images/trackmaniaPieces.png";
 
 let RenderAll = function(ctx, viewZ)
 {
+	if (viewZ === undefined)
+	{
+		viewZ = document.getElementById("trackViewLayer").valueAsNumber;
+	}
+
 	RenderGrass(ctx, viewZ);
 	RenderTrack(ctx, viewZ);
 }
