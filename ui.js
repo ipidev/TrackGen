@@ -8,15 +8,20 @@ let gUI =
 };
 gUI.trackPiecesImage.src = "images/trackmaniaPieces.png";
 
-let RenderAll = function(ctx, viewZ)
+let RenderAll = function(ctx, viewZ, layerViewType)
 {
 	if (viewZ === undefined)
 	{
 		viewZ = document.getElementById("trackViewLayer").valueAsNumber;
 	}
 
+	if (layerViewType === undefined)
+	{
+		layerViewType = document.getElementById("trackViewType").value;
+	}
+
 	RenderGrass(ctx, viewZ);
-	RenderTrack(ctx, viewZ);
+	RenderTrack(ctx, viewZ, layerViewType);
 }
 
 let RenderGrass = function(ctx, viewZ)
@@ -52,7 +57,7 @@ let RenderGrass = function(ctx, viewZ)
 	ctx.globalAlpha = 1;
 }
 
-let RenderTrack = function(ctx, viewZ)
+let RenderTrack = function(ctx, viewZ, layerViewType)
 {
 	let priorCtxTransform = ctx.getTransform();
 
@@ -83,16 +88,31 @@ let RenderTrack = function(ctx, viewZ)
 		//Determine opacity based on the currently viewed height layer.
 		let compositionPasses = [ "source-over" ];
 		let alphaPasses = [];
+		let deltaZ = 0;
 
-		let nearestZWithinCollision = placedPiece.translation.z;
-		if (placedPieceType.useCollisionForRender && placedPieceType.collisionOffset && placedPieceType.collisionExtents)
+		if (layerViewType != "all")
 		{
-			let minimumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z - placedPieceType.collisionExtents.z;
-			let maximumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z + placedPieceType.collisionExtents.z - 1;
-			nearestZWithinCollision = Math.max(minimumZCollision, Math.min(viewZ, maximumZCollision));
+			let nearestZWithinCollision = placedPiece.translation.z;
+			if (placedPieceType.useCollisionForRender && placedPieceType.collisionOffset && placedPieceType.collisionExtents)
+			{
+				let minimumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z - placedPieceType.collisionExtents.z;
+				let maximumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z + placedPieceType.collisionExtents.z;
+
+				//Hack to get upwards ramps rendering correctly.
+				if (placedPieceType.exitOffset.z > 0)
+					maximumZCollision -= 1;
+
+				nearestZWithinCollision = Math.max(minimumZCollision, Math.min(viewZ, maximumZCollision));
+			}
+
+			deltaZ = Math.floor(Math.abs(nearestZWithinCollision - viewZ));
+			if (layerViewType == "none" && deltaZ != 0)
+			{
+				ctx.setTransform(priorCtxTransform);
+				continue;
+			}
 		}
 
-		let deltaZ = Math.floor(Math.abs(nearestZWithinCollision - viewZ));
 		switch (deltaZ)
 		{
 			case 0:		alphaPasses.push(1);	break;
@@ -242,6 +262,16 @@ let OnViewLayerChanged = function(e)
 	RenderAll(gCtx, newViewZ);
 }
 
+let OnViewTypeChanged = function(e)
+{
+	//Skip programmatic changes
+	if (!e.isTrusted)
+		return;
+
+	let newLayerViewType = document.getElementById("trackViewType").value;
+	RenderAll(gCtx, undefined, newLayerViewType);
+}
+
 let OnPageLoaded = function(e)
 {
 	SetCanvasZoom(1);
@@ -254,4 +284,5 @@ let OnPageLoaded = function(e)
 	document.getElementById("generateButton").addEventListener("click", OnGenerateButtonPressed);
 	document.getElementById("zoomButton").addEventListener("click", OnZoomButtonPressed);
 	document.getElementById("trackViewLayer").addEventListener("input", OnViewLayerChanged);
+	document.getElementById("trackViewType").addEventListener("input", OnViewTypeChanged);
 };

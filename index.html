@@ -41,8 +41,18 @@
 				<hr />
 				<div class="table">
 					<div class="row">
-						<div class="label"><label for="trackViewLayer">View Layer:</label></div>
+						<div class="label"><label for="trackViewLayer">Current Height:</label></div>
 						<div class="option"><input id="trackViewLayer" type="number" value="0" min="0" max="31" size="2" /></div>
+					</div>
+					<div class="row">
+						<div class="label"><label for="trackViewType">Other Layers:</label></div>
+						<div class="option">
+							<select id="trackViewType">
+								<option value="all">All</option>
+								<option value="ghost" selected>Ghost</option>
+								<option value="none">None</option>
+							</select>
+						</div>
 					</div>
 					<div class="row">
 						<button id="zoomButton">Zoom Out</button>
