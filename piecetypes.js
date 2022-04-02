@@ -35,6 +35,8 @@ let gTrackPieceTemplates =
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
 	},
 	checkpoint:
 	{
@@ -43,6 +45,8 @@ let gTrackPieceTemplates =
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
 	},
 	finishLine:
 	{
@@ -51,6 +55,8 @@ let gTrackPieceTemplates =
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
 	},
 	curveRight:
 	{
