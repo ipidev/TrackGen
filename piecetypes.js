@@ -132,6 +132,7 @@ let gTrackPieceTemplates =
 		exitOffset: new Vector2D(0, -1),
 		exitAngle: 0,
 		absoluteImageOffset: true,
+		probability: 0.666,
 	},
 	superTurbo:
 	{
@@ -141,6 +142,7 @@ let gTrackPieceTemplates =
 		exitOffset: new Vector2D(0, -1),
 		exitAngle: 0,
 		absoluteImageOffset: true,
+		probability: 0.5,
 	},
 	boostUp:
 	{
@@ -150,6 +152,7 @@ let gTrackPieceTemplates =
 		exitOffset: new Vector2D(0, -1),
 		exitAngle: 0,
 		absoluteImageOffset: true,
+		probability: 0.666,
 	},
 	superBoostUp:
 	{
@@ -159,6 +162,7 @@ let gTrackPieceTemplates =
 		exitOffset: new Vector2D(0, -1),
 		exitAngle: 0,
 		absoluteImageOffset: true,
+		probability: 0.333,
 	},
 	boostDown:
 	{
@@ -168,6 +172,7 @@ let gTrackPieceTemplates =
 		exitOffset: new Vector2D(0, -1),
 		exitAngle: 0,
 		absoluteImageOffset: true,
+		probability: 0.666,
 	},
 	superBoostDown:
 	{
@@ -177,6 +182,7 @@ let gTrackPieceTemplates =
 		exitOffset: new Vector2D(0, -1),
 		exitAngle: 0,
 		absoluteImageOffset: true,
+		probability: 0.5,
 	},
 };
 
@@ -437,6 +443,10 @@ let FindAllSuitablePieceTypes = function(translation, rotation, pieceMaterial, t
 			if (pieceType.transitionTo.material && tagBlacklist.includes(pieceType.transitionTo.tag))
 				return;
 		}
+
+		//Exclude the piece with a random chance.
+		if (pieceType.probability !== undefined && gRandom() > pieceType.probability)
+			return;
 		
 		//Check if the piece fits.
 		if (!forcePlacement && !CanPlacePiece(translation, rotation, pieceType))
