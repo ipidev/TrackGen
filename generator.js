@@ -105,7 +105,7 @@ let CanPlacePiece = function(translation, rotation, trackPieceType)
 let GenerateTrack = function(length, checkpointCount, seed, materialWhitelist)
 {
 	gPlacedPieces.length = 0;
-	gRandom = seed ? mulberry32(seed) : mulberry32(Math.floor(Math.random() * 4294967296));
+	gRandom = mulberry32(seed);
 
 	//Set starting position and create the start line.
 	let currentTranslation = new Vector3D(Math.floor(gRandom() * 24) - 12, Math.floor(gRandom() * 24) - 12, 0);

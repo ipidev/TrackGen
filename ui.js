@@ -4,6 +4,7 @@ let gUI =
 {
 	zoomScale: 1,
 	viewLayer: 0,
+	hasUserProvidedSeed: false,
 	trackPiecesImage: new Image(),
 };
 gUI.trackPiecesImage.src = "images/trackmaniaPieces.png";
@@ -191,7 +192,22 @@ let OnGenerateButtonPressed = function()
 {
 	let trackLength = document.getElementById("trackLength").valueAsNumber;
 	let trackCheckpoints = document.getElementById("trackCheckpoints").valueAsNumber;
-	let trackSeed = document.getElementById("trackSeed").value ? crc32(document.getElementById("trackSeed").value) : null;
+
+	//Pick a random seed if the user doesn't provide one.
+	let trackSeedElement = document.getElementById("trackSeed");
+	let trackSeed = trackSeedElement.value;
+	if (gUI.hasUserProvidedSeed)
+	{
+		trackSeed = parseInt(trackSeed, 10);
+		if (Number.isNaN(trackSeed))
+		{
+			trackSeed = crc32(trackSeed);
+		}
+	}
+	else
+	{
+		trackSeedElement.value = trackSeed = Math.floor(Math.random() * 4294967296);
+	}
 	
 	let trackMaterialWhitelist = [];
 	let trackMaterialsElement = document.getElementById("trackMaterials");
@@ -272,6 +288,17 @@ let OnViewTypeChanged = function(e)
 	RenderAll(gCtx, undefined, newLayerViewType);
 }
 
+let OnTrackSeedChanged = function(e)
+{
+	//Skip programmatic changes
+	if (!e.isTrusted)
+		return;
+
+	//Allow random seeds to be used again if the user clears the field.
+	gUI.hasUserProvidedSeed = !(e.target.value === "" || e.target.value === null);
+	document.getElementById("trackSeedLabel").innerHTML = gUI.hasUserProvidedSeed ? "Seed*:" : "Seed:";
+}
+
 let OnPageLoaded = function(e)
 {
 	SetCanvasZoom(1);
@@ -285,4 +312,5 @@ let OnPageLoaded = function(e)
 	document.getElementById("zoomButton").addEventListener("click", OnZoomButtonPressed);
 	document.getElementById("trackViewLayer").addEventListener("input", OnViewLayerChanged);
 	document.getElementById("trackViewType").addEventListener("input", OnViewTypeChanged);
+	document.getElementById("trackSeed").addEventListener("input", OnTrackSeedChanged);
 };
