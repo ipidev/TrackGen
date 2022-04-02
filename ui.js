@@ -102,6 +102,8 @@ let RenderTrack = function(ctx, viewZ, layerViewType)
 				//Hack to get upwards ramps rendering correctly.
 				if (placedPieceType.exitOffset.z > 0)
 					maximumZCollision -= 1;
+				else if (placedPieceType.exitOffset.z < 0)
+					minimumZCollision += 1;
 
 				nearestZWithinCollision = Math.max(minimumZCollision, Math.min(viewZ, maximumZCollision));
 			}
