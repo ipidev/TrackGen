@@ -10,7 +10,7 @@ let PlacePiece = function(translation, rotation, trackPieceType)
 {
 	gPlacedPieces.push(
 	{
-		translation: Vector2DStatic.CreateCopy(translation),
+		translation: Vector3DStatic.CreateCopy(translation),
 		rotation: rotation,
 		trackPieceType: trackPieceType,
 	});
@@ -18,12 +18,13 @@ let PlacePiece = function(translation, rotation, trackPieceType)
 
 let ApplyPieceOffset = function(translation, rotation, trackPieceType)
 {
-	let rotatedOffset = Vector2DStatic.CreateCopy(trackPieceType.exitOffset);
-	rotatedOffset.Rotate(rotation);
-	
-	let newTranslation = Vector2DStatic.CreateCopy(translation);
+	let rotatedOffset = Vector3DStatic.CreateCopy(trackPieceType.exitOffset);
+	rotatedOffset.RotateYaw(rotation);
+
+	let newTranslation = Vector3DStatic.CreateCopy(translation);
 	newTranslation.x += rotatedOffset.x;
 	newTranslation.y += rotatedOffset.y;
+	newTranslation.z += rotatedOffset.z;
 	rotation += trackPieceType.exitAngle;
 	
 	return { translation: newTranslation, rotation: rotation };
@@ -35,48 +36,35 @@ let GetTrackPieceAABB = function(translation, rotation, trackPieceType)
 	{
 		let returnValue =
 		{
-			min: new Vector2D(translation.x - 0.5, translation.y - 0.5),
-			max: new Vector2D(translation.x + 0.5, translation.y + 0.5),
+			min: new Vector3D(translation.x - 0.5, translation.y - 0.5, translation.z - 0.5),
+			max: new Vector3D(translation.x + 0.5, translation.y + 0.5, translation.z + 0.5),
 		};
 		return returnValue;
 	}
 	
-	let rotatedCollisionOffset = Vector2DStatic.CreateCopy(trackPieceType.collisionOffset);
-	rotatedCollisionOffset.Rotate(rotation);
+	let rotatedCollisionOffset = Vector3DStatic.CreateCopy(trackPieceType.collisionOffset);
+	rotatedCollisionOffset.RotateYaw(rotation);
 	
 	rotatedCollisionOffset.x += translation.x;
 	rotatedCollisionOffset.y += translation.y;
+	rotatedCollisionOffset.z += translation.z;
 	
-	let extent1 = Vector2DStatic.CreateCopy(rotatedCollisionOffset);
+	let extent1 = Vector3DStatic.CreateCopy(rotatedCollisionOffset);
 	extent1.x += trackPieceType.collisionExtents.x;
 	extent1.y += trackPieceType.collisionExtents.y;
+	extent1.z += trackPieceType.collisionExtents.z;
 	
-	let extent2 = Vector2DStatic.CreateCopy(rotatedCollisionOffset);
+	let extent2 = Vector3DStatic.CreateCopy(rotatedCollisionOffset);
 	extent2.x -= trackPieceType.collisionExtents.x;
 	extent2.y -= trackPieceType.collisionExtents.y;
+	extent2.z -= trackPieceType.collisionExtents.z;
 	
 	let returnValue =
 	{
-		min: new Vector2D(Math.min(extent1.x, extent2.x), Math.min(extent1.y, extent2.y)),
-		max: new Vector2D(Math.max(extent1.x, extent2.x), Math.max(extent1.y, extent2.y)),
+		min: new Vector3D(Math.min(extent1.x, extent2.x), Math.min(extent1.y, extent2.y), Math.min(extent1.z, extent2.z)),
+		max: new Vector3D(Math.max(extent1.x, extent2.x), Math.max(extent1.y, extent2.y), Math.max(extent1.z, extent2.z)),
 	};
 	return returnValue;
-}
-
-let HasPieceBeenPlaced = function(translation)
-{
-	let AreVectorsNearlyEqual = function(a, b)
-	{
-		return Math.abs(a.x - b.x) < 0.01 && Math.abs(a.y - b.y) < 0.01;
-	}
-	
-	for (let i = 0; i < gPlacedPieces.length; ++i)
-	{
-		if (AreVectorsNearlyEqual(gPlacedPieces[i].translation, translation))
-			return true;
-	}
-	
-	return false;
 }
 
 let DoesPieceCollide = function(translation, rotation, trackPieceType)
@@ -84,7 +72,8 @@ let DoesPieceCollide = function(translation, rotation, trackPieceType)
 	let DoesAABBIntersect = function(a, b)
 	{
 		return a.min.x < b.max.x && a.max.x > b.min.x &&
-				a.min.y < b.max.y && a.max.y > b.min.y;
+				a.min.y < b.max.y && a.max.y > b.min.y &&
+				a.min.z < b.max.z && a.max.z > b.min.z;
 	}
 	
 	let currentPieceAABB = GetTrackPieceAABB(translation, rotation, trackPieceType);
@@ -101,7 +90,9 @@ let DoesPieceCollide = function(translation, rotation, trackPieceType)
 
 let IsOutOfBounds = function(translation)
 {
-	return translation.x <= -23 || translation.x >= 23 || translation.y <= -23 || translation.y >= 23;
+	return translation.x < -23 || translation.x > 23 ||
+			translation.y < -23 || translation.y > 23 ||
+			translation.z < 0 || translation.y > 31;
 }
 
 let CanPlacePiece = function(translation, rotation, trackPieceType)
@@ -117,7 +108,7 @@ let GenerateTrack = function(length, checkpointCount, seed, materialWhitelist)
 	gRandom = seed ? mulberry32(seed) : mulberry32(Math.floor(Math.random() * 4294967296));
 
 	//Set starting position and create the start line.
-	let currentTranslation = new Vector2D(Math.floor(gRandom() * 24) - 12, Math.floor(gRandom() * 24) - 12);
+	let currentTranslation = new Vector3D(Math.floor(gRandom() * 24) - 12, Math.floor(gRandom() * 24) - 12, 0);
 	let currentRotation = 0;
 	
 	//Setup the tags that will be used to place pieces.

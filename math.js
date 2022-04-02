@@ -180,6 +180,187 @@ Vector2D.prototype.CrossProduct = function(a, b)
 }
 
 //-----------------------------------------------------------------------------
+// 3D Vector
+//-----------------------------------------------------------------------------
+
+class Vector3D
+{
+	constructor(x, y, z)
+	{
+		this.x = x ? x : 0.0;
+		this.y = y ? y : 0.0;
+		this.z = z ? z : 0.0;
+	}
+	
+	//Mutators
+	Set(x, y, z)
+	{
+		debugAssert(typeof x === "number", "x must be a number");
+		debugAssert(typeof y === "number", "x must be a number");
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+	
+	Copy(other)
+	{
+		debugAssert(other instanceof Vector3D, "other must be a Vector3D");
+		this.x = other.x;
+		this.y = other.y;
+		this.z = other.z;
+	}
+	
+	Add(other)
+	{
+		debugAssert(other instanceof Vector3D, "other must be a Vector3D");
+		this.x += other.x;
+		this.y += other.y;
+		this.z += other.z;
+	}
+	
+	Subtract(other)
+	{
+		debugAssert(other instanceof Vector3D, "other must be a Vector3D");
+		this.x -= other.x;
+		this.y -= other.y;
+		this.z -= other.z;
+	}
+	
+	Multiply(scalar)
+	{
+		debugAssert(typeof scalar === "number", "scalar must be a number");
+		this.x *= scalar;
+		this.y *= scalar;
+		this.z *= scalar;
+	}
+	
+	ComponentwiseMultiply(other)
+	{
+		debugAssert(other instanceof Vector3D, "other must be a Vector3D");
+		this.x *= other.x;
+		this.y *= other.y;
+		this.z *= other.z;
+	}
+	
+	Divide(divisor)
+	{
+		debugAssert(typeof divisor === "number", "divisor must be a number");
+		this.x /= divisor;
+		this.y /= divisor;
+		this.z /= divisor;
+	}
+	
+	Normalize()
+	{
+		this.Divide(this.GetLength());
+	}
+	
+	RotateYaw(rotation)
+	{
+		debugAssert(typeof rotation === "number", "rotation must be a number");
+		let cachedX = this.x;
+		this.x = (cachedX * Math.cos(rotation)) - (this.y * Math.sin(rotation));
+		this.y = (cachedX * Math.sin(rotation)) + (this.y * Math.cos(rotation));
+	}
+	
+	Reflect(normal)
+	{
+		debugAssert(normal instanceof Vector3D, "normal must be a Vector3D");
+		const dot = Vector3DStatic.DotProduct(this, normal);
+		this.x -= 2.0 * dot * normal.x;
+		this.y -= 2.0 * dot * normal.y;
+		this.z -= 2.0 * dot * normal.z;
+	}
+	
+	ProjectOnto(normal)
+	{
+		debugAssert(normal instanceof Vector3D, "normal must be a Vector3D");
+		const dot = Vector3DStatic.DotProduct(this, normal);
+		this.x = normal.x * dot;
+		this.y = normal.y * dot;
+		this.z = normal.z * dot;
+	}
+	
+	//Accessors/calculations
+	GetLength()
+	{
+		return Math.sqrt((this.x * this.x) + (this.y * this.y) + (this.z * this.z));
+	}
+	
+	GetLengthSquared()
+	{
+		return (this.x * this.x) + (this.y * this.y) + (this.z * this.z);
+	}
+	
+	toString()
+	{
+		return "{" + this.x + ", " + this.y + ", " + this.z + "}";
+	}
+}
+
+//"Static" accessor for convinience.
+//I learned too late that static wasn't supported in Safari... whoops!
+const Vector3DStatic = Vector3D.prototype;
+
+Vector3D.prototype.CreateZeroVector = function()
+{
+	return new Vector3D(0.0, 0.0, 0.0);
+}
+
+Vector3D.prototype.CreateOneVector = function()
+{
+	return new Vector3D(1.0, 1.0, 1.0);
+}
+
+Vector3D.prototype.CreateCopy = function(other)
+{
+	debugAssert(other instanceof Vector3D, "other must be a Vector3D");
+	return new Vector3D(other.x, other.y, other.z);
+}
+
+Vector3D.prototype.CreateAddition = function(a, b)
+{
+	debugAssert(a instanceof Vector3D, "a must be a Vector3D");
+	debugAssert(b instanceof Vector3D, "b must be a Vector3D");
+	return new Vector3D(a.x + b.x, a.y + b.y, a.z + b.z);
+}
+
+Vector3D.prototype.CreateSubtraction = function(a, b)
+{
+	debugAssert(a instanceof Vector3D, "a must be a Vector3D");
+	debugAssert(b instanceof Vector3D, "b must be a Vector3D");
+	return new Vector3D(a.x - b.x, a.y - b.y, a.z - b.z);
+}
+
+Vector3D.prototype.CreateMultiplication = function(v, scalar)
+{
+	debugAssert(v instanceof Vector3D, "v must be a Vector3D");
+	debugAssert(typeof scalar === "number", "scalar must be a number");
+	return new Vector3D(v.x * scalar, v.y * scalar, v.z * scalar);
+}
+
+Vector3D.prototype.CreateDivision = function(v, divisor)
+{
+	debugAssert(v instanceof Vector3D, "v must be a Vector3D");
+	debugAssert(typeof divisor === "number", "divisor must be a number");
+	return new Vector3D(v.x / divisor, v.y / divisor, v.z / divisor);
+}
+
+Vector3D.prototype.DotProduct = function(a, b)
+{
+	debugAssert(a instanceof Vector3D, "a must be a Vector3D");
+	debugAssert(b instanceof Vector3D, "b must be a Vector3D");
+	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);
+}
+
+Vector3D.prototype.CrossProduct = function(a, b)
+{
+	debugAssert(a instanceof Vector3D, "a must be a Vector3D");
+	debugAssert(b instanceof Vector3D, "b must be a Vector3D");
+	return new Vector3D((a.y * b.z) - (a.z * b.y), (a.x * b.z) - (a.z * b.x), (a.x * b.y) - (a.y * b.x));
+}
+
+//-----------------------------------------------------------------------------
 // PRNG
 //-----------------------------------------------------------------------------
 
