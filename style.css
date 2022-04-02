@@ -44,8 +44,6 @@ body
 	background: #131116;
 	opacity: 50%;
 	transition: opacity 0.25s;
-
-	background: #131116;
 }
 
 #canvasContainer #optionsContainer
@@ -62,6 +60,7 @@ body
 #canvasContainer .overlay .table
 {
 	display: table;
+	margin: auto;
 }
 
 #canvasContainer .overlay .table .row
