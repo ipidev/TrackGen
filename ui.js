@@ -201,7 +201,7 @@ let OnGenerateButtonPressed = function()
 		trackSeed = parseInt(trackSeed, 10);
 		if (Number.isNaN(trackSeed))
 		{
-			trackSeed = crc32(trackSeed);
+			trackSeed = crc32(trackSeedElement.value);
 		}
 	}
 	else
