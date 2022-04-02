@@ -127,7 +127,7 @@ let gTrackPieceTemplates =
 	turbo:
 	{
 		tags: [ "straight", "engineBlock" ],
-		imageOffset: new Vector2D(0, 64),
+		imageOffset: new Vector2D(320, 96),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector2D(0, -1),
 		exitAngle: 0,
@@ -136,7 +136,43 @@ let gTrackPieceTemplates =
 	superTurbo:
 	{
 		tags: [ "straight", "engineBlock" ],
-		imageOffset: new Vector2D(32, 64),
+		imageOffset: new Vector2D(352, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector2D(0, -1),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+	},
+	boostUp:
+	{
+		tags: [ "straight", "engineBlock" ],
+		imageOffset: new Vector2D(384, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector2D(0, -1),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+	},
+	superBoostUp:
+	{
+		tags: [ "straight", "engineBlock" ],
+		imageOffset: new Vector2D(416, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector2D(0, -1),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+	},
+	boostDown:
+	{
+		tags: [ "straight", "engineBlock" ],
+		imageOffset: new Vector2D(448, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector2D(0, -1),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+	},
+	superBoostDown:
+	{
+		tags: [ "straight", "engineBlock" ],
+		imageOffset: new Vector2D(480, 96),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector2D(0, -1),
 		exitAngle: 0,
@@ -176,10 +212,21 @@ let gPieceTypes =
 			exitAngle: 0,
 			transitionTo: { material: "sausageFlat" },
 		},
+		toSausageLong:
+		{
+			tags: [ "straight" ],
+			imageOffset: new Vector2D(64, 448),
+			imageDimensions: new Vector2D(32, 64),
+			exitOffset: new Vector2D(0, -2),
+			exitAngle: 0,
+			collisionOffset: new Vector2D(0, -0.5),
+			collisionExtents: new Vector2D(1, 2),
+			transitionTo: { material: "sausageFlat" },
+		},
 		jump:
 		{
 			tags: [ "jump" ],
-			imageOffset: new Vector2D(64, 64),
+			imageOffset: new Vector2D(0, 64),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector2D(0, -2),
 			exitAngle: 0,
@@ -196,7 +243,23 @@ let gPieceTypes =
 			exitOffset: new Vector2D(0, -1),
 			exitAngle: 0,
 			transitionTo: { material: "roadFlat" },
-		}
+		},
+		largeBump:
+		{
+			tags: [ "straight" ],
+			imageOffset: new Vector2D(32, 192),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector2D(0, -1),
+			exitAngle: 0,
+		},
+		smallBumps:
+		{
+			tags: [ "straight" ],
+			imageOffset: new Vector2D(64, 192),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector2D(0, -1),
+			exitAngle: 0,
+		},
 	},
 	iceFlat:
 	{
@@ -220,7 +283,42 @@ let gPieceTypes =
 			exitOffset: new Vector2D(0, -1),
 			exitAngle: 0,
 			transitionTo: { material: "roadFlat" },
-		}
+		},
+		toRoadLong:
+		{
+			tags: [ "straight" ],
+			imageOffset: new Vector2D(32, 448),
+			imageDimensions: new Vector2D(32, 64),
+			exitOffset: new Vector2D(0, -2),
+			exitAngle: 0,
+			collisionOffset: new Vector2D(0, -0.5),
+			collisionExtents: new Vector2D(1, 2),
+			transitionTo: { material: "roadFlat" },
+		},
+		narrowCentre:
+		{
+			tags: [ "straight" ],
+			imageOffset: new Vector2D(224, 480),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector2D(0, -1),
+			exitAngle: 0,
+		},
+		narrowRight:
+		{
+			tags: [ "straight" ],
+			imageOffset: new Vector2D(256, 480),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector2D(0, -1),
+			exitAngle: 0,
+		},
+		narrowLeft:
+		{
+			tags: [ "straight" ],
+			imageOffset: new Vector2D(288, 480),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector2D(0, -1),
+			exitAngle: 0,
+		},
 	},
 };
 
