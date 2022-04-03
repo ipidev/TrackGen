@@ -212,7 +212,7 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			//Reduce index and count dead-ends hit
 			++deadEndsHit;
 			
-			let timesToBackUp = Math.max(1, Math.floor(Math.min(deadEndsHit * 0.5, gPlacedPieces.length * 0.25)));
+			let timesToBackUp = 1;//Math.max(1, Math.floor(Math.min(deadEndsHit * 0.5, gPlacedPieces.length * 0.25)));
 			for (let j = 0; j < timesToBackUp && gPlacedPieces.length > 1; ++j)
 			{
 				//Don't select this piece again
