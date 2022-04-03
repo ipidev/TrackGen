@@ -182,21 +182,25 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			//If this piece causes a transition, alter the whitelist.
 			if (nextPieceType.transitionTo)
 			{
-				if (nextPieceType.transitionTo.material)
+				if (nextPieceType.transitionTo.probability === undefined ||
+					gRandom() <= nextPieceType.transitionTo.probability)
 				{
-					if (nextPieceType.transitionTo.material == "any")
+					if (nextPieceType.transitionTo.material && !materialBlacklist.includes(nextPieceType.transitionTo.material))
 					{
-						pieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
+						if (nextPieceType.transitionTo.material == "any")
+						{
+							pieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
+						}
+						else
+						{
+							pieceMaterial = nextPieceType.transitionTo.material;
+						}
 					}
-					else
+					
+					if (nextPieceType.transitionTo.tag)
 					{
-						pieceMaterial = nextPieceType.transitionTo.material;
+						pieceTagWhitelist.push(nextPieceType.transitionTo.tag);
 					}
-				}
-				
-				if (nextPieceType.transitionTo.tag)
-				{
-					pieceTagWhitelist.push(nextPieceType.transitionTo.tag);
 				}
 			}
 		}
@@ -224,10 +228,37 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 	}
 	
 	//Place the finish line.
+	for (let i = 0; i < 3; ++i)
 	{
 		let finishLinePieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceMaterial, ["finishLine"], pieceTagBlacklist, [], true);
-		if (!finishLinePieceType)
-			return;	//Oh dear.
-		PlacePiece(currentTranslation, currentRotation, finishLinePieceType);
+		if (finishLinePieceType)
+		{
+			PlacePiece(currentTranslation, currentRotation, finishLinePieceType);
+			break;
+		}
+		
+		//This material doesn't have a finish line - transition to one that does.
+		let pieceMaterials = GetPieceMaterials();
+		for (let j = 0; j < pieceMaterials.length; ++j)
+		{
+			if (FindPieceTypeByPredicate(pieceMaterials[j], pieceType => pieceType.tags.includes("finishLine")))
+			{
+				let transitionPieceType = FindPieceTypeByPredicate(pieceMaterial, pieceType =>
+				{
+					return pieceType.transitionTo !== undefined && pieceType.transitionTo.material == pieceMaterials[j];
+				});
+				if (transitionPieceType)
+				{
+					PlacePiece(currentTranslation, currentRotation, transitionPieceType);
+			
+					let offsetPositions = ApplyPieceOffset(currentTranslation, currentRotation, transitionPieceType);
+					currentTranslation = offsetPositions.translation;
+					currentRotation = offsetPositions.rotation;
+					
+					pieceMaterial = pieceMaterials[j];
+					break;
+				}
+			}
+		}
 	}
 }

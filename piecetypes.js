@@ -265,7 +265,7 @@ let gPieceTypes =
 	{
 		toDirt:
 		{
-			tags: [ "straight" ],
+			tags: [ "straight", "transition" ],
 			imageOffset: new Vector2D(224, 96),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
@@ -274,7 +274,7 @@ let gPieceTypes =
 		},
 		toIce:
 		{
-			tags: [ "straight" ],
+			tags: [ "straight", "transition" ],
 			imageOffset: new Vector2D(256, 96),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
@@ -283,7 +283,7 @@ let gPieceTypes =
 		},
 		toSausage:
 		{
-			tags: [ "straight" ],
+			tags: [ "straight", "transition" ],
 			imageOffset: new Vector2D(288, 96),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
@@ -292,7 +292,7 @@ let gPieceTypes =
 		},
 		toSausageLong:
 		{
-			tags: [ "straight" ],
+			tags: [ "straight", "transition" ],
 			imageOffset: new Vector2D(64, 448),
 			imageDimensions: new Vector2D(32, 64),
 			exitOffset: new Vector3D(0, -2, 0),
@@ -315,7 +315,7 @@ let gPieceTypes =
 	{
 		toRoad:
 		{
-			tags: [ "straight" ],
+			tags: [ "straight", "transition" ],
 			imageOffset: new Vector2D(0, 192),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
@@ -343,7 +343,7 @@ let gPieceTypes =
 	{
 		toRoad:
 		{
-			tags: [ "straight" ],
+			tags: [ "straight", "transition" ],
 			imageOffset: new Vector2D(0, 320),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
@@ -355,7 +355,7 @@ let gPieceTypes =
 	{
 		toRoad:
 		{
-			tags: [ "straight" ],
+			tags: [ "straight", "transition" ],
 			imageOffset: new Vector2D(0, 448),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
@@ -364,7 +364,7 @@ let gPieceTypes =
 		},
 		toRoadLong:
 		{
-			tags: [ "straight" ],
+			tags: [ "straight", "transition" ],
 			imageOffset: new Vector2D(32, 448),
 			imageDimensions: new Vector2D(32, 64),
 			exitOffset: new Vector3D(0, -2, 0),
@@ -402,7 +402,7 @@ let gPieceTypes =
 	{
 		toWaterDeep:
 		{
-			tags: [ "straight" ],
+			tags: [ "straight", "transition" ],
 			imageOffset: new Vector2D(0, 576),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, -1),
@@ -416,12 +416,12 @@ let gPieceTypes =
 	{
 		toWaterShallow:
 		{
-			tags: [ "straight" ],
+			tags: [ "straight", "transition" ],
 			imageOffset: new Vector2D(0, 704),
 			imageDimensions: new Vector2D(32, 32),
-			exitOffset: new Vector3D(0, -1, -1),
+			exitOffset: new Vector3D(0, -1, 1),
 			exitAngle: 0,
-			collisionOffset: new Vector3D(0, 0, -1),
+			collisionOffset: new Vector3D(0, 0, 1),
 			collisionExtents: new Vector3D(0.5, 0.5, 1),
 			transitionTo: { material: "waterShallow" },
 		},
@@ -445,7 +445,7 @@ let SanitiseBespokePieceTypes = function()
 	});
 }
 
-let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extraImageOffset, tagBlacklist)
+let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extraImageOffset, tagBlacklist, extraHeight)
 {
 	//Create material object if it doesn't exist.
 	if (gPieceTypes[pieceMaterial] === undefined) { gPieceTypes[pieceMaterial] = {}; }
@@ -470,9 +470,55 @@ let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extra
 			newPieceType.imageOffset = Vector2DStatic.CreateAddition(newPieceType.imageOffset, extraImageOffset);
 		}
 
+		//Some materials are taller than others
+		if (extraHeight !== undefined)
+		{
+			if (newPieceType.collisionOffset === undefined && newPieceType.collisionExtents === undefined)
+			{
+				newPieceType.collisionOffset = new Vector3D(0, 0, 0.5);
+				newPieceType.collisionExtents = new Vector3D(0.5, 0.5, 0.5);
+			}
+			else
+			{
+				newPieceType.collisionOffset = Vector3DStatic.CreateCopy(newPieceType.collisionOffset);
+				newPieceType.collisionExtents = Vector3DStatic.CreateCopy(newPieceType.collisionExtents);
+			}
+
+			//Convert extents to height, perform addition, divide back into extents
+			newPieceType.collisionOffset.z += extraHeight * 0.5;
+			newPieceType.collisionExtents.z = ((newPieceType.collisionExtents.z * 2) + extraHeight) * 0.5;
+		}
+
 		SanitisePieceType(newPieceType, pieceMaterial);
 
 		gPieceTypes[pieceMaterial][templateKey] = newPieceType;
+	});
+}
+
+let ModifyPieceTypeProperty = function(pieceMaterialKey, propertyKey, propertyValue, tagBlacklist)
+{
+	Object.getOwnPropertyNames(gPieceTypes[pieceMaterialKey]).forEach(pieceTypeKey =>
+	{
+		let pieceType = gPieceTypes[pieceMaterialKey][pieceTypeKey];
+
+		if (pieceType[propertyKey] !== undefined && typeof pieceType[propertyKey] !== "number")
+			return;
+
+		if (pieceType.tags && tagBlacklist !== undefined)
+		{
+			//Are any of the tags in the blacklist?
+			if (tagBlacklist.find(tag => pieceType.tags.includes(tag)))
+				return;
+		}
+
+		if (pieceType[propertyKey] === undefined)
+		{
+			pieceType[propertyKey] = propertyValue;
+		}
+		else
+		{
+			pieceType[propertyKey] *= propertyValue;
+		}
 	});
 }
 
@@ -482,10 +528,18 @@ let InitialisePieceTypes = function()
 
 	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "roadFlat", new Vector2D(0, 0));
 	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "dirtFlat", new Vector2D(0, 128));
-	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "iceFlat", new Vector2D(0, 256));
+	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "iceFlat", new Vector2D(0, 256), undefined, 1);
 	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "sausageFlat", new Vector2D(0, 384));
 	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "waterShallow", new Vector2D(0, 512), [ "ramp" ]);
-	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "waterDeep", new Vector2D(0, 640), [ "ramp", "progress" ]);
+	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "waterDeep", new Vector2D(0, 640), [ "ramp", "progress" ], 1);
+
+	//Special-case transitions.
+	ModifyPieceTypeProperty("roadFlat", "transitionTo", { material: "waterShallow", probability: 0.025 }, [ "ramp" ]);
+	ModifyPieceTypeProperty("waterShallow", "transitionTo", { material: "roadFlat", probability: 0.25 }, [ "ramp" ]);
+
+	//Shorten deep water sections and make them appear on more layers.
+	ModifyPieceTypeProperty("waterDeep", "probability", 0.1, [ "transition "]);
+	ModifyPieceTypeProperty("waterDeep", "useCollisionForRender", true);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -520,7 +574,16 @@ let SelectPieceMaterialFromTag = function(tagToFind, materialBlacklist)
 	return suitablePieceMaterials.length > 0 ? suitablePieceMaterials[Math.floor(gRandom() * suitablePieceMaterials.length)] : null;
 }
 
-let FindAllSuitablePieceTypes = function(translation, rotation, pieceMaterial, tagWhitelist, tagBlacklist, pieceTypeBlacklist, forcePlacement)
+let FindPieceTypeByPredicate = function(pieceMaterial, predicate)
+{
+	let pieceTypeKey = Object.getOwnPropertyNames(gPieceTypes[pieceMaterial]).find(pieceTypeKey =>
+	{
+		return predicate(gPieceTypes[pieceMaterial][pieceTypeKey]);
+	});
+	return pieceTypeKey ? gPieceTypes[pieceMaterial][pieceTypeKey] : null;
+}
+
+let FindAllSuitablePieceTypes = function(translation, rotation, pieceMaterial, tagWhitelist, tagBlacklist, pieceTypeBlacklist, alwaysUse)
 {
 	let suitablePieceTypes = [];
 	
@@ -543,7 +606,7 @@ let FindAllSuitablePieceTypes = function(translation, rotation, pieceMaterial, t
 				return;
 		}
 
-		if (pieceType.transitionTo)
+		if (pieceType.transitionTo && !pieceType.transitionTo.probability)
 		{
 			//Does the piece transition to a piece in the blacklist?
 			if (pieceType.transitionTo.material && tagBlacklist.includes(pieceType.transitionTo.material))
@@ -553,13 +616,16 @@ let FindAllSuitablePieceTypes = function(translation, rotation, pieceMaterial, t
 				return;
 		}
 
-		//Exclude the piece with a random chance.
-		if (pieceType.probability !== undefined && gRandom() > pieceType.probability)
-			return;
-		
-		//Check if the piece fits.
-		if (!forcePlacement && !CanPlacePiece(translation, rotation, pieceType))
-			return;
+		if (!alwaysUse)
+		{
+			//Exclude the piece with a random chance.
+			if (pieceType.probability !== undefined && gRandom() > pieceType.probability)
+				return;
+			
+			//Check if the piece fits.
+			if (!CanPlacePiece(translation, rotation, pieceType))
+				return;
+		}
 		
 		suitablePieceTypes.push(pieceType);
 	});
