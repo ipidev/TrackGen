@@ -121,7 +121,9 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 	let pieceTagBlacklist = [].concat(materialBlacklist);
 
 	let pieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
-
+	if (!pieceMaterial)
+		return;
+	
 	//Place the start line.
 	{
 		let startLinePieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceMaterial, ["startLine"], pieceTagBlacklist, [], true);
@@ -160,7 +162,7 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 		if (nextPieceType === null)
 		{
 			nextPieceType = SelectSuitablePieceType(currentTranslation, currentRotation,
-				pieceMaterial, pieceTagWhitelist, pieceTagBlacklist.concat([ "startLine", "checkpoint", "finishLine" ]), [ lastDeadEndPieceType ]);
+				pieceMaterial, pieceTagWhitelist, pieceTagBlacklist.concat([ "progress" ]), [ lastDeadEndPieceType ]);
 		}
 		
 		//Clear the whitelist each time (might need more flexible solution)

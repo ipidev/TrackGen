@@ -17,6 +17,11 @@ let gAdjectives =
 		"queen's", "royal", "buggy", "janky", "progressive", "regressive",
 		"radical", "incredible", "amazing", "brilliant", "official", "stinky",
 	],
+	emptyList:
+	[
+		"empty", "absent", "non-existent", "gone", "departed", "null", "nil",
+		"blank", "devoid", "lost", "missing", "vacant", "bugged", "glitched",
+	],
 	fastSynonyms:
 	[
 		"fast", "quick", "dashing", "rapid", "accelerated", "speeding",
@@ -93,6 +98,12 @@ let gNouns =
 		"brand", "teeth", "tank", "vehicle", "feet", "toes", "member", "leg",
 		"intestine", "gut", "stomach", "bone", "spine", "sphincter", "organ",
 	],
+	emptyList:
+	[
+		"void", "nothing", "gap", "vacuum", "space", "exhaustion", "vacuity",
+		"plain", "free space", "land", "grass", "editor", "canvas", "slate",
+		"what",
+	],
 	roadList:
 	[
 		"tarmac", "cement", "asphalt", "road", "stadium", "classic", "original",
@@ -112,6 +123,11 @@ let gNouns =
 	[
 		"sausage", "fat", "tech", "air", "jump", "bank", "lagoon", "shortcut",
 		"patty", "frankfurter", "bratwurst", "tallow", "bulk", "vault",
+	],
+	waterList:
+	[
+		"water", "river", "lake", "ocean", "sea", "stream", "estuary", "pond",
+		"watercourse", "basin", "puddle", "pool", "reservoir", "drink", "liquid"
 	],
 };
 
@@ -139,7 +155,7 @@ let gPostpositionsList =
 let DeterminePossibleAdjectives = function()
 {
 	if (gPlacedPieces.length == 0)
-		return [ "how did you do this" ];
+		return gAdjectives.emptyList;
 
 	let possibleAdjectives = [];
 
@@ -208,6 +224,9 @@ let DeterminePossibleAdjectives = function()
 
 let DeterminePossibleNouns = function()
 {
+	if (gPlacedPieces.length <= 0)
+		return gNouns.emptyList;
+
 	let possibleAdjectives = gNouns.anyList;
 
 	//Count track materials.
@@ -248,6 +267,7 @@ let DeterminePossibleNouns = function()
 			"dirt": gNouns.dirtList,
 			"ice": gNouns.iceList,
 			"sausage": gNouns.sausageList,
+			"water": gNouns.waterList,
 		};
 
 		let materialToNounListKey = Object.getOwnPropertyNames(materialToNounListMap).find(materialKey =>

@@ -30,7 +30,7 @@ let gTrackPieceTemplates =
 	},
 	startLine:
 	{
-		tags: [ "startLine" ],
+		tags: [ "progress", "startLine" ],
 		imageOffset: new Vector2D(0, 32),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
@@ -40,7 +40,7 @@ let gTrackPieceTemplates =
 	},
 	checkpoint:
 	{
-		tags: [ "checkpoint" ],
+		tags: [ "progress", "checkpoint" ],
 		imageOffset: new Vector2D(32, 32),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
@@ -50,7 +50,7 @@ let gTrackPieceTemplates =
 	},
 	finishLine:
 	{
-		tags: [ "finishLine" ],
+		tags: [ "progress", "finishLine" ],
 		imageOffset: new Vector2D(64, 32),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
@@ -245,7 +245,7 @@ let gTrackPieceTemplates =
 		collisionExtents: new Vector3D(0.5, 1, 1),
 		useCollisionForRender: true,
 	},
-	rampDownLevelSteep:
+	rampDownLevelLong:
 	{
 		tags: [ "ramp" ],
 		imageOffset: new Vector2D(576, 64),
@@ -398,6 +398,34 @@ let gPieceTypes =
 			exitAngle: 0,
 		},
 	},
+	waterShallow:
+	{
+		toWaterDeep:
+		{
+			tags: [ "straight" ],
+			imageOffset: new Vector2D(0, 576),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, -1),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, -1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "waterDeep" },
+		},
+	},
+	waterDeep:
+	{
+		toWaterShallow:
+		{
+			tags: [ "straight" ],
+			imageOffset: new Vector2D(0, 704),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, -1),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, -1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "waterShallow" },
+		},
+	},
 };
 
 let SanitisePieceType = function(pieceType, pieceMaterial)
@@ -417,7 +445,7 @@ let SanitiseBespokePieceTypes = function()
 	});
 }
 
-let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extraImageOffset)
+let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extraImageOffset, tagBlacklist)
 {
 	//Create material object if it doesn't exist.
 	if (gPieceTypes[pieceMaterial] === undefined) { gPieceTypes[pieceMaterial] = {}; }
@@ -425,6 +453,13 @@ let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extra
 	Object.getOwnPropertyNames(templateObject).forEach(templateKey =>
 	{
 		let template = templateObject[templateKey];
+
+		if (template.tags && tagBlacklist !== undefined)
+		{
+			//Are any of the tags in the blacklist?
+			if (tagBlacklist.find(tag => template.tags.includes(tag)))
+				return;
+		}
 
 		//Clone template object first.
 		let newPieceType = {};
@@ -449,6 +484,8 @@ let InitialisePieceTypes = function()
 	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "dirtFlat", new Vector2D(0, 128));
 	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "iceFlat", new Vector2D(0, 256));
 	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "sausageFlat", new Vector2D(0, 384));
+	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "waterShallow", new Vector2D(0, 512), [ "ramp" ]);
+	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "waterDeep", new Vector2D(0, 640), [ "ramp", "progress" ]);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
