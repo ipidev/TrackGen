@@ -10,53 +10,55 @@
 	<body>
 		<div id="canvasContainer">
 			<h1 id="title">title</h1>
-			<canvas id="canvas"></canvas>
-			<div class="overlay" id="optionsContainer">
-				<div class="table">
-					<div class="row">
-						<div class="label"><label for="trackLength">Length:</label></div>
-						<div class="option"><input id="trackLength" type="number" value="15" min="1" max="999" size="3" /></div>
-					</div>
-					<div class="row">
-						<div class="label"><label for="trackCheckpoints">Checkpoints:</label></div>
-						<div class="option"><input id="trackCheckpoints" type="number" value="3" min="0" max="20" size="2" /></div>
-					</div>
-					<div class="row">
-						<div class="label"><label for="trackMaterials">Materials:</label></div>
-						<div class="option">
-							<select id="trackMaterials" multiple size="2">
-								<option value="roadFlat" selected>Road</option>
-								<option value="dirtFlat" selected>Dirt</option>
-								<option value="iceFlat" selected>Ice</option>
-								<option value="sausageFlat" selected>Sausage</option>
-							</select>
-						</div>
-					</div>
-					<div class="row">
-						<div class="label"><label for="trackSeed" id="trackSeedLabel">Seed:</label></div>
-						<div class="option"><input id="trackSeed" type="text" value="" maxlength="10" size="10" /></div>
+			<div>
+				<canvas id="canvas"></canvas>
+			</div>
+		</div>
+		<div class="overlay" id="optionsContainer">
+			<div class="table">
+				<div class="row">
+					<div class="label"><label for="trackLength">Length:</label></div>
+					<div class="option"><input id="trackLength" type="number" value="15" min="1" max="999" size="3" /></div>
+				</div>
+				<div class="row">
+					<div class="label"><label for="trackCheckpoints">Checkpoints:</label></div>
+					<div class="option"><input id="trackCheckpoints" type="number" value="3" min="0" max="20" size="2" /></div>
+				</div>
+				<div class="row">
+					<div class="label"><label for="trackMaterials">Materials:</label></div>
+					<div class="option">
+						<select id="trackMaterials" multiple size="2">
+							<option value="roadFlat" selected>Road</option>
+							<option value="dirtFlat" selected>Dirt</option>
+							<option value="iceFlat" selected>Ice</option>
+							<option value="sausageFlat" selected>Sausage</option>
+						</select>
 					</div>
 				</div>
-				<button id="generateButton">Generate</button>
-				<hr />
-				<div class="table">
-					<div class="row">
-						<div class="label"><label for="trackViewLayer">Current Height:</label></div>
-						<div class="option"><input id="trackViewLayer" type="number" value="0" min="0" max="31" size="2" /></div>
+				<div class="row">
+					<div class="label"><label for="trackSeed" id="trackSeedLabel">Seed:</label></div>
+					<div class="option"><input id="trackSeed" type="text" value="" maxlength="10" size="10" /></div>
+				</div>
+			</div>
+			<button id="generateButton">Generate</button>
+			<hr />
+			<div class="table">
+				<div class="row">
+					<div class="label"><label for="trackViewLayer">Current Height:</label></div>
+					<div class="option"><input id="trackViewLayer" type="number" value="0" min="0" max="31" size="2" /></div>
+				</div>
+				<div class="row">
+					<div class="label"><label for="trackViewType">Other Layers:</label></div>
+					<div class="option">
+						<select id="trackViewType">
+							<option value="all">All</option>
+							<option value="ghost" selected>Ghost</option>
+							<option value="none">None</option>
+						</select>
 					</div>
-					<div class="row">
-						<div class="label"><label for="trackViewType">Other Layers:</label></div>
-						<div class="option">
-							<select id="trackViewType">
-								<option value="all">All</option>
-								<option value="ghost" selected>Ghost</option>
-								<option value="none">None</option>
-							</select>
-						</div>
-					</div>
-					<div class="row">
-						<button id="zoomButton">Zoom Out</button>
-					</div>
+				</div>
+				<div class="row">
+					<button id="zoomButton">Zoom Out</button>
 				</div>
 			</div>
 		</div>

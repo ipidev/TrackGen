@@ -12,6 +12,7 @@ body
 	height: 100%;
 	width: 100%;
 	overflow: scroll;
+	text-align: center;
 }
 
 #canvasContainer #title
@@ -34,7 +35,7 @@ body
 	transition: opacity 0.25s;
 }
 
-#canvasContainer .overlay
+.overlay
 {
 	position: absolute;
 	padding: 0.75em;
@@ -46,57 +47,57 @@ body
 	transition: opacity 0.25s;
 }
 
-#canvasContainer #optionsContainer
+#optionsContainer
 {
 	left: 1em;
 }
 
-#canvasContainer .overlay:hover
+.overlay:hover
 {
 	opacity: 100%;
 	transition: opacity 0.25s;
 }
 
-#canvasContainer .overlay .table
+.overlay .table
 {
 	display: table;
 	margin: auto;
 }
 
-#canvasContainer .overlay .table .row
+.overlay .table .row
 {
 	display: table-row;
 }
 
-#canvasContainer .overlay .table .row .label
+.overlay .table .row .label
 {
 	display: table-cell;
 	vertical-align: middle;
 	text-align: right;
 }
 
-#canvasContainer .overlay .table .row .label label
+.overlay .table .row .label label
 {
 	display: inline-block;
 	margin: 1px 5px 1px 0px;
 }
 
-#canvasContainer .overlay .table .row .option
+.overlay .table .row .option
 {
 	display: table-cell;
 }
 
-#canvasContainer .overlay .table .row .option input
+.overlay .table .row .option input
 {
 	margin-bottom: 3px;
 }
 
-#canvasContainer .overlay .table .row .option select
+.overlay .table .row .option select
 {
 	margin-bottom: 3px;
 }
 
-#canvasContainer #generateButton
+#generateButton
 {
 	width: 100%;
 	padding: 0.5em;
