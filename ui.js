@@ -195,6 +195,10 @@ let OnGenerateButtonPressed = function()
 	let trackLength = document.getElementById("trackLength").valueAsNumber;
 	let trackCheckpoints = document.getElementById("trackCheckpoints").valueAsNumber;
 
+	let trackDimensions = new Vector3D(document.getElementById("trackDimensionsX").valueAsNumber,
+		document.getElementById("trackDimensionsY").valueAsNumber,
+		document.getElementById("trackDimensionsZ").valueAsNumber);
+
 	//Pick a random seed if the user doesn't provide one.
 	let trackSeedElement = document.getElementById("trackSeed");
 	let trackSeed = trackSeedElement.value;
@@ -210,7 +214,7 @@ let OnGenerateButtonPressed = function()
 	{
 		trackSeedElement.value = trackSeed = Math.floor(Math.random() * 4294967296);
 	}
-	
+
 	let trackMaterialWhitelist = [];
 	let trackMaterialsElement = document.getElementById("trackMaterials");
 
@@ -222,7 +226,7 @@ let OnGenerateButtonPressed = function()
 		}
 	}
 
-	GenerateTrack(trackLength, trackCheckpoints, trackSeed, trackMaterialWhitelist);
+	GenerateTrack(trackSeed, trackLength, trackDimensions, trackCheckpoints, trackMaterialWhitelist);
 
 	//Determine new view layer limits from generated track.
 	let newViewZ = 0;
@@ -310,6 +314,9 @@ let OnPageLoaded = function(e)
 	
 	document.getElementById("trackLength").addEventListener("input", ClampNumberInput);
 	document.getElementById("trackCheckpoints").addEventListener("input", ClampNumberInput);
+	document.getElementById("trackDimensionsX").addEventListener("input", ClampNumberInput);
+	document.getElementById("trackDimensionsY").addEventListener("input", ClampNumberInput);
+	document.getElementById("trackDimensionsZ").addEventListener("input", ClampNumberInput);
 	document.getElementById("generateButton").addEventListener("click", OnGenerateButtonPressed);
 	document.getElementById("zoomButton").addEventListener("click", OnZoomButtonPressed);
 	document.getElementById("trackViewLayer").addEventListener("input", OnViewLayerChanged);

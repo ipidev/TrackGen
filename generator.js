@@ -1,10 +1,8 @@
 "use strict"
 
-let gTrackPiecesImage = new Image();
-gTrackPiecesImage.src = "images/trackmaniaPieces.png";
-
 let gPlacedPieces = [];
 let gRandom = null;
+let gTrackDimensions = null;
 
 let PlacePiece = function(translation, rotation, trackPieceType)
 {
@@ -90,9 +88,12 @@ let DoesPieceCollide = function(translation, rotation, trackPieceType)
 
 let IsOutOfBounds = function(translation)
 {
-	return translation.x < -23 || translation.x > 23 ||
-			translation.y < -23 || translation.y > 23 ||
-			translation.z < 0 || translation.y > 31;
+	return translation.x < Math.floor(gTrackDimensions.x * -0.5) + 1 ||
+			translation.x > Math.ceil(gTrackDimensions.x * 0.5) - 1 ||
+			translation.y < Math.floor(gTrackDimensions.y * -0.5) + 1 ||
+			translation.y > Math.ceil(gTrackDimensions.y * 0.5) - 1 ||
+			translation.z < 0 ||
+			translation.z > gTrackDimensions.z - 1;
 }
 
 let CanPlacePiece = function(translation, rotation, trackPieceType)
@@ -102,15 +103,17 @@ let CanPlacePiece = function(translation, rotation, trackPieceType)
 		!DoesPieceCollide(offsetPositions.translation, offsetPositions.rotation, gPieceTypes.roadFlat.straight) && !IsOutOfBounds(offsetPositions.translation);
 }
 
-let GenerateTrack = function(length, checkpointCount, seed, materialWhitelist)
+let GenerateTrack = function(seed, length, dimensions, checkpointCount, materialWhitelist)
 {
 	gPlacedPieces.length = 0;
 	gRandom = mulberry32(seed);
+	gTrackDimensions = dimensions;
 
 	//Set starting position and create the start line.
-	let currentTranslation = new Vector3D(Math.floor(gRandom() * 24) - 12, Math.floor(gRandom() * 24) - 12, 0);
-	let currentRotation = 0;
-	
+	let GetRandomStartCoordinate = function(dimension) { return Math.round((gRandom() - 0.5) * Math.floor(dimension * 0.5)); };
+	let currentTranslation = new Vector3D(GetRandomStartCoordinate(dimensions.x), GetRandomStartCoordinate(dimensions.y), 0);
+	let currentRotation = Math.floor(gRandom() * 4) * 0.5 * Math.PI;
+
 	//Setup the tags that will be used to place pieces.
 	let materialBlacklist = GetPieceMaterials().filter(material => !materialWhitelist.includes(material));
 
@@ -126,7 +129,10 @@ let GenerateTrack = function(length, checkpointCount, seed, materialWhitelist)
 			return;	//Oh dear.
 		
 		PlacePiece(currentTranslation, currentRotation, startLinePieceType);
-		currentTranslation.y -= 1;
+
+		let offsetPositions = ApplyPieceOffset(currentTranslation, currentRotation, startLinePieceType);
+		currentTranslation = offsetPositions.translation;
+		currentRotation = offsetPositions.rotation;
 	}
 
 	let nextCheckpointIndex = checkpointCount > 0 ? length / (checkpointCount + 1) : -1;
@@ -134,12 +140,12 @@ let GenerateTrack = function(length, checkpointCount, seed, materialWhitelist)
 	let deadEndsHit = 0;
 	let lastDeadEndPieceType = null;
 
-	for (let i = 0; i < length && deadEndsHit < 10; ++i)
+	for (let pieceIndex = 0; pieceIndex < length && deadEndsHit < 20; ++pieceIndex)
 	{
 		let nextPieceType = null;
 		
 		//See if we need to place a checkpoint.
-		if (nextCheckpointIndex >= 0 && i >= Math.floor(nextCheckpointIndex))
+		if (nextCheckpointIndex >= 0 && pieceIndex >= Math.floor(nextCheckpointIndex))
 		{
 			let checkpointPieceType = SelectSuitablePieceType(currentTranslation, currentRotation,
 				pieceMaterial, pieceTagWhitelist.concat(["checkpoint"]), pieceTagBlacklist, []);
@@ -197,22 +203,21 @@ let GenerateTrack = function(length, checkpointCount, seed, materialWhitelist)
 		{
 			//Reduce index and count dead-ends hit
 			++deadEndsHit;
-			for (let j = 0; j < deadEndsHit && i > 0; ++j)
-			{
-				--i;
 
+			let timesToBackUp = Math.max(1, Math.floor(Math.min(deadEndsHit * 0.5, gPlacedPieces.length * 0.25)));
+			for (let j = 0; j < timesToBackUp && gPlacedPieces.length > 1; ++j)
+			{
 				//Don't select this piece again
-				if (gPlacedPieces.length > 0)
-				{
-					let deadEndPiece = gPlacedPieces.pop();
-					lastDeadEndPieceType = deadEndPiece.trackPieceType;
-					
-					//Step backwards
-					currentTranslation = deadEndPiece.translation;
-					currentRotation = deadEndPiece.rotation;
-					pieceMaterial = lastDeadEndPieceType.pieceMaterial;
-				}
+				let deadEndPiece = gPlacedPieces.pop();
+				lastDeadEndPieceType = deadEndPiece.trackPieceType;
+				
+				//Step backwards
+				currentTranslation = deadEndPiece.translation;
+				currentRotation = deadEndPiece.rotation;
+				pieceMaterial = lastDeadEndPieceType.pieceMaterial;
 			}
+
+			pieceIndex = gPlacedPieces.length - 1;
 		}
 	}
 	
