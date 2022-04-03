@@ -106,3 +106,21 @@ body
 	font-size: 1.5em;
 	font-weight: bold;
 }
+
+#navigationContainer
+{
+	right: 2em;
+}
+
+#navigationContainer button
+{
+	font-size: 3em;
+	font-weight: bold;
+	padding: 2px;
+	margin-bottom: 5px;
+}
+
+#navigationContainer .rotateButton
+{
+	padding: 2px 8px;
+}

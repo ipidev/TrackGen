@@ -3,6 +3,7 @@
 let gUI =
 {
 	zoomScale: 1,
+	rotation: 0,
 	viewLayer: 0,
 	hasUserProvidedSeed: false,
 	trackPiecesImage: new Image(),
@@ -150,18 +151,19 @@ let RenderTrack = function(ctx, viewZ, layerViewType)
 	ctx.globalCompositeOperation = "source-over";
 }
 
-let SetCanvasZoom = function(scale)
+let UpdateCanvasTransform = function(canvas, ctx)
 {
-	gUI.zoomScale = scale;
-	gCanvas.width = 1536 * scale;
-	gCanvas.height = 1536 * scale;
+	canvas.width = 1536 * gUI.zoomScale;
+	canvas.height = 1536 * gUI.zoomScale;
 	
 	let canvasTransform = new DOMMatrix();
-	canvasTransform.a = scale;
-	canvasTransform.d = scale;
+	canvasTransform.a = Math.cos(gUI.rotation) * gUI.zoomScale;
+	canvasTransform.b = Math.sin(gUI.rotation) * gUI.zoomScale;
+	canvasTransform.c = -Math.sin(gUI.rotation) * gUI.zoomScale;
+	canvasTransform.d = Math.cos(gUI.rotation) * gUI.zoomScale;
 	canvasTransform.e = gCanvas.width * 0.5;
 	canvasTransform.f = gCanvas.height * 0.5;
-	gCtx.setTransform(canvasTransform);
+	ctx.setTransform(canvasTransform);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -258,17 +260,25 @@ let OnGenerateButtonPressed = function()
 
 let OnZoomButtonPressed = function(e)
 {
-	if (gUI.zoomScale != 1)
-	{
-		SetCanvasZoom(1);
-		e.target.innerHTML = "Zoom Out";
-	}
-	else
-	{
-		SetCanvasZoom(0.5);
-		e.target.innerHTML = "Zoom In";
-	}
+	gUI.zoomScale = (gUI.zoomScale == 1) ? 0.5 : 1;
+	UpdateCanvasTransform(gCanvas, gCtx);
 	
+	RenderAll(gCtx);
+}
+
+let OnRotateLeftButtonPressed = function(e)
+{
+	gUI.rotation -= Math.PI * 0.5;
+	UpdateCanvasTransform(gCanvas, gCtx);
+
+	RenderAll(gCtx);
+}
+
+let OnRotateRightButtonPressed = function(e)
+{
+	gUI.rotation += Math.PI * 0.5;
+	UpdateCanvasTransform(gCanvas, gCtx);
+
 	RenderAll(gCtx);
 }
 
@@ -307,7 +317,7 @@ let OnTrackSeedChanged = function(e)
 
 let OnPageLoaded = function(e)
 {
-	SetCanvasZoom(1);
+	UpdateCanvasTransform(gCanvas, gCtx);
 	InitialisePieceTypes();
 
 	OnGenerateButtonPressed();
@@ -319,6 +329,8 @@ let OnPageLoaded = function(e)
 	document.getElementById("trackDimensionsZ").addEventListener("input", ClampNumberInput);
 	document.getElementById("generateButton").addEventListener("click", OnGenerateButtonPressed);
 	document.getElementById("zoomButton").addEventListener("click", OnZoomButtonPressed);
+	document.getElementById("rotateLeftButton").addEventListener("click", OnRotateLeftButtonPressed);
+	document.getElementById("rotateRightButton").addEventListener("click", OnRotateRightButtonPressed);
 	document.getElementById("trackViewLayer").addEventListener("input", OnViewLayerChanged);
 	document.getElementById("trackViewType").addEventListener("input", OnViewTypeChanged);
 	document.getElementById("trackSeed").addEventListener("input", OnTrackSeedChanged);
