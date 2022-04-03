@@ -48,11 +48,11 @@ let RenderGrass = function(ctx, viewZ)
 	ctx.fillStyle = "#FFFFFF";
 	ctx.globalAlpha = 0.075;
 
-	for (let y = -24; y <= 24; ++y)
+	for (let y = -23; y <= 24; ++y)
 	{
-		for (let x = -12; x <= 12; ++x)
+		for (let x = -11; x <= 12; ++x)
 		{
-			ctx.fillRect((x * 64 + ((y & 1) * 32)) - 16, (y * 32) - 16, 32, 32);
+			ctx.fillRect((x * 64 - ((y & 1) * 32)) - 16, (y * 32) - 16, 32, 32);
 		}
 	}
 
@@ -153,16 +153,17 @@ let RenderTrack = function(ctx, viewZ, layerViewType)
 
 let UpdateCanvasTransform = function(canvas, ctx)
 {
-	canvas.width = 1536 * gUI.zoomScale;
-	canvas.height = 1536 * gUI.zoomScale;
+	let pieceSize = 32 * gUI.zoomScale; 
+	canvas.width = 48 * pieceSize;
+	canvas.height = 48 * pieceSize;
 	
 	let canvasTransform = new DOMMatrix();
 	canvasTransform.a = Math.cos(gUI.rotation) * gUI.zoomScale;
 	canvasTransform.b = Math.sin(gUI.rotation) * gUI.zoomScale;
 	canvasTransform.c = -Math.sin(gUI.rotation) * gUI.zoomScale;
 	canvasTransform.d = Math.cos(gUI.rotation) * gUI.zoomScale;
-	canvasTransform.e = gCanvas.width * 0.5;
-	canvasTransform.f = gCanvas.height * 0.5;
+	canvasTransform.e = (gCanvas.width * 0.5) - (pieceSize * 0.5);
+	canvasTransform.f = (gCanvas.height * 0.5) - (pieceSize * 0.5);
 	ctx.setTransform(canvasTransform);
 }
 
