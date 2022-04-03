@@ -89,9 +89,9 @@ let DoesPieceCollide = function(translation, rotation, trackPieceType)
 let IsOutOfBounds = function(translation)
 {
 	return translation.x < Math.floor(gTrackDimensions.x * -0.5) + 1 ||
-			translation.x > Math.ceil(gTrackDimensions.x * 0.5) - 1 ||
+			translation.x > Math.floor(gTrackDimensions.x * 0.5) ||
 			translation.y < Math.floor(gTrackDimensions.y * -0.5) + 1 ||
-			translation.y > Math.ceil(gTrackDimensions.y * 0.5) - 1 ||
+			translation.y > Math.floor(gTrackDimensions.y * 0.5) ||
 			translation.z < 0 ||
 			translation.z > gTrackDimensions.z - 1;
 }
