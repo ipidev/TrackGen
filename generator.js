@@ -111,7 +111,9 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 
 	//Set starting position and create the start line.
 	let GetRandomStartCoordinate = function(dimension) { return Math.round((gRandom() - 0.5) * Math.floor(dimension * 0.5)); };
-	let currentTranslation = new Vector3D(GetRandomStartCoordinate(dimensions.x), GetRandomStartCoordinate(dimensions.y), 0);
+	let currentTranslation = new Vector3D(GetRandomStartCoordinate(dimensions.x),
+		GetRandomStartCoordinate(dimensions.y),
+		Math.floor(gRandom() * dimensions.z));
 	let currentRotation = Math.floor(gRandom() * 4) * 0.5 * Math.PI;
 
 	//Setup the tags that will be used to place pieces.
@@ -209,7 +211,7 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 		{
 			//Reduce index and count dead-ends hit
 			++deadEndsHit;
-
+			
 			let timesToBackUp = Math.max(1, Math.floor(Math.min(deadEndsHit * 0.5, gPlacedPieces.length * 0.25)));
 			for (let j = 0; j < timesToBackUp && gPlacedPieces.length > 1; ++j)
 			{
@@ -224,6 +226,14 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			}
 
 			pieceIndex = gPlacedPieces.length - 1;
+		}
+
+		//Centre the track if we get too close to the boundary to give us more space.
+		if ((dimensions.x >= 10 || dimensions.y >= 10) &&
+			(Math.abs(dimensions.x - currentTranslation.x) < 5 || Math.abs(dimensions.y - currentTranslation.y) < 5))
+		{
+			let recentredOffset = TryRecentreTrack();
+			currentTranslation.Subtract(recentredOffset);
 		}
 	}
 	
@@ -261,4 +271,41 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			}
 		}
 	}
+	
+	TryRecentreTrack(true);
+}
+
+let TryRecentreTrack = function(setOnGround)
+{
+	if (gPlacedPieces.length <= 0)
+		return null;
+
+	let minExtents = new Vector3D(Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY);
+	let maxExtents = new Vector3D(Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY);
+
+	//Average out the location of each piece.
+	gPlacedPieces.forEach(placedPiece =>
+	{
+		minExtents.x = Math.min(minExtents.x, placedPiece.translation.x);
+		minExtents.y = Math.min(minExtents.y, placedPiece.translation.y);
+		minExtents.z = Math.min(minExtents.z, placedPiece.translation.z);
+		maxExtents.x = Math.max(maxExtents.x, placedPiece.translation.x);
+		maxExtents.y = Math.max(maxExtents.y, placedPiece.translation.y);
+		maxExtents.z = Math.max(maxExtents.z, placedPiece.translation.z);
+	});
+
+	let offset = Vector3DStatic.CreateAddition(minExtents, maxExtents);
+	offset.x = (offset.x * 0.5) | 0;	//Truncate (rounds towards zero)
+	offset.y = (offset.y * 0.5) | 0;
+	offset.z = setOnGround ? minExtents.z : 0;
+
+	if (offset.x !== 0 || offset.y !== 0 || offset.z !== 0)
+	{
+		gPlacedPieces.forEach(placedPiece =>
+		{
+			placedPiece.translation.Subtract(offset);
+		});
+	}
+
+	return offset;
 }
