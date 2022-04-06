@@ -6,16 +6,34 @@ let gAdjectives =
 	[
 		"good", "bad", "new", "old", "great", "poor", "wild", "crazy", "red",
 		"green", "blue", "white", "black", "thin", "wide", "stale", "terrific",
-		"horrific", "average", "run-of-the-mill", "dusty", "clear", "opaque",
+		"horrific", "average", "run-of-the-mill", "shiny", "clear", "opaque",
 		"my first", "equal", "foolish", "gullible", "first", "second", "third",
-		"last", "feeble", "faint", "lame", "awesome", "cool", "hot", "8",
-		"psychedelic", "greasy", "momentous", "memorable", "forgettable",
-		"plain", "busy", "hurried", "unknown", "loud", "quiet", "living",
+		"last", "feeble", "faint", "lame", "awesome", "cool", "warm", "8",
+		"psychedelic", "trippy", "momentous", "memorable", "forgettable",
+		"distinct", "busy", "hurried", "unknown", "loud", "quiet", "living",
 		"dead", "injured", "maimed", "healthy", "invisible", "obvious", "solid",
-		"hard", "soft", "bloody", "clean", "dirty", "spotless", "smelly",
+		"hard", "soft", "bloody", "clean", "immaculate", "spotless", "smelly",
 		"mother's", "father's", "daddy's", "grandma's", "baby's", "king's",
 		"queen's", "royal", "buggy", "janky", "progressive", "regressive",
 		"radical", "incredible", "amazing", "brilliant", "official", "stinky",
+		"well-produced", "factory-farmed", "organic", "processed", "natural",
+		"voluptuous", "supple", "top-heavy", "down-trodden", "beaten",
+		"roasted", "poached", "boiled", "raw", "unique", "mass-produced",
+		"hand-carved", "random", "curious", "industrious", "lovely", "bright",
+		"dark", "redundant", "sassy", "common", "uncommon", "rare", "epic",
+		"legendary", "broken", "dysfunctional", "sporadic", "magical", "half",
+		"full", "nutty", "wacky", "zany", "kooky", "sticky", "graceful", 
+		"hodge-podge", "improvised", "tidy", "trashy", "futuristic", "roomy", 
+		"claustrophobic", "indoor", "spacious", "decorated", "own-brand", 
+		"family-owned", "corporate", "ill", "sick", "twisted", "far-out", 
+		"tubular", "wicked", "mondo", "poggers", "peng", "modern", "classic", 
+		"retro", "vintage", "pulsating", "throbbing", "disgusting", "holy", 
+		"legitimate", "original", "genuine", "fake", "fraudulent", "knock-off",
+		"counterfeit", "reproduced", "unusual", "zany", "bogus", "cheap",
+		"expensive", "disastrous", "fresh", "rotten", "vegan", "vegetarian",
+		"carnivorous", "meat-free", "dairy-free", "gluten-free", "sugar-free",
+		"scummy", "horny", "cheeky", "naughty", "inviting", "mature", "spicy",
+		"risqué", "sweet", "sour", "salty", "bitter", "unwashed", "steamy",
 	],
 	emptyList:
 	[
@@ -29,6 +47,8 @@ let gAdjectives =
 		"flying", "hasty", "breakneck", "supersonic", "moving", "brisk",
 		"snappy", "swift", "reckless", "energetic", "abrupt", "expeditive",
 		"active", "transient", "volatile", "double-time", "hurried", "nimble",
+		"express", "screaming", "spanking", "barrelling", "impulsive", "urgent",
+		"electric", "split-second", "full-speed", "speedy", "rushed", "boosted",
 	],
 	slowSynonyms:
 	[
@@ -37,6 +57,8 @@ let gAdjectives =
 		"sluggish", "moderate", "boring", "lifeless", "late", "passive",
 		"torpid", "deliberate", "inactive", "reluctant", "inert", "sleepy",
 		"humdrum", "dull", "lackadaisical", "slothful", "listless", "lazy",
+		"slack", "apathetic", "dawdling", "crawling", "creeping", "disinclined",
+		"static", "dormant", "immobile", "sedentary", "limp", "low-key",
 	],
 	difficultSynonyms:
 	[
@@ -44,8 +66,10 @@ let gAdjectives =
 		"severe", "demanding", "intricate", "advanced", "expert", "confusing",
 		"rage-inducing", "tight", "burdensome", "troublesome", "irritating",
 		"toilsome", "unyielding", "critical", "onerous", "Herculean", "painful",
-		"complex", "tricky", "awkward", "bothersome", "titanic", "hard-won",
-		"tenacious", "resilient", "firm", "stalwart", "vigorous",
+		"complex", "tricky", "awkward", "bothersome", "dangerous", "hard-won",
+		"tenacious", "resilient", "firm", "stalwart", "vigorous", "cruel",
+		"ambitious", "backbreaking", "confounding", "formidable", "brutal",
+		"relentless", "harsh", "callous", "inhumane", "curvy", "winding",
 	],
 	easySynonyms:
 	[
@@ -54,6 +78,7 @@ let gAdjectives =
 		"novice", "clear", "manageable", "mere", "smooth", "automatic",
 		"beginner's", "painless", "facile", "lucid", "apt", "easy-peasy",
 		"elementary", "mild", "transparent", "readable", "accessible",
+		"light", "uncomplicated", "peaceful", "calm", "tranquil", "gentle",
 	],
 	longSynonyms:
 	[
@@ -64,6 +89,9 @@ let gAdjectives =
 		"drawn-out", "spindly", "stringy", "oversized", "jumbo", "extra large",
 		"large", "big", "full", "vast", "mammoth", "enormous", "gigantic",
 		"considerable", "colossal", "heavy-duty", "walloping", "burly",
+		"excruciating", "sadistic", "agonizing", "drawn-out", "continued",
+		"extended", "long-winded", "wearisome", "elongated", "padded", "mega",
+		"titanic", "astronomical", "bumper", "mighty", "supersize", "grand",
 	],
 	shortSynonyms:
 	[
@@ -72,6 +100,36 @@ let gAdjectives =
 		"inadequate", "slim", "meager", "abbreviated", "undersized", "small",
 		"teensy", "cramped", "minuscule", "miniature", "modest", "slight",
 		"insufficient", "teeny-weeny", "scrubby", "toy", "puny", "petite",
+		"compressed", "lessened", "diminished", "condensed", "mini", "tiny",
+		"insignificant", "diminuitive", "infinitesimal", "pint-sized", "wee",
+	],
+	roadAdjectives:
+	[
+		"paved", "surfaced", "constructed", "plain", "vanilla", "pure", 
+		"conventional", "traditional", "typical", "emblematic", "normal",
+		"exemplary", "quintissential", "archetypal", "everyday", "standard",
+	],
+	dirtAdjectives:
+	[
+		"dirty", "dusty", "muddy", "sandy", "natural", "deserted", "hot",
+		"chalky", "drifting", "messy", "granular", "unkempt", "gritty",
+		"baking", "tropical", "scorching", "sweltering", "sweaty", "sizzling",
+	],
+	iceAdjectives:
+	[
+		"icy", "snowy", "glacial", "frosty", "slippery", "greasy", "lubricated",
+		"glazed", "unstable", "chilly", "cold", "freezing", "frozen", "polar",
+		"arctic", "antarctic", "frigid", "glistening", "polished", "glacé",
+	],
+	sausageAdjectives:
+	[
+		"porky", "fat", "jumping", "banking", "risen", "bulging", "chunky",
+		"elephantine", "potbellied", "lumpy", "bumpy", "uneven", "slanted", 
+	],
+	waterAdjectives:
+	[
+		"wet", "dank", "rainy", "drenched", "sodden", "saturated", "soaking",
+		"moist", "dripping", "watery", "aqueous", "flooded", "inundated",
 	],
 };
 
@@ -85,8 +143,8 @@ let gNouns =
 		"robot", "stone", "billboard", "gate", "hospital", "ear", "bedroom",
 		"pond", "emotion", "gate", "signature", "aspect", "sponge", "quality",
 		"painting", "world", "agency", "sample", "surgery", "estate", "stranger",
-		"operation", "ratio", "garbage", "pony", "animal", "snail", "bunny",
-		"rabbit", "undefined", "invitational", "moisturiser", "imposter",
+		"operation", "ratio", "garbage", "pony", "animal", "human", "bunny",
+		"vegetable", "mineral", "invitational", "moisturiser", "imposter",
 		"stock", "chassis", "wheel", "axle", "gear", "pedal", "subscriber",
 		"spring", "summer", "autumn", "fall", "auto", "car", "dog", "cat",
 		"hand", "pole", "object", "block", "arrow", "lamppost", "spotlight",
@@ -94,9 +152,23 @@ let gNouns =
 		"bottle cap", "meme", "trackmania", "video game", "lol", "waste",
 		"generation", "plastic", "toy", "mass", "pirate", "experiment", "bit",
 		"mistake", "accident", "chicken", "beef", "noodles", "fish", "curry",
-		"tikka masala", "ball", "stunt", "demo", "hamster", "sugar", "candy",
+		"tikka masala", "ball", "stunt", "demo", "sweet", "sugar", "candy",
 		"brand", "teeth", "tank", "vehicle", "feet", "toes", "member", "leg",
 		"intestine", "gut", "stomach", "bone", "spine", "sphincter", "organ",
+		"tweet", "internet", "website", "product", "oil", "chocolate", "gum",
+		"foot", "heel", "elbow", "finger", "thumb", "bean", "pie", "horn",
+		"goat", "sandwich", "cereal", "waffle", "bread", "toast", "panini",
+		"toastie", "cheese", "brie", "cheddar", "edam", "mozarella", "halloumi",
+		"pizza", "korma", "vindaloo", "duck", "goose", "chow mein", "spaghetti",
+		"pasta", "lasagne", "apple", "banana", "cherry", "pear", "lemon",
+		"lime", "strawberry", "raspberry", "pineapple", "anchovy", "bacon",
+		"ham", "salt", "pepper", "sushi", "spring roll", "fried rice", "rice",
+		"naan bread", "venison", "sea bass", "cod", "pollock", "scampi",
+		"haddock", "salmon", "paper", "muscle", "tongue", "sack", "wood",
+		"trunk", "pocket", "wound", "toe", "ring", "rod", "bell", "cream",
+		"crack", "hole", "glue", "bear", "twink", "scene", "goth", "nerd",
+		"geek", "normie", "acid", "vinegar", "chemical", "rock", "gabber",
+		"speedcore", "house", "trance", "eurobeat", "metal", "jazz", "funk",
 	],
 	emptyList:
 	[
@@ -129,6 +201,42 @@ let gNouns =
 		"water", "river", "lake", "ocean", "sea", "stream", "estuary", "pond",
 		"watercourse", "basin", "puddle", "pool", "reservoir", "drink", "liquid"
 	],
+	fastNouns:
+	[
+		"speed", "speedrun", "rush", "blitz", "flow", "scramble", "energy",
+		"express", "priority", "run", "jog", "momentum", "velocity", "tempo", 
+		"quickness", "headway", "cheetah", "lion", "rabbit", "bunny", "falcon",
+		"hawk", "eagle", "kangaroo",
+	],
+	slowNouns:
+	[
+		"walk", "stroll", "crawl", "ramble", "cruise", "saunter", "leisure",
+		"pleasure", "sunday", "weekend", "holiday", "vacation", "break",
+		"rest", "sleep", "bed", "sloth", "snail", "koala", "tortoise", "slug", 
+	],
+	difficultNouns:
+	[
+		"challenge", "puzzle", "test", "exam", "experiment", "essay", "trick",
+		"obstruction", "blockage", "hindrance", "trouble", "wall", "punishment",
+		"bull", "tiger", "shark", "dragon", "killer", "murder", "death",
+	],
+	easyNouns:
+	[
+		"training", "warm-up", "practice", "excercise", "basics", "foundation",
+		"advantage", "help", "support", "luxury", "rest", "relaxation", "life",
+	],
+	longNouns:
+	[
+		"length", "tedium", "task", "giant", "titan", "behemoth", "goliath",
+		"whale", "elephant", "mammoth", "snake", "cross-country", "planet",
+		"rhino", "dinosaur", "mountain", "cobra", "colossus", "whopper",
+	],
+	shortNouns:
+	[
+		"speck", "crumb", "dot", "fleck", "particle", "iota", "baby", "child",
+		"youngster", "toy", "ant", "mouse", "hamster", "fly", "waterbear",
+		"bacteria", "microbe", "chode", "stub", "dwarf", "pixie", "sprite",
+	],
 };
 
 let gInfixList = 
@@ -149,30 +257,33 @@ let gPostpositionsList =
 	"direction", "canal", "aisle", "twist", "turn", "straightaway", "stunt",
 	"stadium", "colosseum", "amphitheatre", "gymnasium", "field", "gridiron",
 	"diamond", "ring", "bowl", "pit", "rallycross", "crossroads", "roundabout",
-	"competition", "endurance", "playground", "assault course", "test",
+	"competition", "endurance", "playground", "assault course", "test", "pass",
+	"cut", "gorge", "path", "ravine", "court", "throughfare", "drive", "row",
+	"way", "turf", "byway", "superhighway", "parking lot", "subway", "artery",
 ];
 
-let DeterminePossibleAdjectives = function()
+let DetermineTrackCharacteristics = function()
 {
 	if (gPlacedPieces.length == 0)
-		return gAdjectives.emptyList;
+		return [ "empty" ];
 
-	let possibleAdjectives = [];
+	let characteristics = [ "any" ];
 
 	//Determine track length.
 	if (gPlacedPieces.length <= 25)
 	{
-		possibleAdjectives = possibleAdjectives.concat(gAdjectives.shortSynonyms);
+		characteristics.push("short");
 	}
-	else if (gPlacedPieces.length >= 50)
+	else if (gPlacedPieces.length >= 75)
 	{
-		possibleAdjectives = possibleAdjectives.concat(gAdjectives.longSynonyms);
+		characteristics.push("long");
 	}
 
 	//Check track features.
 	let turboCount = 0;
 	let checkpointCount = 0;
-	let cornerCount = 0;
+	let straightCount = 0;
+	let trackMaterialCounts = {};
 
 	gPlacedPieces.forEach(placedPiece =>
 	{
@@ -185,56 +296,11 @@ let DeterminePossibleAdjectives = function()
 		{
 			++checkpointCount;
 		}
-		else if (placedPieceType.exitAngle != 0)
+		else if (placedPieceType.tags.includes("straight"))
 		{
-			++cornerCount;
+			++straightCount;
 		}
-	});
 
-	let turboRatio = turboCount / gPlacedPieces.length;
-	let checkpointRatio = checkpointCount / gPlacedPieces.length;
-	let cornerRatio = cornerCount / gPlacedPieces.length;
-
-	if (gPlacedPieces.length > 20 && (checkpointRatio < 0.1 || cornerRatio > 0.5))
-	{
-		possibleAdjectives = possibleAdjectives.concat(gAdjectives.difficultSynonyms);
-	}
-	else if (checkpointRatio > 0.2)
-	{
-		possibleAdjectives = possibleAdjectives.concat(gAdjectives.easySynonyms);
-	}
-
-	if (turboRatio > 0.15 || cornerRatio < 0.25)
-	{
-		possibleAdjectives = possibleAdjectives.concat(gAdjectives.fastSynonyms);
-	}
-	else if (turboRatio < 0.05)
-	{
-		possibleAdjectives = possibleAdjectives.concat(gAdjectives.slowSynonyms);
-	}
-
-	//Make sure special adjectives are chosen more than generic ones.
-	if (possibleAdjectives.length == 0 || gRandom() >= 0.5)
-	{
-		possibleAdjectives = possibleAdjectives.concat(gAdjectives.anyList);
-	}
-
-	return possibleAdjectives;
-}
-
-let DeterminePossibleNouns = function()
-{
-	if (gPlacedPieces.length <= 0)
-		return gNouns.emptyList;
-
-	let possibleAdjectives = gNouns.anyList;
-
-	//Count track materials.
-	let trackMaterialCounts = {};
-
-	gPlacedPieces.forEach(placedPiece =>
-	{
-		let placedPieceType = placedPiece.trackPieceType;
 		if (trackMaterialCounts[placedPieceType.pieceMaterial] !== undefined)
 		{
 			++trackMaterialCounts[placedPieceType.pieceMaterial];
@@ -245,7 +311,29 @@ let DeterminePossibleNouns = function()
 		}
 	});
 
-	//Determine which is the highest.
+	let turboRatio = turboCount / gPlacedPieces.length;
+	let checkpointRatio = checkpointCount / gPlacedPieces.length;
+	let straightRatio = straightCount / gPlacedPieces.length;
+
+	if (gPlacedPieces.length > 30 && (checkpointRatio < 0.1 || straightRatio < 0.5))
+	{
+		characteristics.push("difficult");
+	}
+	else if (checkpointRatio > 0.2)
+	{
+		characteristics.push("easy");
+	}
+
+	if (turboRatio > 0.2 || (straightRatio > 0.25 && gPlacedPieces.length > 20))
+	{
+		characteristics.push("fast");
+	}
+	else if (turboRatio < 0.05)
+	{
+		characteristics.push("slow");
+	}
+
+	//Determine which material is used the most.
 	let highestTrackMaterial = null;
 	let highestTrackMaterialCount = 0;
 
@@ -258,26 +346,36 @@ let DeterminePossibleNouns = function()
 		}
 	});
 
-	//Now add the nouns to be selected.
 	if (highestTrackMaterialCount > gPlacedPieces.length * 0.5)
 	{
-		let materialToNounListMap =
-		{
-			"road": gNouns.roadList,
-			"dirt": gNouns.dirtList,
-			"ice": gNouns.iceList,
-			"sausage": gNouns.sausageList,
-			"water": gNouns.waterList,
-		};
-
-		let materialToNounListKey = Object.getOwnPropertyNames(materialToNounListMap).find(materialKey =>
+		let materialCharacteristics = [ "road", "dirt", "ice", "sausage", "water" ];
+		let materialCharacteristic = materialCharacteristics.find(materialKey =>
 		{
 			return highestTrackMaterial.startsWith(materialKey);
 		});
-		possibleAdjectives = possibleAdjectives.concat(materialToNounListMap[materialToNounListKey]);
+
+		if (materialCharacteristic)
+		{
+			characteristics.push(materialCharacteristic);
+		}
 	}
 
-	return possibleAdjectives;
+	return characteristics;
+}
+
+let GetWordsFromCharacteristics = function(wordsObject, characteristics)
+{
+	let possibleWords = [];
+
+	Object.getOwnPropertyNames(wordsObject).forEach(wordsListKey =>
+	{
+		if (characteristics.find(characteristic => wordsListKey.startsWith(characteristic)))
+		{
+			possibleWords = possibleWords.concat(wordsObject[wordsListKey]);
+		}
+	});
+
+	return possibleWords;
 }
 
 let GenerateTitle = function()
@@ -298,14 +396,16 @@ let GenerateTitle = function()
 	}
 
 	//Determine which adjectives can be used for this track.
-	let adjective = SelectRandomElement(DeterminePossibleAdjectives());
-	let noun = SelectRandomElement(DeterminePossibleNouns());
+	let characteristics = DetermineTrackCharacteristics();
+
+	let adjective = SelectRandomElement(GetWordsFromCharacteristics(gAdjectives, characteristics));
+	let noun = SelectRandomElement(GetWordsFromCharacteristics(gNouns, characteristics));
 	let postposition = SelectRandomElement(gPostpositionsList);
 
 	//Rarely use an infix.
-	if (gRandom() < 0.02)
+	if (gRandom() < 0.025)
 	{
-		let noun2 = SelectRandomElement(DeterminePossibleNouns(), noun);
+		let noun2 = SelectRandomElement(GetWordsFromCharacteristics(gNouns, characteristics));
 		let infix = SelectRandomElement(gInfixList);
 		return adjective + " " + noun + infix + noun2 +  " " + postposition;
 	}
