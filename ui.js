@@ -6,9 +6,13 @@ let gUI =
 	rotation: 0,
 	viewLayer: 0,
 	hasUserProvidedSeed: false,
+	isOnMobile: false,
 	trackPiecesImage: new Image(),
 };
 gUI.trackPiecesImage.src = "images/trackmaniaPieces.png";
+gUI.isOnMobile = navigator.maxTouchPoints ||
+	/\b(BlackBerry|webOS|iPhone|IEMobile)\b/i.test(navigator.userAgent) ||
+	/\b(Android|Windows Phone|iPad|iPod)\b/i.test(navigator.userAgent);
 
 let RenderAll = function(ctx, viewZ, layerViewType)
 {
@@ -294,6 +298,24 @@ let OnViewLayerChanged = function(e)
 	RenderAll(gCtx, newViewZ);
 }
 
+let OnViewLayerDownPressed = function(e)
+{
+	let trackViewLayerElement = document.getElementById("trackViewLayer");
+	let newViewZ = Math.max(trackViewLayerElement.valueAsNumber - 1, trackViewLayerElement.min);
+	trackViewLayerElement.value = newViewZ;
+
+	RenderAll(gCtx, newViewZ, null);
+}
+
+let OnViewLayerUpPressed = function(e)
+{
+	let trackViewLayerElement = document.getElementById("trackViewLayer");
+	let newViewZ = Math.min(trackViewLayerElement.valueAsNumber + 1, trackViewLayerElement.max);
+	trackViewLayerElement.value = newViewZ;
+
+	RenderAll(gCtx, newViewZ, null);
+}
+
 let OnViewTypeChanged = function(e)
 {
 	//Skip programmatic changes
@@ -332,6 +354,19 @@ let OnPageLoaded = function(e)
 	document.getElementById("rotateLeftButton").addEventListener("click", OnRotateLeftButtonPressed);
 	document.getElementById("rotateRightButton").addEventListener("click", OnRotateRightButtonPressed);
 	document.getElementById("trackViewLayer").addEventListener("input", OnViewLayerChanged);
+	document.getElementById("trackViewLayerDown").addEventListener("click", OnViewLayerDownPressed);
+	document.getElementById("trackViewLayerUp").addEventListener("click", OnViewLayerUpPressed);
 	document.getElementById("trackViewType").addEventListener("input", OnViewTypeChanged);
 	document.getElementById("trackSeed").addEventListener("input", OnTrackSeedChanged);
+
+	if (gUI.isOnMobile)
+	{
+		document.getElementById("trackViewLayerPC").classList.add("hidden");
+		document.getElementById("trackViewLayerMobile").classList.remove("hidden");
+	}
+	else
+	{
+		document.getElementById("trackViewLayerMobile").classList.add("hidden");
+		document.getElementById("trackViewLayerPC").classList.remove("hidden");
+	}
 };

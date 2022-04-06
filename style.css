@@ -7,6 +7,11 @@ body
 	font-family: "Trebuchet MS", sans-serif
 }
 
+.hidden
+{
+	display: none !important;
+}
+
 #canvasContainer
 {
 	height: 100%;
@@ -123,4 +128,9 @@ body
 #navigationContainer .rotateButton
 {
 	padding: 2px 8px;
+}
+
+#navigationContainer .arrowButton
+{
+	width: 47%;
 }

@@ -61,8 +61,14 @@
 					<button id="rotateRightButton" class="rotateButton">&#10552;</button>
 				</div>
 			</div>
-			<div class="table">
+			<div class="table hidden" id="trackViewLayerMobile" style="width: 100%;">
 				<div class="row">
+					<button id="trackViewLayerDown" class="arrowButton">&#11015;</button>
+					<button id="trackViewLayerUp" class="arrowButton">&#11014;</button>
+				</div>
+			</div>
+			<div class="table">
+				<div id="trackViewLayerPC" class="row">
 					<div class="label"><label for="trackViewLayer">Current Height:</label></div>
 					<div class="option"><input id="trackViewLayer" type="number" value="0" min="0" max="31" size="2" /></div>
 				</div>
