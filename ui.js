@@ -337,6 +337,47 @@ let OnTrackSeedChanged = function(e)
 	document.getElementById("trackSeedLabel").innerHTML = gUI.hasUserProvidedSeed ? "Seed*:" : "Seed:";
 }
 
+let OnKeyDown = function(e)
+{
+	switch (e.code)
+	{
+		case "Minus":
+			OnViewLayerDownPressed(e);
+			break;
+		case "Equal":
+			OnViewLayerUpPressed(e);
+			break;
+		case "Comma":
+			OnRotateLeftButtonPressed(e);
+			break;
+		case "Period":
+			OnRotateLeftButtonPressed(e);
+			break;
+	}
+
+	switch (e.key)
+	{
+		case "z":
+			OnZoomButtonPressed(e);
+			break;
+	}
+}
+
+let OnHotkeysButtonPressed = function(e)
+{
+	let hotkeysWindowElement = document.getElementById("hotkeysWindow");
+	if (hotkeysWindowElement.classList.contains("hotkeysWindowShown"))
+	{
+		hotkeysWindowElement.classList.remove("hotkeysWindowShown");
+		e.target.innerHTML = "Show hotkeys"
+	}
+	else
+	{
+		hotkeysWindowElement.classList.add("hotkeysWindowShown");
+		e.target.innerHTML = "Hide hotkeys"
+	}
+}
+
 let OnPageLoaded = function(e)
 {
 	UpdateCanvasTransform(gCanvas, gCtx);
@@ -363,10 +404,17 @@ let OnPageLoaded = function(e)
 	{
 		document.getElementById("trackViewLayerPC").classList.add("hidden");
 		document.getElementById("trackViewLayerMobile").classList.remove("hidden");
+
+		document.getElementById("hotkeysContainer").classList.add("hidden");
 	}
 	else
 	{
 		document.getElementById("trackViewLayerMobile").classList.add("hidden");
 		document.getElementById("trackViewLayerPC").classList.remove("hidden");
+
+		document.getElementById("hotkeysContainer").classList.remove("hidden");
+
+		document.addEventListener("keydown", OnKeyDown);
+		document.getElementById("hotkeysButton").addEventListener("click", OnHotkeysButtonPressed);
 	}
 };
