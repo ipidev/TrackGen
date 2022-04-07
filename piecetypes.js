@@ -16,6 +16,7 @@ let gTrackPieceTemplates =
 	},
 	cornerRight:
 	{
+		tags: [ "notAfterTurbo" ],
 		imageOffset: new Vector2D(32, 0),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(1, 0, 0),
@@ -23,6 +24,7 @@ let gTrackPieceTemplates =
 	},
 	cornerLeft:
 	{
+		tags: [ "notAfterTurbo" ],
 		imageOffset: new Vector2D(64, 0),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(-1, 0, 0),
@@ -139,6 +141,7 @@ let gTrackPieceTemplates =
 		exitAngle: 0,
 		absoluteImageOffset: true,
 		probability: 0.666,
+		transitionTo: { tag: "!notAfterTurbo" },
 	},
 	superTurbo:
 	{
@@ -149,50 +152,55 @@ let gTrackPieceTemplates =
 		exitAngle: 0,
 		absoluteImageOffset: true,
 		probability: 0.5,
+		transitionTo: { tag: "!notAfterTurbo" },
 	},
 	boostUp:
 	{
-		tags: [ "straight", "engineBlock" ],
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
 		imageOffset: new Vector2D(384, 96),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
 		absoluteImageOffset: true,
 		probability: 0.666,
+		transitionTo: { tag: "!notAfterBoost" },
 	},
 	superBoostUp:
 	{
-		tags: [ "straight", "engineBlock" ],
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
 		imageOffset: new Vector2D(416, 96),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
 		absoluteImageOffset: true,
 		probability: 0.333,
+		transitionTo: { tag: "!notAfterBoost" },
 	},
 	boostDown:
 	{
-		tags: [ "straight", "engineBlock" ],
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
 		imageOffset: new Vector2D(448, 96),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
 		absoluteImageOffset: true,
 		probability: 0.666,
+		transitionTo: { tag: "!notAfterBoost" },
 	},
 	superBoostDown:
 	{
-		tags: [ "straight", "engineBlock" ],
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
 		imageOffset: new Vector2D(480, 96),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
 		absoluteImageOffset: true,
 		probability: 0.5,
+		transitionTo: { tag: "!notAfterBoost" },
 	},
 	rampUpLevelGentle:
 	{
-		tags: [ "ramp" ],
+		tags: [ "ramp", "notAfterTurbo" ],
 		imageOffset: new Vector2D(544, 0),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 1),
@@ -203,7 +211,7 @@ let gTrackPieceTemplates =
 	},
 	rampDownLevelGentle:
 	{
-		tags: [ "ramp" ],
+		tags: [ "ramp", "notAfterTurbo" ],
 		imageOffset: new Vector2D(576, 0),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, -1),
@@ -214,7 +222,7 @@ let gTrackPieceTemplates =
 	},
 	rampUpLevelSteep:
 	{
-		tags: [ "ramp" ],
+		tags: [ "ramp", "notAfterTurbo" ],
 		imageOffset: new Vector2D(544, 32),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 2),
@@ -225,7 +233,7 @@ let gTrackPieceTemplates =
 	},
 	rampDownLevelSteep:
 	{
-		tags: [ "ramp" ],
+		tags: [ "ramp", "notAfterTurbo" ],
 		imageOffset: new Vector2D(576, 32),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, -2),
@@ -303,7 +311,7 @@ let gPieceTypes =
 		},
 		jump:
 		{
-			tags: [ "jump" ],
+			tags: [ "jump", "notAfterTurbo" ],
 			imageOffset: new Vector2D(0, 64),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -2, 0),

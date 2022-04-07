@@ -4,6 +4,47 @@ let gPlacedPieces = [];
 let gRandom = null;
 let gTrackDimensions = null;
 
+//Used to 
+class TimedFilterList
+{
+	constructor(permanentItems)
+	{
+		this.list = [];
+
+		if (permanentItems instanceof Array)
+			permanentItems.forEach(item => Add(item));
+	}
+
+	Add(value, lifetime)
+	{
+		if (value !== undefined && value !== null &&
+			(lifetime === undefined || lifetime > 0))
+		{
+			this.list.push(
+			{
+				value: value,
+				lifetime: lifetime !== undefined ? lifetime : Number.POSITIVE_INFINITY
+			});
+		}
+	}
+
+	GetFlatList()
+	{
+		let returnedList = [];
+		this.list.forEach(item => returnedList.push(item.value));
+		return returnedList;
+	}
+
+	StepLifetime()
+	{
+		for (let i = this.list.length - 1; i >= 0; --i)
+		{
+			if (--this.list[i].lifetime <= 0)
+				this.list.splice(i, 1);
+		}
+	}
+}
+
 let PlacePiece = function(translation, rotation, trackPieceType)
 {
 	gPlacedPieces.push(
@@ -119,8 +160,8 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 	//Setup the tags that will be used to place pieces.
 	let materialBlacklist = GetPieceMaterials().filter(material => !materialWhitelist.includes(material));
 
-	let pieceTagWhitelist = [];
-	let pieceTagBlacklist = [].concat(materialBlacklist);
+	let pieceTagAllowedFilter = new TimedFilterList();
+	let pieceTagUnallowedFilter = new TimedFilterList(materialBlacklist);
 
 	let pieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
 	if (!pieceMaterial)
@@ -128,7 +169,7 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 	
 	//Place the start line.
 	{
-		let startLinePieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceMaterial, ["startLine"], pieceTagBlacklist, [], true);
+		let startLinePieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceMaterial, ["startLine"], materialBlacklist, [], true);
 		if (!startLinePieceType)
 			return;	//Oh dear.
 		
@@ -147,6 +188,8 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 	for (let pieceIndex = 0; pieceIndex < length && deadEndsHit < 20; ++pieceIndex)
 	{
 		let nextPieceType = null;
+		let pieceTagWhitelist = pieceTagAllowedFilter.GetFlatList();
+		let pieceTagBlacklist = pieceTagUnallowedFilter.GetFlatList();
 		
 		//See if we need to place a checkpoint.
 		if (nextCheckpointIndex >= 0 && pieceIndex >= Math.floor(nextCheckpointIndex))
@@ -166,9 +209,6 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			nextPieceType = SelectSuitablePieceType(currentTranslation, currentRotation,
 				pieceMaterial, pieceTagWhitelist, pieceTagBlacklist.concat([ "progress" ]), [ lastDeadEndPieceType ]);
 		}
-		
-		//Clear the whitelist each time (might need more flexible solution)
-		pieceTagWhitelist.length = 0;
 
 		//Place the piece (if we have one).
 		if (nextPieceType !== null)
@@ -180,6 +220,10 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			currentRotation = offsetPositions.rotation;
 			
 			lastDeadEndPieceType = null;
+
+			//Step the filters as we've placed a new piece.
+			pieceTagAllowedFilter.StepLifetime();
+			pieceTagUnallowedFilter.StepLifetime();
 
 			//If this piece causes a transition, alter the whitelist.
 			if (nextPieceType.transitionTo)
@@ -201,7 +245,10 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 					
 					if (nextPieceType.transitionTo.tag)
 					{
-						pieceTagWhitelist.push(nextPieceType.transitionTo.tag);
+						if (nextPieceType.transitionTo.tag.startsWith("!"))
+							pieceTagUnallowedFilter.Add(nextPieceType.transitionTo.tag.slice(1), 1);
+						else
+							pieceTagAllowedFilter.Add(nextPieceType.transitionTo.tag, 1);
 					}
 				}
 			}
@@ -240,7 +287,7 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 	//Place the finish line.
 	for (let i = 0; i < 3; ++i)
 	{
-		let finishLinePieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceMaterial, ["finishLine"], pieceTagBlacklist, [], true);
+		let finishLinePieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceMaterial, ["finishLine"], materialBlacklist, [], true);
 		if (finishLinePieceType)
 		{
 			PlacePiece(currentTranslation, currentRotation, finishLinePieceType);
