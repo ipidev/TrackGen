@@ -12,7 +12,7 @@ class TimedFilterList
 		this.list = [];
 
 		if (permanentItems instanceof Array)
-			permanentItems.forEach(item => Add(item));
+			permanentItems.forEach(item => this.Add(item));
 	}
 
 	Add(value, lifetime)
@@ -158,7 +158,7 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 	let currentRotation = Math.floor(gRandom() * 4) * 0.5 * Math.PI;
 
 	//Setup the tags that will be used to place pieces.
-	let materialBlacklist = GetPieceMaterials().filter(material => !materialWhitelist.includes(material));
+	let materialBlacklist = GetPieceMaterials().filter(material => !materialWhitelist.find(materialStart => material.startsWith(materialStart)));
 
 	let pieceTagAllowedFilter = new TimedFilterList();
 	let pieceTagUnallowedFilter = new TimedFilterList(materialBlacklist);

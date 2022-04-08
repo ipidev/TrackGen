@@ -4,7 +4,7 @@
 // Piece types and templates
 ////////////////////////////////////////////////////////////////////////////////
 
-let gTrackPieceTemplates =
+let gGenericPieceTemplates =
 {
 	straight:
 	{
@@ -266,6 +266,231 @@ let gTrackPieceTemplates =
 	},
 };
 
+//Templates for materials that transition to banked pieces.
+let gBankTransitionPieceTemplates =
+{
+	toBankRightLevelShort:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(608, 0),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		transitionTo: { material: "BankRight" },
+	},
+	toBankRightDownShort:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(608, 32),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, -1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 0),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		transitionTo: { material: "BankRight" },
+	},
+	toBankRightLevelLong:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(640, 0),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 1),
+		collisionExtents: new Vector3D(0.5, 1, 1),
+		transitionTo: { material: "BankRight" },
+	},
+	toBankRightDownLong:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(640, 64),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, -1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 0),
+		collisionExtents: new Vector3D(0.5, 1, 1),
+		transitionTo: { material: "BankRight" },
+	},
+	toBankLeftLevelShort:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(608, 64),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		transitionTo: { material: "BankLeft" },
+	},
+	toBankLeftDownShort:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(608, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, -1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 0),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		transitionTo: { material: "BankLeft" },
+	},
+	toBankLeftLevelLong:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(672, 0),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 1),
+		collisionExtents: new Vector3D(0.5, 1, 1),
+		transitionTo: { material: "BankLeft" },
+	},
+	toBankLeftDownLong:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(672, 64),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, -1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 0),
+		collisionExtents: new Vector3D(0.5, 1, 1),
+		transitionTo: { material: "BankLeft" },
+	},
+};
+
+//Templates for right-banked pieces (can be flipped for left-banking pieces)
+let gBankedPieceTemplates =
+{
+	straight:
+	{
+		tags: [ "straight" ],
+		imageOffset: new Vector2D(704, 0),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+	},
+	checkpoint:
+	{
+		tags: [ "progress", "checkpoint" ],
+		imageOffset: new Vector2D(704, 64),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+	},
+	corner:
+	{
+		imageOffset: new Vector2D(704, 32),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(1, 0, 0),
+		exitAngle: Math.PI * 0.5,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+	},
+	curve:
+	{
+		imageOffset: new Vector2D(736, 0),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(2, -2, 0),
+		exitAngle: Math.PI * 0.5,
+		collisionOffset: new Vector3D(0.5, 0.5, 1),
+		collisionExtents: new Vector3D(1, 1, 1),
+	},
+	curveBig:
+	{
+		imageOffset: new Vector2D(800, 0),
+		imageDimensions: new Vector2D(96, 96),
+		exitOffset: new Vector3D(3, -3, 0),
+		exitAngle: Math.PI * 0.5,
+		collisionOffset: new Vector3D(1, 1, 1),
+		collisionExtents: new Vector3D(1.5, 1.5, 1),
+	},
+	sBendOut:
+	{
+		imageOffset: new Vector2D(736, 64),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(-1, -2, 1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(-0.5, -0.5, 1.5),
+		collisionExtents: new Vector3D(1, 1, 1.5),
+	},
+	bigSBendOut:
+	{
+		imageOffset: new Vector2D(896, 0),
+		imageDimensions: new Vector2D(64, 96),
+		exitOffset: new Vector3D(-1, -3, 1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(-0.5, -1, 1.5),
+		collisionExtents: new Vector3D(1, 1.5, 1.5),
+	},
+	sBendIn:
+	{
+		imageOffset: new Vector2D(1024, 0),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(1, -2, -1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0.5, -0.5, 0.5),
+		collisionExtents: new Vector3D(1, 1, 1.5),
+	},
+	bigSBendIn:
+	{
+		imageOffset: new Vector2D(960, 0),
+		imageDimensions: new Vector2D(64, 96),
+		exitOffset: new Vector3D(1, -3, -1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0.5, -1, 0.5),
+		collisionExtents: new Vector3D(1, 1.5, 1.5),
+	},
+	toFlatLevelShort:
+	{
+		tags: [ "straight" ],
+		imageOffset: new Vector2D(960, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		transitionTo: { material: "Flat" },
+	},
+	toFlatUpShort:
+	{
+		tags: [ "straight" ],
+		imageOffset: new Vector2D(992, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		transitionTo: { material: "Flat" },
+	},
+	toFlatLevelLong:
+	{
+		tags: [ "straight" ],
+		imageOffset: new Vector2D(1024, 64),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 1),
+		collisionExtents: new Vector3D(0.5, 1, 1),
+		transitionTo: { material: "Flat" },
+	},
+	toFlatUpLong:
+	{
+		tags: [ "straight" ],
+		imageOffset: new Vector2D(1056, 64),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, 1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 1),
+		collisionExtents: new Vector3D(0.5, 1, 1),
+		transitionTo: { material: "Flat" },
+	},
+};
+
 //Piece types object.
 let gPieceTypes =
 {
@@ -378,7 +603,7 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -2, 0),
 			exitAngle: 0,
 			collisionOffset: new Vector3D(0, -0.5, 0.5),
-			collisionExtents: new Vector3D(1, 2, 0.5),
+			collisionExtents: new Vector3D(0.5, 1, 0.5),
 			transitionTo: { material: "roadFlat" },
 		},
 		narrowCentre:
@@ -434,6 +659,34 @@ let gPieceTypes =
 			transitionTo: { material: "waterShallow" },
 		},
 	},
+	roadBankRight:
+	{
+		toBankLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(704, 96),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "roadBankLeft" },
+		},
+	},
+	roadBankLeft:
+	{
+		toBankRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1088, 96),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "roadBankRight" },
+		},
+	},
 };
 
 let SanitisePieceType = function(pieceType, pieceMaterial)
@@ -453,7 +706,7 @@ let SanitiseBespokePieceTypes = function()
 	});
 }
 
-let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extraImageOffset, tagBlacklist, extraHeight)
+let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extraImageOffset, tagBlacklist, extraHeight, transitionPreposition, flipExitX)
 {
 	//Create material object if it doesn't exist.
 	if (gPieceTypes[pieceMaterial] === undefined) { gPieceTypes[pieceMaterial] = {}; }
@@ -471,7 +724,17 @@ let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extra
 
 		//Clone template object first.
 		let newPieceType = {};
-		Object.getOwnPropertyNames(template).forEach(key => newPieceType[key] = template[key]);
+		Object.getOwnPropertyNames(template).forEach(key =>
+		{
+			if (template[key] instanceof Vector3D)
+				newPieceType[key] = Vector3DStatic.CreateCopy(template[key]);
+			else if (template[key] instanceof Vector2D)
+				newPieceType[key] = Vector2DStatic.CreateCopy(template[key]);
+			else if (typeof template[key] === "object")
+				newPieceType[key] = JSON.parse(JSON.stringify(template[key]));
+			else
+				newPieceType[key] = template[key]
+		});
 
 		if (!newPieceType.absoluteImageOffset)
 		{
@@ -479,22 +742,33 @@ let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extra
 		}
 
 		//Some materials are taller than others
-		if (extraHeight !== undefined)
+		if (extraHeight !== undefined && extraHeight != 0)
 		{
 			if (newPieceType.collisionOffset === undefined && newPieceType.collisionExtents === undefined)
 			{
 				newPieceType.collisionOffset = new Vector3D(0, 0, 0.5);
 				newPieceType.collisionExtents = new Vector3D(0.5, 0.5, 0.5);
 			}
-			else
-			{
-				newPieceType.collisionOffset = Vector3DStatic.CreateCopy(newPieceType.collisionOffset);
-				newPieceType.collisionExtents = Vector3DStatic.CreateCopy(newPieceType.collisionExtents);
-			}
 
 			//Convert extents to height, perform addition, divide back into extents
 			newPieceType.collisionOffset.z += extraHeight * 0.5;
 			newPieceType.collisionExtents.z = ((newPieceType.collisionExtents.z * 2) + extraHeight) * 0.5;
+		}
+
+		if (transitionPreposition !== undefined && newPieceType.transitionTo && newPieceType.transitionTo.material)
+		{
+			newPieceType.transitionTo.material = transitionPreposition.concat(newPieceType.transitionTo.material);
+		}
+
+		if (flipExitX)
+		{
+			newPieceType.exitOffset.x *= -1;
+			newPieceType.exitAngle *= -1;
+
+			if (newPieceType.collisionOffset !== undefined)
+			{
+				newPieceType.collisionOffset.x *= -1;
+			}
 		}
 
 		SanitisePieceType(newPieceType, pieceMaterial);
@@ -534,12 +808,16 @@ let InitialisePieceTypes = function()
 {
 	SanitiseBespokePieceTypes();
 
-	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "roadFlat", new Vector2D(0, 0));
-	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "dirtFlat", new Vector2D(0, 128));
-	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "iceFlat", new Vector2D(0, 256), undefined, 1);
-	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "sausageFlat", new Vector2D(0, 384));
-	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "waterShallow", new Vector2D(0, 512), [ "ramp" ]);
-	CreatePieceTypesFromTemplate(gTrackPieceTemplates, "waterDeep", new Vector2D(0, 640), [ "ramp", "progress" ], 1);
+	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "roadFlat", new Vector2D(0, 0));
+	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "dirtFlat", new Vector2D(0, 128));
+	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "iceFlat", new Vector2D(0, 256), undefined, 1);
+	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "sausageFlat", new Vector2D(0, 384));
+	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "waterShallow", new Vector2D(0, 512), [ "ramp" ]);
+	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "waterDeep", new Vector2D(0, 640), [ "ramp", "progress" ], 1);
+
+	CreatePieceTypesFromTemplate(gBankTransitionPieceTemplates, "roadFlat", new Vector2D(0, 0), undefined, 0, "road");
+	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "roadBankRight", new Vector2D(0, 0), undefined, 0, "road");
+	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "roadBankLeft", new Vector2D(384, 0), undefined, 0, "road", true);
 
 	//Special-case transitions.
 	ModifyPieceTypeProperty("roadFlat", "transitionTo", { material: "waterShallow", probability: 0.025 }, [ "ramp" ]);
