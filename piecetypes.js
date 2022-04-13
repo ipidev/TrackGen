@@ -819,6 +819,14 @@ let InitialisePieceTypes = function()
 	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "roadBankRight", new Vector2D(0, 0), undefined, 0, "road");
 	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "roadBankLeft", new Vector2D(384, 0), undefined, 0, "road", true);
 
+	CreatePieceTypesFromTemplate(gBankTransitionPieceTemplates, "dirtFlat", new Vector2D(0, 128), undefined, 0, "dirt");
+	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "dirtBankRight", new Vector2D(0, 128), undefined, 0, "dirt");
+	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "dirtBankLeft", new Vector2D(384, 128), undefined, 0, "dirt", true);
+
+	CreatePieceTypesFromTemplate(gBankTransitionPieceTemplates, "sausageFlat", new Vector2D(0, 384), undefined, 0, "sausage");
+	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "sausageBankRight", new Vector2D(0, 384), undefined, 0, "sausage");
+	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "sausageBankLeft", new Vector2D(384, 384), undefined, 0, "sausage", true);
+
 	//Special-case transitions.
 	ModifyPieceTypeProperty("roadFlat", "transitionTo", { material: "waterShallow", probability: 0.025 }, [ "ramp" ]);
 	ModifyPieceTypeProperty("waterShallow", "transitionTo", { material: "roadFlat", probability: 0.25 }, [ "ramp" ]);
