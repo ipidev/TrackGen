@@ -1081,6 +1081,39 @@ let gPieceTypes =
 			collisionExtents: new Vector3D(0.5, 0.5, 1),
 			transitionTo: { material: "roadBankLeft" },
 		},
+		toDirtBankRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(800, 96),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "dirtBankRight" },
+		},
+		toSausageBankRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(832, 96),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "sausageBankRight" },
+		},
+		toSausageBankRightLong:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1408, 256),
+			imageDimensions: new Vector2D(32, 64),
+			exitOffset: new Vector3D(0, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, -0.5, 1),
+			collisionExtents: new Vector3D(0.5, 1, 1),
+			transitionTo: { material: "sausageBankRight" },
+		},
 	},
 	roadBankLeft:
 	{
@@ -1093,6 +1126,161 @@ let gPieceTypes =
 			exitAngle: 0,
 			collisionOffset: new Vector3D(0, 0, 1),
 			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "roadBankRight" },
+		},
+		toDirtBankLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1184, 96),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "dirtBankLeft" },
+		},
+		toSausageBankLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1216, 96),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "sausageBankLeft" },
+		},
+		toSausageBankLeftLong:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1440, 256),
+			imageDimensions: new Vector2D(32, 64),
+			exitOffset: new Vector3D(0, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, -0.5, 1),
+			collisionExtents: new Vector3D(0.5, 1, 1),
+			transitionTo: { material: "sausageBankLeft" },
+		},
+	},
+	dirtBankRight:
+	{
+		toBankLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(704, 224),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "dirtBankLeft" },
+		},
+		toRoadBankRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(800, 224),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "roadBankRight" },
+		},
+	},
+	dirtBankLeft:
+	{
+		toBankRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1088, 224),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "dirtBankRight" },
+		},
+		toRoadBankLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1184, 224),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "roadBankLeft" },
+		},
+	},
+	sausageBankRight:
+	{
+		toBankLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(704, 480),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "sausageBankLeft" },
+		},
+		toRoadBankRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(800, 480),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "roadBankRight" },
+		},
+		toRoadBankRightLong:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1408, 320),
+			imageDimensions: new Vector2D(32, 64),
+			exitOffset: new Vector3D(0, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, -0.5, 1),
+			collisionExtents: new Vector3D(0.5, 1, 1),
+			transitionTo: { material: "roadBankRight" },
+		},
+	},
+	sausageBankLeft:
+	{
+		toBankRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1088, 480),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "sausageBankRight" },
+		},
+		toRoadBankLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1184, 480),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, 0, 1),
+			collisionExtents: new Vector3D(0.5, 0.5, 1),
+			transitionTo: { material: "roadBankLeft" },
+		},
+		toRoadBankLeftLong:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1440, 320),
+			imageDimensions: new Vector2D(32, 64),
+			exitOffset: new Vector3D(0, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0, -0.5, 1),
+			collisionExtents: new Vector3D(0.5, 1, 1),
 			transitionTo: { material: "roadBankRight" },
 		},
 	},
