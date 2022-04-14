@@ -447,7 +447,7 @@ let gBankedPieceTemplates =
 	},
 	toFlatLevelShort:
 	{
-		tags: [ "straight" ],
+		tags: [ "straight", "transition" ],
 		imageOffset: new Vector2D(960, 96),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
@@ -458,7 +458,7 @@ let gBankedPieceTemplates =
 	},
 	toFlatUpShort:
 	{
-		tags: [ "straight" ],
+		tags: [ "straight", "transition" ],
 		imageOffset: new Vector2D(992, 96),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 1),
@@ -469,7 +469,7 @@ let gBankedPieceTemplates =
 	},
 	toFlatLevelLong:
 	{
-		tags: [ "straight" ],
+		tags: [ "straight", "transition" ],
 		imageOffset: new Vector2D(1024, 64),
 		imageDimensions: new Vector2D(32, 64),
 		exitOffset: new Vector3D(0, -2, 0),
@@ -480,7 +480,7 @@ let gBankedPieceTemplates =
 	},
 	toFlatUpLong:
 	{
-		tags: [ "straight" ],
+		tags: [ "straight", "transition" ],
 		imageOffset: new Vector2D(1056, 64),
 		imageDimensions: new Vector2D(32, 64),
 		exitOffset: new Vector3D(0, -2, 1),
@@ -488,6 +488,72 @@ let gBankedPieceTemplates =
 		collisionOffset: new Vector3D(0, -0.5, 1),
 		collisionExtents: new Vector3D(0.5, 1, 1),
 		transitionTo: { material: "Flat" },
+	},
+	turbo:
+	{
+		tags: [ "straight", "engineBlock" ],
+		imageOffset: new Vector2D(320, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.666,
+		transitionTo: { tag: "!notAfterTurbo" },
+	},
+	superTurbo:
+	{
+		tags: [ "straight", "engineBlock" ],
+		imageOffset: new Vector2D(352, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.5,
+		transitionTo: { tag: "!notAfterTurbo" },
+	},
+	boostUp:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(384, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.666,
+		transitionTo: { tag: "!notAfterBoost" },
+	},
+	superBoostUp:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(416, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.333,
+		transitionTo: { tag: "!notAfterBoost" },
+	},
+	boostDown:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(448, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.666,
+		transitionTo: { tag: "!notAfterBoost" },
+	},
+	superBoostDown:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(480, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.5,
+		transitionTo: { tag: "!notAfterBoost" },
 	},
 };
 
