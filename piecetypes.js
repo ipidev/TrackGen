@@ -598,6 +598,7 @@ let gBlockPieceTemplates =
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
+		probability: 0.25,
 	},
 	holeCornerRight:
 	{
@@ -606,6 +607,7 @@ let gBlockPieceTemplates =
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(1, 0, 0),
 		exitAngle: Math.PI * 0.5,
+		probability: 0.25,
 	},
 	holeCornerLeft:
 	{
@@ -614,6 +616,7 @@ let gBlockPieceTemplates =
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(-1, 0, 0),
 		exitAngle: Math.PI * -0.5,
+		probability: 0.25,
 	},
 	turbo:
 	{
@@ -838,6 +841,42 @@ let gPieceTypes =
 			exitAngle: 0,
 			transitionTo: { material: "roadBlock" },
 		},
+		toDirtBlock:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(544, 576),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "dirtBlock" },
+		},
+		toIceBlock:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(544, 640),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "iceBlock" },
+		},
+		toGrassBlock:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(544, 704),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "grassBlock" },
+		},
+		toRubberBlock:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(608, 288),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "rubberBlock" },
+		},
 		jump:
 		{
 			tags: [ "jump", "notAfterTurbo" ],
@@ -1024,6 +1063,117 @@ let gPieceTypes =
 			transitionTo: { material: "roadBlock" },
 		},
 	},
+	dirtBlock:
+	{
+		toRoadFlat:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(672, 608),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "roadFlat" },
+		},
+		toDirtShoulder:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(704, 608),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "dirtShoulder" },
+		},
+	},
+	dirtShoulder:
+	{
+		toDirtBlock:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(768, 608),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "dirtBlock" },
+		},
+	},
+	iceBlock:
+	{
+		toRoadFlat:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(672, 672),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "roadFlat" },
+		},
+		toIceShoulder:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(704, 672),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "iceShoulder" },
+		},
+	},
+	iceShoulder:
+	{
+		toIceBlock:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(768, 672),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "iceBlock" },
+		},
+	},
+	grassBlock:
+	{
+		toRoadFlat:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(672, 736),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "roadFlat" },
+		},
+		toGrassShoulder:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(704, 736),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "grassShoulder" },
+		},
+	},
+	grassShoulder:
+	{
+		toGrassBlock:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(768, 736),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "grassBlock" },
+		},
+	},
+	rubberBlock:
+	{
+		toRoadFlat:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(736, 320),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "roadFlat" },
+		},
+	},
 };
 
 let SanitisePieceType = function(pieceType, pieceMaterial)
@@ -1166,6 +1316,13 @@ let InitialisePieceTypes = function()
 
 	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "roadBlock", new Vector2D(0, 0));
 	CreatePieceTypesFromTemplate(gShoulderPieceTemplates, "roadShoulder", new Vector2D(0, 0));
+	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "dirtBlock", new Vector2D(0, 64));
+	CreatePieceTypesFromTemplate(gShoulderPieceTemplates, "dirtShoulder", new Vector2D(0, 64));
+	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "iceBlock", new Vector2D(0, 128));
+	CreatePieceTypesFromTemplate(gShoulderPieceTemplates, "iceShoulder", new Vector2D(0, 128));
+	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "grassBlock", new Vector2D(0, 192));
+	CreatePieceTypesFromTemplate(gShoulderPieceTemplates, "grassShoulder", new Vector2D(0, 192));
+	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "rubberBlock", new Vector2D(64, -224));
 
 	//Special-case transitions.
 	ModifyPieceTypeProperty("roadFlat", "transitionTo", { material: "waterShallow", probability: 0.025 }, [ "ramp" ]);
