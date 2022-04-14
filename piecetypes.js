@@ -1,7 +1,7 @@
 "use strict"
 
 ////////////////////////////////////////////////////////////////////////////////
-// Piece types and templates
+// Piece type templates
 ////////////////////////////////////////////////////////////////////////////////
 
 let gGenericPieceTemplates =
@@ -491,7 +491,302 @@ let gBankedPieceTemplates =
 	},
 };
 
-//Piece types object.
+let gBlockPieceTemplates =
+{
+	straight:
+	{
+		tags: [ "straight" ],
+		imageOffset: new Vector2D(576, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+	},
+	cornerRight:
+	{
+		tags: [ "notAfterTurbo" ],
+		imageOffset: new Vector2D(576, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(1, 0, 0),
+		exitAngle: Math.PI * 0.5,
+	},
+	cornerLeft:
+	{
+		tags: [ "notAfterTurbo" ],
+		imageOffset: new Vector2D(576, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(-1, 0, 0),
+		exitAngle: Math.PI * -0.5,
+	},
+	startLine:
+	{
+		tags: [ "progress", "startLine" ],
+		imageOffset: new Vector2D(544, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+	},
+	checkpoint:
+	{
+		tags: [ "progress", "checkpoint" ],
+		imageOffset: new Vector2D(576, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+	},
+	finishLine:
+	{
+		tags: [ "progress", "finishLine" ],
+		imageOffset: new Vector2D(608, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+	},
+	rampUpLevelGentle:
+	{
+		tags: [ "ramp", "notAfterTurbo" ],
+		imageOffset: new Vector2D(608, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		useCollisionForRender: true,
+	},
+	rampUpLevelSteep:
+	{
+		tags: [ "ramp", "notAfterTurbo" ],
+		imageOffset: new Vector2D(640, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		useCollisionForRender: true,
+	},
+	rampDownLevelGentle:
+	{
+		tags: [ "ramp", "notAfterTurbo" ],
+		imageOffset: new Vector2D(672, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, -1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, -1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		useCollisionForRender: true,
+	},
+	rampDownLevelSteep:
+	{
+		tags: [ "ramp", "notAfterTurbo" ],
+		imageOffset: new Vector2D(704, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, -2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, -1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		useCollisionForRender: true,
+	},
+	holeStraight:
+	{
+		tags: [ "notAfterTurbo", "notAfterBoost" ],
+		imageOffset: new Vector2D(640, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+	},
+	holeCornerRight:
+	{
+		tags: [ "notAfterTurbo", "notAfterBoost" ],
+		imageOffset: new Vector2D(640, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(1, 0, 0),
+		exitAngle: Math.PI * 0.5,
+	},
+	holeCornerLeft:
+	{
+		tags: [ "notAfterTurbo", "notAfterBoost" ],
+		imageOffset: new Vector2D(640, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(-1, 0, 0),
+		exitAngle: Math.PI * -0.5,
+	},
+	turbo:
+	{
+		tags: [ "straight", "engineBlock" ],
+		imageOffset: new Vector2D(608, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.666,
+		transitionTo: { tag: "!notAfterTurbo" },
+	},
+	superTurbo:
+	{
+		tags: [ "straight", "engineBlock" ],
+		imageOffset: new Vector2D(640, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.5,
+		transitionTo: { tag: "!notAfterTurbo" },
+	},
+	boostUp:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(672, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.666,
+		transitionTo: { tag: "!notAfterBoost" },
+	},
+	superBoostUp:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(704, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.333,
+		transitionTo: { tag: "!notAfterBoost" },
+	},
+	boostDown:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(736, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.666,
+		transitionTo: { tag: "!notAfterBoost" },
+	},
+	superBoostDown:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(768, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		absoluteImageOffset: true,
+		probability: 0.5,
+		transitionTo: { tag: "!notAfterBoost" },
+	},
+};
+
+let gShoulderPieceTemplates =
+{
+	straight:
+	{
+		tags: [ "straight" ],
+		imageOffset: new Vector2D(736, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+	},
+	cornerRight:
+	{
+		tags: [ "notAfterTurbo" ],
+		imageOffset: new Vector2D(768, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(1, 0, 0),
+		exitAngle: Math.PI * 0.5,
+	},
+	cornerLeft:
+	{
+		tags: [ "notAfterTurbo" ],
+		imageOffset: new Vector2D(800, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(-1, 0, 0),
+		exitAngle: Math.PI * -0.5,
+	},
+	checkpoint:
+	{
+		tags: [ "progress", "checkpoint" ],
+		imageOffset: new Vector2D(736, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+	},
+	curveRight:
+	{
+		imageOffset: new Vector2D(832, 512),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(2, -1, 0),
+		exitAngle: Math.PI * 0.5,
+		collisionOffset: new Vector3D(0.5, -0.5, 0.5),
+		collisionExtents: new Vector3D(1, 1, 0.5),
+	},
+	curveLeft:
+	{
+		imageOffset: new Vector2D(896, 512),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(-2, -1, 0),
+		exitAngle: Math.PI * -0.5,
+		collisionOffset: new Vector3D(-0.5, -0.5, 0.5),
+		collisionExtents: new Vector3D(1, 1, 0.5),
+	},
+	rampUpLevelGentle:
+	{
+		tags: [ "ramp", "notAfterTurbo" ],
+		imageOffset: new Vector2D(960, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		useCollisionForRender: true,
+	},
+	rampUpLevelSteep:
+	{
+		tags: [ "ramp", "notAfterTurbo" ],
+		imageOffset: new Vector2D(992, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		useCollisionForRender: true,
+	},
+	rampDownLevelGentle:
+	{
+		tags: [ "ramp", "notAfterTurbo" ],
+		imageOffset: new Vector2D(960, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, -1),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, -1),
+		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		useCollisionForRender: true,
+	},
+	rampDownLevelSteep:
+	{
+		tags: [ "ramp", "notAfterTurbo" ],
+		imageOffset: new Vector2D(992, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, -2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, -1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		useCollisionForRender: true,
+	},
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// Piece types (non-templated)
+////////////////////////////////////////////////////////////////////////////////
+
 let gPieceTypes =
 {
 	roadFlat:
@@ -533,6 +828,15 @@ let gPieceTypes =
 			collisionOffset: new Vector3D(0, -0.5, 0.5),
 			collisionExtents: new Vector3D(1, 2, 0.5),
 			transitionTo: { material: "sausageFlat" },
+		},
+		toRoadBlock:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(544, 512),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "roadBlock" },
 		},
 		jump:
 		{
@@ -687,6 +991,39 @@ let gPieceTypes =
 			transitionTo: { material: "roadBankRight" },
 		},
 	},
+	roadBlock:
+	{
+		toRoadFlat:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(672, 544),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "roadFlat" },
+		},
+		toRoadShoulder:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(704, 544),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "roadShoulder" },
+		},
+	},
+	roadShoulder:
+	{
+		toRoadBlock:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(768, 544),
+			imageDimensions: new Vector2D(32, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			transitionTo: { material: "roadBlock" },
+		},
+	},
 };
 
 let SanitisePieceType = function(pieceType, pieceMaterial)
@@ -826,6 +1163,9 @@ let InitialisePieceTypes = function()
 	CreatePieceTypesFromTemplate(gBankTransitionPieceTemplates, "sausageFlat", new Vector2D(0, 384), undefined, 0, "sausage");
 	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "sausageBankRight", new Vector2D(0, 384), undefined, 0, "sausage");
 	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "sausageBankLeft", new Vector2D(384, 384), undefined, 0, "sausage", true);
+
+	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "roadBlock", new Vector2D(0, 0));
+	CreatePieceTypesFromTemplate(gShoulderPieceTemplates, "roadShoulder", new Vector2D(0, 0));
 
 	//Special-case transitions.
 	ModifyPieceTypeProperty("roadFlat", "transitionTo", { material: "waterShallow", probability: 0.025 }, [ "ramp" ]);
