@@ -906,6 +906,7 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "roadBlock" },
+			renderAsBlock: true,
 		},
 		toDirtBlock:
 		{
@@ -915,6 +916,7 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "dirtBlock" },
+			renderAsBlock: true,
 		},
 		toIceBlock:
 		{
@@ -924,6 +926,7 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "iceBlock" },
+			renderAsBlock: true,
 		},
 		toGrassBlock:
 		{
@@ -933,6 +936,7 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "grassBlock" },
+			renderAsBlock: true,
 		},
 		toRubberBlock:
 		{
@@ -942,6 +946,7 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "rubberBlock" },
+			renderAsBlock: true,
 		},
 		jump:
 		{

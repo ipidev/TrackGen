@@ -75,83 +75,171 @@ let RenderTrack = function(ctx, viewZ, layerViewType)
 		return 0;
 	});
 
+	let ResetCanvas = function(ctx)
+	{
+		ctx.globalAlpha = 1;
+		ctx.globalCompositeOperation = "source-over";
+	};
+
+	//Draw piece outlines.
 	for (let i = 0; i < sortedPieces.length; ++i)
 	{
-		//Determine piece position.
-		let placedPiece = sortedPieces[i];
-		let placedPieceType = placedPiece.trackPieceType;
-		
-		ctx.translate(placedPiece.translation.x * 32, placedPiece.translation.y * 32);
-		ctx.rotate(placedPiece.rotation);
-		
-		let renderOffset = Vector2DStatic.CreateZeroVector();
-		if (placedPieceType.collisionOffset)
-		{
-			renderOffset.x = placedPieceType.collisionOffset.x * 32;
-			renderOffset.y = placedPieceType.collisionOffset.y * 32;
-		}
-
-		//Determine opacity based on the currently viewed height layer.
-		let compositionPasses = [ "source-over" ];
-		let alphaPasses = [];
-		let deltaZ = 0;
-
-		if (layerViewType != "all")
-		{
-			let nearestZWithinCollision = placedPiece.translation.z;
-			if (placedPieceType.useCollisionForRender && placedPieceType.collisionOffset && placedPieceType.collisionExtents)
-			{
-				let minimumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z - placedPieceType.collisionExtents.z;
-				let maximumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z + placedPieceType.collisionExtents.z;
-
-				if (placedPieceType.collisionOffset.z > 0)
-					maximumZCollision -= 1;
-				else if (placedPieceType.collisionOffset.z < 0)
-					minimumZCollision += 1;
-
-				nearestZWithinCollision = Math.max(minimumZCollision, Math.min(viewZ, maximumZCollision));
-			}
-
-			deltaZ = Math.round(Math.abs(nearestZWithinCollision - viewZ));
-			if (layerViewType == "none" && deltaZ != 0)
-			{
-				ctx.setTransform(priorCtxTransform);
-				continue;
-			}
-		}
-
-		switch (deltaZ)
-		{
-			case 0:		alphaPasses.push(1);	break;
-			case 1:		alphaPasses.push(0.4);	break;
-			case 2:		alphaPasses.push(0.3);	break;
-			default:	alphaPasses.push(0.1);	break;
-		}
-
-		//Darken or lighten the image if it's below or above the current layer.
-		if (deltaZ != 0)
-		{
-			compositionPasses.push(placedPiece.translation.z - viewZ > 0 ? "screen" : "multiply");
-			alphaPasses.push((1 - alphaPasses[0]) * 0.15);
-		}
-
-		for (let j = 0; j < alphaPasses.length; ++j)
-		{
-			ctx.globalAlpha = alphaPasses[j];
-			ctx.globalCompositeOperation = compositionPasses[j];
-
-			ctx.drawImage(gUI.trackPiecesImage,
-				placedPieceType.imageOffset.x, placedPieceType.imageOffset.y,
-				placedPieceType.imageDimensions.x, placedPieceType.imageDimensions.y,
-				(placedPieceType.imageDimensions.x * -0.5) + renderOffset.x, (placedPieceType.imageDimensions.y * -0.5) + renderOffset.y,
-				placedPieceType.imageDimensions.x, placedPieceType.imageDimensions.y);
-		}
-		
+		DrawTrackPieceOutline(ctx, sortedPieces[i], viewZ, layerViewType);
 		ctx.setTransform(priorCtxTransform);
 	}
+	ResetCanvas(ctx);
 
-	ctx.globalAlpha = 1;
-	ctx.globalCompositeOperation = "source-over";
+	//Draw pieces.
+	for (let i = 0; i < sortedPieces.length; ++i)
+	{
+		DrawTrackPiece(ctx, sortedPieces[i], viewZ, layerViewType);
+		ctx.setTransform(priorCtxTransform);
+	}
+	ResetCanvas(ctx);
+}
+
+let DetermineDeltaZForDraw = function(placedPiece, viewZ, layerViewType)
+{
+	let placedPieceType = placedPiece.trackPieceType;
+
+	if (layerViewType != "all")
+	{
+		let nearestZWithinCollision = placedPiece.translation.z;
+		if (placedPieceType.useCollisionForRender && placedPieceType.collisionOffset && placedPieceType.collisionExtents)
+		{
+			let minimumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z - placedPieceType.collisionExtents.z;
+			let maximumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z + placedPieceType.collisionExtents.z;
+
+			if (placedPieceType.collisionOffset.z > 0)
+				maximumZCollision -= 1;
+			else if (placedPieceType.collisionOffset.z < 0)
+				minimumZCollision += 1;
+
+			nearestZWithinCollision = Math.max(minimumZCollision, Math.min(viewZ, maximumZCollision));
+		}
+
+		return Math.round(Math.abs(nearestZWithinCollision - viewZ));
+	}
+	
+	return 0;
+}
+
+let SetupCanvasForDraw = function(ctx, placedPiece, viewZ, layerViewType)
+{
+	let placedPieceType = placedPiece.trackPieceType;
+	
+	//Determine opacity based on the currently viewed height layer.
+	let deltaZ = DetermineDeltaZForDraw(placedPiece, viewZ, layerViewType);
+	if (layerViewType == "none" && deltaZ != 0)
+		return null;	//Don't draw anything - piece isn't visible.
+
+	let compositionPasses = [ "source-over" ];
+	let alphaPasses = [];
+	
+	switch (deltaZ)
+	{
+		case 0:		alphaPasses.push(1);	break;
+		case 1:		alphaPasses.push(0.4);	break;
+		case 2:		alphaPasses.push(0.3);	break;
+		default:	alphaPasses.push(0.1);	break;
+	}
+
+	//Darken or lighten the image if it's below or above the current layer.
+	if (deltaZ != 0)
+	{
+		compositionPasses.push(placedPiece.translation.z - viewZ > 0 ? "screen" : "multiply");
+		alphaPasses.push((1 - alphaPasses[0]) * 0.15);
+	}
+
+	//Move canvas into correct position.
+	ctx.translate(placedPiece.translation.x * 32, placedPiece.translation.y * 32);
+	ctx.rotate(placedPiece.rotation);
+	
+	let renderOffset = Vector2DStatic.CreateZeroVector();
+	if (placedPieceType.collisionOffset)
+	{
+		renderOffset.x = placedPieceType.collisionOffset.x * 32;
+		renderOffset.y = placedPieceType.collisionOffset.y * 32;
+	}
+
+	let setupObject =
+	{
+		compositionPasses: compositionPasses,
+		alphaPasses: alphaPasses,
+		renderOffset: renderOffset,
+	};
+	return setupObject;
+}
+
+let DrawTrackPieceOutline = function(ctx, placedPiece, viewZ, layerViewType)
+{
+	let placedPieceType = placedPiece.trackPieceType;
+	if (!placedPieceType.pieceMaterial.includes("Block") &&
+		!placedPieceType.pieceMaterial.includes("Shoulder") &&
+		!placedPieceType.renderAsBlock)
+	{
+		return;
+	}
+
+	let setupObject = SetupCanvasForDraw(ctx, placedPiece, viewZ, layerViewType);
+	if (setupObject === null)
+		return;
+	
+	for (let j = 0; j < setupObject.alphaPasses.length; ++j)
+	{
+		ctx.globalAlpha = setupObject.alphaPasses[j];
+		ctx.globalCompositeOperation = setupObject.compositionPasses[j];
+
+		ctx.strokeStyle = "black";
+		ctx.lineWidth = 2;
+
+		//Only draw side lines for pieces that change height, avoids black line breaking track flow
+		if (placedPieceType.exitOffset.z == 0)
+		{
+			ctx.strokeRect((placedPieceType.imageDimensions.x * -0.5) + setupObject.renderOffset.x - 1,
+				(placedPieceType.imageDimensions.y * -0.5) + setupObject.renderOffset.y - 1,
+				placedPieceType.imageDimensions.x + 2,
+				placedPieceType.imageDimensions.y + 2);
+		}
+		else
+		{
+			let leftSideX = (placedPieceType.imageDimensions.x * -0.5) + setupObject.renderOffset.x - 1;
+			let rightSideX = (placedPieceType.imageDimensions.x * 0.5) + setupObject.renderOffset.x + 1;
+			let topSideY = (placedPieceType.imageDimensions.y * -0.5) + setupObject.renderOffset.y - 1;
+			let bottomSideY = (placedPieceType.imageDimensions.y * 0.5) + setupObject.renderOffset.y + 1;
+
+			ctx.beginPath();
+			ctx.moveTo(leftSideX, topSideY);
+			ctx.lineTo(leftSideX, bottomSideY);
+			ctx.stroke();
+
+			ctx.beginPath();
+			ctx.moveTo(rightSideX, topSideY);
+			ctx.lineTo(rightSideX, bottomSideY);
+			ctx.stroke();
+		}
+	}
+}
+
+let DrawTrackPiece = function(ctx, placedPiece, viewZ, layerViewType)
+{
+	let placedPieceType = placedPiece.trackPieceType;
+
+	let setupObject = SetupCanvasForDraw(ctx, placedPiece, viewZ, layerViewType);
+	if (setupObject === null)
+		return;
+
+	for (let j = 0; j < setupObject.alphaPasses.length; ++j)
+	{
+		ctx.globalAlpha = setupObject.alphaPasses[j];
+		ctx.globalCompositeOperation = setupObject.compositionPasses[j];
+
+		ctx.drawImage(gUI.trackPiecesImage,
+			placedPieceType.imageOffset.x, placedPieceType.imageOffset.y,
+			placedPieceType.imageDimensions.x, placedPieceType.imageDimensions.y,
+			(placedPieceType.imageDimensions.x * -0.5) + setupObject.renderOffset.x, (placedPieceType.imageDimensions.y * -0.5) + setupObject.renderOffset.y,
+			placedPieceType.imageDimensions.x, placedPieceType.imageDimensions.y);
+	}
 }
 
 let UpdateCanvasTransform = function(canvas, ctx)
