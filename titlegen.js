@@ -183,14 +183,14 @@ let gNouns =
 		"hand", "pole", "object", "block", "arrow", "lamppost", "spotlight",
 		"body", "sandwich", "food", "bass", "sheep", "beer", "castle", "null",
 		"bottle cap", "meme", "trackmania", "video game", "lol", "waste",
-		"generation", "plastic", "toy", "mass", "pirate", "experiment", "bit",
+		"generation", "cardboard", "toy", "mass", "pirate", "experiment", "bit",
 		"mistake", "accident", "chicken", "beef", "noodles", "fish", "curry",
 		"tikka masala", "ball", "stunt", "demo", "sweet", "sugar", "candy",
 		"brand", "teeth", "tank", "vehicle", "feet", "toes", "member", "leg",
 		"intestine", "gut", "stomach", "bone", "spine", "sphincter", "organ",
 		"tweet", "internet", "website", "product", "oil", "chocolate", "gum",
 		"foot", "heel", "elbow", "finger", "thumb", "bean", "pie", "horn",
-		"goat", "sandwich", "cereal", "waffle", "bread", "toast", "panini",
+		"goat", "yoghurt", "cereal", "waffle", "bread", "toast", "panini",
 		"toastie", "cheese", "brie", "cheddar", "edam", "mozarella", "halloumi",
 		"pizza", "korma", "vindaloo", "duck", "goose", "chow mein", "spaghetti",
 		"pasta", "lasagne", "apple", "banana", "cherry", "pear", "lemon",
@@ -214,6 +214,7 @@ let gNouns =
 		"aadvark", "toucan", "chipmunk", "deer", "weasel", "lynx", "porcupine",
 		"seahorse", "starfish", "elk", "turkey", "pig", "meerkat", "narwhal",
 		"flamingo", "skunk", "hippo", "emu", "zebra", "orangutan", "chameleon",
+		"factory", "cola", "vodka", "cider", "wine", "champagne", "rum", "gin",
 	],
 	emptyList:
 	[
@@ -244,7 +245,8 @@ let gNouns =
 	waterList:
 	[
 		"water", "river", "lake", "ocean", "sea", "stream", "estuary", "pond",
-		"watercourse", "basin", "puddle", "pool", "reservoir", "drink", "liquid"
+		"watercourse", "basin", "puddle", "pool", "reservoir", "drink",
+		"liquid", "splunge", "sandbank", "shoal", "reef", "atoll", "quay",
 	],
 	grassList:
 	[
