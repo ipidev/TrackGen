@@ -16,7 +16,7 @@ let gAdjectives =
 		"mother's", "father's", "daddy's", "grandma's", "baby's", "king's",
 		"queen's", "royal", "buggy", "janky", "progressive", "regressive",
 		"radical", "incredible", "amazing", "brilliant", "official", "stinky",
-		"well-produced", "factory-farmed", "organic", "processed", "natural",
+		"well-produced", "factory-farmed", "organic", "processed", "refined",
 		"voluptuous", "supple", "top-heavy", "down-trodden", "beaten",
 		"roasted", "poached", "boiled", "raw", "unique", "mass-produced",
 		"hand-carved", "random", "curious", "industrious", "lovely", "bright",
@@ -34,6 +34,9 @@ let gAdjectives =
 		"carnivorous", "meat-free", "dairy-free", "gluten-free", "sugar-free",
 		"scummy", "horny", "cheeky", "naughty", "inviting", "mature", "spicy",
 		"risqué", "sweet", "sour", "salty", "bitter", "unwashed", "steamy",
+		"suspicious", "bashful", "shy", "abrasive", "brash", "dying", "killed",
+		"murdered", "buried", "stiff", "strange", "odd", "peculiar", "uncanny",
+		"quaint", "outlandish", "boring", "dull", "humdrum", "dreary", "fun",
 	],
 	emptyList:
 	[
@@ -131,6 +134,36 @@ let gAdjectives =
 		"wet", "dank", "rainy", "drenched", "sodden", "saturated", "soaking",
 		"moist", "dripping", "watery", "aqueous", "flooded", "inundated",
 	],
+	grassAdjectives:
+	[
+		"grassy", "carpeted", "lush", "verdant", "reedy", "sowed", "turfy",
+		"gardened", "outdoor", "overgrown", "mossy", "dense", "natural",
+	],
+	rubberAdjectives:
+	[
+		"rubber", "elastic", "bouncy", "flexible", "stretchy", "springy",
+		"supple", "plastic", "formable", "chemical", "synthetic", "eyecatching",
+	],
+	leftAdjectives:
+	[
+		"left", "left-handed", "left-leaning", "anticlockwise", "port",
+		"liberal", "leftist", "sinistral",
+	],
+	rightAdjectives:
+	[
+		"right", "right-handed", "right-leaning", "clockwise", "starboard",
+		"conservative", "reactionary", "dextral",
+	],
+	hillyAdjectives:
+	[
+		"hilly", "elevated", "mountainous", "rolling", "steep", "undulating",
+		"high", "sloped", "inclined", "choppy", "jarring", "wavy", "ripply",
+	],
+	flatAdjectives:
+	[
+		"flat", "horizontal", "low", "even", "flush", "planar", "deflated",
+		"prostrate", "level", "parallel", "smooth", "aligned", "uniform",
+	],
 };
 
 let gNouns = 
@@ -169,6 +202,18 @@ let gNouns =
 		"crack", "hole", "glue", "bear", "twink", "scene", "goth", "nerd",
 		"geek", "normie", "acid", "vinegar", "chemical", "rock", "gabber",
 		"speedcore", "house", "trance", "eurobeat", "metal", "jazz", "funk",
+		"beaver", "racoon", "squirrel", "gopher", "hedgehog", "owl", "raven",
+		"crow", "pigeon", "shrimp", "prawn", "crayfish", "lobster", "octopus",
+		"squid", "jellyfish", "tuna", "caviar", "eel", "alligator", "anchovy",
+		"avocado", "bagel", "cookie", "cow", "cucumber", "donkey", "fox",
+		"gammon", "guinea pig", "hamster", "koala", "lamb", "llama", "lunch",
+		"maize", "milk", "moose", "mushroom", "mustard", "opossum", "pangolin",
+		"peacock", "pheasant", "popcorn", "quesadilla", "reindeer", "salad",
+		"sardine", "shortcake", "spider", "steak", "sundae", "tofu", "turtle",
+		"wheat", "worm", "breakfast", "dinner", "tea", "coffee", "snack",
+		"aadvark", "toucan", "chipmunk", "deer", "weasel", "lynx", "porcupine",
+		"seahorse", "starfish", "elk", "turkey", "pig", "meerkat", "narwhal",
+		"flamingo", "skunk", "hippo", "emu", "zebra", "orangutan", "chameleon",
 	],
 	emptyList:
 	[
@@ -201,12 +246,21 @@ let gNouns =
 		"water", "river", "lake", "ocean", "sea", "stream", "estuary", "pond",
 		"watercourse", "basin", "puddle", "pool", "reservoir", "drink", "liquid"
 	],
+	grassList:
+	[
+		"grass", "lawn", "garden", "backyard", "park", "yard", "plot", "field",
+		"farm", "green", "meadow", "pasture", "range", "grove", "vineyard",
+	],
+	rubberList:
+	[
+		"rubber", "plastic", "toy brick", "building block", "slot car", "model",
+	],
 	fastNouns:
 	[
 		"speed", "speedrun", "rush", "blitz", "flow", "scramble", "energy",
 		"express", "priority", "run", "jog", "momentum", "velocity", "tempo", 
 		"quickness", "headway", "cheetah", "lion", "rabbit", "bunny", "falcon",
-		"hawk", "eagle", "kangaroo",
+		"hawk", "eagle", "kangaroo", "blue hedgehog",
 	],
 	slowNouns:
 	[
@@ -236,6 +290,7 @@ let gNouns =
 		"speck", "crumb", "dot", "fleck", "particle", "iota", "baby", "child",
 		"youngster", "toy", "ant", "mouse", "hamster", "fly", "waterbear",
 		"bacteria", "microbe", "chode", "stub", "dwarf", "pixie", "sprite",
+		"insect", "mite", "bacterium", "beetle", "particle", "plankton",
 	],
 };
 
@@ -283,6 +338,9 @@ let DetermineTrackCharacteristics = function()
 	let turboCount = 0;
 	let checkpointCount = 0;
 	let straightCount = 0;
+	let leftTurnCount = 0;
+	let rightTurnCount = 0;
+	let heightChangeCount = 0;
 	let trackMaterialCounts = {};
 
 	gPlacedPieces.forEach(placedPiece =>
@@ -301,6 +359,20 @@ let DetermineTrackCharacteristics = function()
 			++straightCount;
 		}
 
+		if (placedPieceType.exitAngle > 0)
+		{
+			++rightTurnCount;
+		}
+		else if (placedPieceType.exitAngle < 0)
+		{
+			++leftTurnCount;
+		}
+
+		if (placedPieceType.exitOffset.z != 0)
+		{
+			++heightChangeCount;
+		}
+
 		if (trackMaterialCounts[placedPieceType.pieceMaterial] !== undefined)
 		{
 			++trackMaterialCounts[placedPieceType.pieceMaterial];
@@ -314,6 +386,9 @@ let DetermineTrackCharacteristics = function()
 	let turboRatio = turboCount / gPlacedPieces.length;
 	let checkpointRatio = checkpointCount / gPlacedPieces.length;
 	let straightRatio = straightCount / gPlacedPieces.length;
+	let leftTurnRatio = leftTurnCount / gPlacedPieces.length;
+	let rightTurnRatio = rightTurnCount / gPlacedPieces.length;
+	let heightChangeRatio = heightChangeCount / gPlacedPieces.length;
 
 	if (gPlacedPieces.length > 30 && (checkpointRatio < 0.1 || straightRatio < 0.5))
 	{
@@ -333,6 +408,24 @@ let DetermineTrackCharacteristics = function()
 		characteristics.push("slow");
 	}
 
+	if (rightTurnRatio > leftTurnRatio * 3 && leftTurnRatio < 0.1)
+	{
+		characteristics.push("right");
+	}
+	else if (leftTurnRatio > rightTurnRatio * 3 && rightTurnRatio < 0.1)
+	{
+		characteristics.push("left");
+	}
+
+	if (heightChangeRatio > 0.2 && gPlacedPieces.length > 20)
+	{
+		characteristics.push("hilly");
+	}
+	else if (heightChangeRatio < 0.05)
+	{
+		characteristics.push("flat");
+	}
+
 	//Determine which material is used the most.
 	let highestTrackMaterial = null;
 	let highestTrackMaterialCount = 0;
@@ -348,7 +441,7 @@ let DetermineTrackCharacteristics = function()
 
 	if (highestTrackMaterialCount > gPlacedPieces.length * 0.5)
 	{
-		let materialCharacteristics = [ "road", "dirt", "ice", "sausage", "water" ];
+		let materialCharacteristics = [ "road", "dirt", "ice", "sausage", "water", "grass", "rubber" ];
 		let materialCharacteristic = materialCharacteristics.find(materialKey =>
 		{
 			return highestTrackMaterial.startsWith(materialKey);
