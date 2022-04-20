@@ -150,6 +150,8 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 	gRandom = mulberry32(seed);
 	gTrackDimensions = dimensions;
 
+	let longestDeadEndTrack = [];
+
 	//Set starting position and create the start line.
 	let GetRandomStartCoordinate = function(dimension) { return Math.round((gRandom() - 0.5) * Math.floor(dimension * 0.5)); };
 	let currentTranslation = new Vector3D(GetRandomStartCoordinate(dimensions.x),
@@ -273,6 +275,11 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			}
 
 			pieceIndex = gPlacedPieces.length - 1;
+
+			if (gPlacedPieces.length > longestDeadEndTrack.length)
+			{
+				longestDeadEndTrack = [].concat(gPlacedPieces);
+			}
 		}
 
 		//Centre the track if we get too close to the boundary to give us more space.
@@ -282,6 +289,18 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			let recentredOffset = TryRecentreTrack();
 			currentTranslation.Subtract(recentredOffset);
 		}
+	}
+
+	//Use the longest track we ever encountered.
+	if (longestDeadEndTrack.length > gPlacedPieces.length)
+	{
+		gPlacedPieces = longestDeadEndTrack;
+
+		let lastPiece = longestDeadEndTrack[longestDeadEndTrack.length - 1];
+
+		let offsetPositions = ApplyPieceOffset(lastPiece.translation, lastPiece.rotation, lastPiece.trackPieceType);
+		currentTranslation = offsetPositions.translation;
+		currentRotation = offsetPositions.rotation;
 	}
 	
 	//Place the finish line.
