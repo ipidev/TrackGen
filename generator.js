@@ -179,8 +179,13 @@ let CanBeginCrossroadChain = function(translation, rotation, trackPieceType)
 			if (!collidingPieceType.supportsCrossroad)
 				return false;
 			
-			if (trackPieceType.pieceMaterial != collidingPieceType.pieceMaterial &&
-				trackPieceType.pieceMaterial != collidingPieceType.crossroadMaterial)
+			//Check the materials match.
+			let pieceMaterialToCheck = trackPieceType.pieceMaterial;
+			if (trackPieceType.transitionTo && trackPieceType.transitionTo.material)
+				pieceMaterialToCheck = trackPieceType.transitionTo.material;
+
+			if (pieceMaterialToCheck != collidingPieceType.pieceMaterial &&
+				pieceMaterialToCheck != collidingPieceType.crossroadMaterial)
 			{
 				return false;
 			}
