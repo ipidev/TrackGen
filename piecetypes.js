@@ -144,6 +144,8 @@ let gGenericPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.666,
 		transitionTo: { tag: "!notAfterTurbo" },
+		supportsCrossroad: true,
+		crossroadPieceType: "crossroad",
 	},
 	superTurbo:
 	{
@@ -155,6 +157,8 @@ let gGenericPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.5,
 		transitionTo: { tag: "!notAfterTurbo" },
+		supportsCrossroad: true,
+		crossroadPieceType: "crossroad",
 	},
 	boostUp:
 	{
@@ -166,6 +170,8 @@ let gGenericPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.666,
 		transitionTo: { tag: "!notAfterBoost" },
+		supportsCrossroad: true,
+		crossroadPieceType: "crossroad",
 	},
 	superBoostUp:
 	{
@@ -177,6 +183,8 @@ let gGenericPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.333,
 		transitionTo: { tag: "!notAfterBoost" },
+		supportsCrossroad: true,
+		crossroadPieceType: "crossroad",
 	},
 	boostDown:
 	{
@@ -188,6 +196,8 @@ let gGenericPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.666,
 		transitionTo: { tag: "!notAfterBoost" },
+		supportsCrossroad: true,
+		crossroadPieceType: "crossroad",
 	},
 	superBoostDown:
 	{
@@ -199,6 +209,8 @@ let gGenericPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.5,
 		transitionTo: { tag: "!notAfterBoost" },
+		supportsCrossroad: true,
+		crossroadPieceType: "crossroad",
 	},
 	rampUpLevelGentle:
 	{
@@ -711,6 +723,8 @@ let gBlockPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.666,
 		transitionTo: { tag: "!notAfterTurbo" },
+		supportsCrossroad: true,
+		crossroadPieceType: "straight",
 	},
 	superTurbo:
 	{
@@ -722,6 +736,8 @@ let gBlockPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.5,
 		transitionTo: { tag: "!notAfterTurbo" },
+		supportsCrossroad: true,
+		crossroadPieceType: "straight",
 	},
 	boostUp:
 	{
@@ -733,6 +749,8 @@ let gBlockPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.666,
 		transitionTo: { tag: "!notAfterBoost" },
+		supportsCrossroad: true,
+		crossroadPieceType: "straight",
 	},
 	superBoostUp:
 	{
@@ -744,6 +762,8 @@ let gBlockPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.333,
 		transitionTo: { tag: "!notAfterBoost" },
+		supportsCrossroad: true,
+		crossroadPieceType: "straight",
 	},
 	boostDown:
 	{
@@ -755,6 +775,8 @@ let gBlockPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.666,
 		transitionTo: { tag: "!notAfterBoost" },
+		supportsCrossroad: true,
+		crossroadPieceType: "straight",
 	},
 	superBoostDown:
 	{
@@ -766,6 +788,8 @@ let gBlockPieceTemplates =
 		absoluteImageOffset: true,
 		probability: 0.5,
 		transitionTo: { tag: "!notAfterBoost" },
+		supportsCrossroad: true,
+		crossroadPieceType: "straight",
 	},
 };
 
