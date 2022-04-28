@@ -69,14 +69,16 @@ let ApplyPieceOffset = function(translation, rotation, trackPieceType)
 	return { translation: newTranslation, rotation: rotation };
 }
 
-let GetTrackPieceAABB = function(translation, rotation, trackPieceType)
+let GetTrackPieceAABB = function(translation, rotation, trackPieceType, scale)
 {
+	if (scale === undefined) { scale = 1; }
+
 	if (!trackPieceType.collisionExtents || !trackPieceType.collisionOffset)
 	{
 		let returnValue =
 		{
-			min: new Vector3D(translation.x - 0.5, translation.y - 0.5, translation.z - 0.5),
-			max: new Vector3D(translation.x + 0.5, translation.y + 0.5, translation.z + 0.5),
+			min: new Vector3D(translation.x - (0.5 * scale), translation.y - (0.5 * scale), translation.z - (0.5 * scale)),
+			max: new Vector3D(translation.x + (0.5 * scale), translation.y + (0.5 * scale), translation.z + (0.5 * scale)),
 		};
 		return returnValue;
 	}
@@ -89,14 +91,14 @@ let GetTrackPieceAABB = function(translation, rotation, trackPieceType)
 	rotatedCollisionOffset.z += translation.z;
 	
 	let extent1 = Vector3DStatic.CreateCopy(rotatedCollisionOffset);
-	extent1.x += trackPieceType.collisionExtents.x;
-	extent1.y += trackPieceType.collisionExtents.y;
-	extent1.z += trackPieceType.collisionExtents.z;
+	extent1.x += trackPieceType.collisionExtents.x * scale;
+	extent1.y += trackPieceType.collisionExtents.y * scale;
+	extent1.z += trackPieceType.collisionExtents.z * scale;
 	
 	let extent2 = Vector3DStatic.CreateCopy(rotatedCollisionOffset);
-	extent2.x -= trackPieceType.collisionExtents.x;
-	extent2.y -= trackPieceType.collisionExtents.y;
-	extent2.z -= trackPieceType.collisionExtents.z;
+	extent2.x -= trackPieceType.collisionExtents.x * scale;
+	extent2.y -= trackPieceType.collisionExtents.y * scale;
+	extent2.z -= trackPieceType.collisionExtents.z * scale;
 	
 	let returnValue =
 	{
@@ -106,25 +108,31 @@ let GetTrackPieceAABB = function(translation, rotation, trackPieceType)
 	return returnValue;
 }
 
-let DoesPieceCollide = function(translation, rotation, trackPieceType)
+let DoesAABBIntersect = function(a, b)
 {
-	let DoesAABBIntersect = function(a, b)
-	{
-		return a.min.x < b.max.x && a.max.x > b.min.x &&
-				a.min.y < b.max.y && a.max.y > b.min.y &&
-				a.min.z < b.max.z && a.max.z > b.min.z;
-	}
-	
-	let currentPieceAABB = GetTrackPieceAABB(translation, rotation, trackPieceType);
+	return a.min.x < b.max.x && a.max.x > b.min.x &&
+			a.min.y < b.max.y && a.max.y > b.min.y &&
+			a.min.z < b.max.z && a.max.z > b.min.z;
+}
+
+let FindCollidingPiece = function(translation, rotation, trackPieceType)
+{
+	//Fudge AABB to be smaller - avoids adjacent collisions for 1x1 pieces.
+	let currentPieceAABB = GetTrackPieceAABB(translation, rotation, trackPieceType, 0.95);
 	
 	for (let i = 0; i < gPlacedPieces.length; ++i)
 	{
 		let placedPieceAABB = GetTrackPieceAABB(gPlacedPieces[i].translation, gPlacedPieces[i].rotation, gPlacedPieces[i].trackPieceType);
 		if (DoesAABBIntersect(placedPieceAABB, currentPieceAABB))
-			return true;
+			return gPlacedPieces[i];
 	}
 	
-	return false;
+	return null;
+}
+
+let DoesPieceCollide = function(translation, rotation, trackPieceType)
+{
+	return FindCollidingPiece(translation, rotation, trackPieceType) !== null;
 }
 
 let IsOutOfBounds = function(translation)
@@ -141,7 +149,78 @@ let CanPlacePiece = function(translation, rotation, trackPieceType)
 {
 	let offsetPositions = ApplyPieceOffset(translation, rotation, trackPieceType);
 	return !DoesPieceCollide(translation, rotation, trackPieceType) && !IsOutOfBounds(translation) &&
-		!DoesPieceCollide(offsetPositions.translation, offsetPositions.rotation, gPieceTypes.roadFlat.straight) && !IsOutOfBounds(offsetPositions.translation);
+		(!DoesPieceCollide(offsetPositions.translation, offsetPositions.rotation, gPieceTypes.genericPiece) ||
+		CanBeginCrossroadChain(offsetPositions.translation, offsetPositions.rotation, trackPieceType)) &&
+		!IsOutOfBounds(offsetPositions.translation);
+}
+
+let CanBeginCrossroadChain = function(translation, rotation, trackPieceType)
+{
+	let currentTranslation = Vector3DStatic.CreateCopy(translation);
+	let displacement = Vector3DStatic.CreateCopy(gPieceTypes.genericPiece.exitOffset);
+	displacement.RotateYaw(rotation);
+
+	for (let i = 0; i < 1000; ++i)
+	{
+		//Stepped out of bounds.
+		if (IsOutOfBounds(currentTranslation))
+			return false;
+
+		let collidingPiece = FindCollidingPiece(currentTranslation, rotation, gPieceTypes.genericPiece);
+		if (collidingPiece === null)
+		{
+			//End of crossroad chain has been found.
+			return true;
+		}
+		else
+		{
+			let collidingPieceType = collidingPiece.trackPieceType;
+
+			if (!collidingPieceType.supportsCrossroad)
+				return false;
+			
+			if (trackPieceType.pieceMaterial != collidingPieceType.pieceMaterial &&
+				trackPieceType.pieceMaterial != collidingPieceType.crossroadMaterial)
+			{
+				return false;
+			}
+
+			//Current piece supports crossroads, step forwards and check again.
+			currentTranslation.x += displacement.x;
+			currentTranslation.y += displacement.y;
+		}
+	}
+
+	//Unreachable?
+	return false;
+}
+
+let ApplyCrossroadChain = function(translation, rotation)
+{
+	let displacement = Vector3DStatic.CreateCopy(gPieceTypes.genericPiece.exitOffset);
+	displacement.RotateYaw(rotation);
+
+	for (let i = 0; i < 1000; ++i)
+	{
+		let collidingPiece = FindCollidingPiece(translation, rotation, gPieceTypes.genericPiece);
+		if (collidingPiece === null)
+			return i;
+		
+		let collidingPieceType = collidingPiece.trackPieceType;
+
+		//Sanity check - should only be called when crossroad is possible.
+		if (!collidingPieceType.supportsCrossroad)
+			return i;
+		
+		//Transform piece if needed.
+		if (collidingPieceType.crossroadPieceType !== undefined)
+			collidingPiece.trackPieceType = (gPieceTypes[collidingPieceType.pieceMaterial])[collidingPieceType.crossroadPieceType];
+
+		translation.x += displacement.x;
+		translation.y += displacement.y;
+	}
+
+	return i;
 }
 
 let GenerateTrack = function(seed, length, dimensions, checkpointCount, materialWhitelist)
@@ -193,6 +272,16 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 		let pieceTagWhitelist = pieceTagAllowedFilter.GetFlatList();
 		let pieceTagBlacklist = pieceTagUnallowedFilter.GetFlatList();
 		
+		//Apply crossroads if we're overlapping a piece that supports them.
+		{
+			let collidingPiece = FindCollidingPiece(currentTranslation, currentRotation, gPieceTypes.genericPiece);
+			if (collidingPiece && collidingPiece.trackPieceType.supportsCrossroad === true)
+			{
+				let crossroadLength = ApplyCrossroadChain(currentTranslation, currentRotation);
+				pieceIndex += crossroadLength;
+			}
+		}
+
 		//See if we need to place a checkpoint.
 		if (nextCheckpointIndex >= 0 && pieceIndex >= Math.floor(nextCheckpointIndex))
 		{
@@ -260,7 +349,7 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 		{
 			//Reduce index and count dead-ends hit
 			++deadEndsHit;
-			
+
 			let timesToBackUp = 1;//Math.max(1, Math.floor(Math.min(deadEndsHit * 0.5, gPlacedPieces.length * 0.25)));
 			for (let j = 0; j < timesToBackUp && gPlacedPieces.length > 1; ++j)
 			{
@@ -297,12 +386,22 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 		gPlacedPieces = longestDeadEndTrack;
 
 		let lastPiece = longestDeadEndTrack[longestDeadEndTrack.length - 1];
+		let lastPieceType = lastPiece.trackPieceType;
+
+		if (lastPieceType.transitionTo && lastPieceType.transitionTo.material)
+		{
+			pieceMaterial = lastPieceType.transitionTo.material;
+		}
+		else
+		{
+			pieceMaterial = lastPieceType.pieceMaterial;
+		}
 
 		let offsetPositions = ApplyPieceOffset(lastPiece.translation, lastPiece.rotation, lastPiece.trackPieceType);
 		currentTranslation = offsetPositions.translation;
 		currentRotation = offsetPositions.rotation;
 	}
-	
+
 	//Place the finish line.
 	for (let i = 0; i < 3; ++i)
 	{

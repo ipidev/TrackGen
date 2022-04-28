@@ -13,6 +13,8 @@ let gGenericPieceTemplates =
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
+		supportsCrossroad: true,
+		crossroadPieceType: "crossroad",
 	},
 	cornerRight:
 	{
@@ -263,6 +265,16 @@ let gGenericPieceTemplates =
 		collisionOffset: new Vector3D(0, -0.5, -1),
 		collisionExtents: new Vector3D(0.5, 1, 1),
 		useCollisionForRender: true,
+	},
+	crossroad:
+	{
+		tags: [ "crossroad" ],
+		imageOffset: new Vector2D(0, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		probability: 0,	//Don't allow normal placement
+		supportsCrossroad: true,
 	},
 };
 
@@ -566,6 +578,7 @@ let gBlockPieceTemplates =
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
+		supportsCrossroad: true,
 	},
 	cornerRight:
 	{
@@ -592,6 +605,7 @@ let gBlockPieceTemplates =
 		exitAngle: 0,
 		collisionOffset: new Vector3D(0, 0, 1),
 		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		supportsCrossroad: true,
 	},
 	checkpoint:
 	{
@@ -602,6 +616,7 @@ let gBlockPieceTemplates =
 		exitAngle: 0,
 		collisionOffset: new Vector3D(0, 0, 1),
 		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		supportsCrossroad: true,
 	},
 	finishLine:
 	{
@@ -612,6 +627,7 @@ let gBlockPieceTemplates =
 		exitAngle: 0,
 		collisionOffset: new Vector3D(0, 0, 1),
 		collisionExtents: new Vector3D(0.5, 0.5, 1),
+		supportsCrossroad: true,
 	},
 	rampUpLevelGentle:
 	{
@@ -665,6 +681,7 @@ let gBlockPieceTemplates =
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
 		probability: 0.25,
+		supportsCrossroad: true,
 	},
 	holeCornerRight:
 	{
@@ -761,6 +778,8 @@ let gShoulderPieceTemplates =
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
+		supportsCrossroad: true,
+		crossroadPieceType: "crossroad",
 	},
 	cornerRight:
 	{
@@ -850,6 +869,16 @@ let gShoulderPieceTemplates =
 		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
 		useCollisionForRender: true,
 	},
+	crossroad:
+	{
+		tags: [ "crossroad" ],
+		imageOffset: new Vector2D(800, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		probability: 0,	//Don't allow normal placement
+		supportsCrossroad: true,
+	},
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -907,6 +936,8 @@ let gPieceTypes =
 			exitAngle: 0,
 			transitionTo: { material: "roadBlock" },
 			renderAsBlock: true,
+			supportsCrossroad: true,
+			crossroadMaterial: "roadBlock",
 		},
 		toDirtBlock:
 		{
@@ -917,6 +948,8 @@ let gPieceTypes =
 			exitAngle: 0,
 			transitionTo: { material: "dirtBlock" },
 			renderAsBlock: true,
+			supportsCrossroad: true,
+			crossroadMaterial: "dirtBlock",
 		},
 		toIceBlock:
 		{
@@ -927,6 +960,8 @@ let gPieceTypes =
 			exitAngle: 0,
 			transitionTo: { material: "iceBlock" },
 			renderAsBlock: true,
+			supportsCrossroad: true,
+			crossroadMaterial: "iceBlock",
 		},
 		toGrassBlock:
 		{
@@ -937,6 +972,8 @@ let gPieceTypes =
 			exitAngle: 0,
 			transitionTo: { material: "grassBlock" },
 			renderAsBlock: true,
+			supportsCrossroad: true,
+			crossroadMaterial: "grassBlock",
 		},
 		toRubberBlock:
 		{
@@ -947,6 +984,8 @@ let gPieceTypes =
 			exitAngle: 0,
 			transitionTo: { material: "rubberBlock" },
 			renderAsBlock: true,
+			supportsCrossroad: true,
+			crossroadMaterial: "rubberBlock",
 		},
 		jump:
 		{
@@ -1299,6 +1338,7 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "roadFlat" },
+			supportsCrossroad: true,
 		},
 		toRoadShoulder:
 		{
@@ -1332,6 +1372,7 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "roadFlat" },
+			supportsCrossroad: true,
 		},
 		toDirtShoulder:
 		{
@@ -1365,6 +1406,7 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "roadFlat" },
+			supportsCrossroad: true,
 		},
 		toIceShoulder:
 		{
@@ -1398,6 +1440,7 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "roadFlat" },
+			supportsCrossroad: true,
 		},
 		toGrassShoulder:
 		{
@@ -1431,6 +1474,7 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "roadFlat" },
+			supportsCrossroad: true,
 		},
 	},
 };
@@ -1590,6 +1634,9 @@ let InitialisePieceTypes = function()
 	//Shorten deep water sections and make them appear on more layers.
 	ModifyPieceTypeProperty("waterDeep", "probability", 0.1, [ "transition "]);
 	ModifyPieceTypeProperty("waterDeep", "useCollisionForRender", true);
+
+	//Useful for collision detection.
+	gPieceTypes.genericPiece = gPieceTypes.roadFlat.straight;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1669,7 +1716,7 @@ let FindAllSuitablePieceTypes = function(translation, rotation, pieceMaterial, t
 		if (!alwaysUse)
 		{
 			//Exclude the piece with a random chance.
-			if (pieceType.probability !== undefined && gRandom() > pieceType.probability)
+			if (pieceType.probability !== undefined && gRandom() >= pieceType.probability)
 				return;
 			
 			//Check if the piece fits.
