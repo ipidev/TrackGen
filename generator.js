@@ -331,13 +331,23 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 				{
 					if (nextPieceType.transitionTo.material && !materialBlacklist.includes(nextPieceType.transitionTo.material))
 					{
-						if (nextPieceType.transitionTo.material == "any")
+						switch (nextPieceType.transitionTo.material)
 						{
-							pieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
-						}
-						else
-						{
-							pieceMaterial = nextPieceType.transitionTo.material;
+							case "#any":
+								pieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
+								break;
+							case "#waterShallowFlatExit":
+								pieceMaterial = SelectPieceMaterialFromSubstrings([ "roadFlat", "Block", "Shoulder" ], materialBlacklist);
+								break;
+							case "#waterShallowBlockExit":
+								pieceMaterial = SelectPieceMaterialFromSubstrings([ "waterShallowFlat", "Block", "Shoulder" ], materialBlacklist);
+								break;
+							case "#waterShallowEntry":
+								pieceMaterial = SelectPieceMaterialFromSubstrings([ "waterShallow" ], materialBlacklist);
+								break;
+							default:
+								pieceMaterial = nextPieceType.transitionTo.material;
+								break;
 						}
 					}
 					
@@ -397,7 +407,8 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 		let lastPiece = longestDeadEndTrack[longestDeadEndTrack.length - 1];
 		let lastPieceType = lastPiece.trackPieceType;
 
-		if (lastPieceType.transitionTo && lastPieceType.transitionTo.material)
+		if (lastPieceType.transitionTo && lastPieceType.transitionTo.material &&
+			!lastPieceType.transitionTo.material.startsWith("#"))
 		{
 			pieceMaterial = lastPieceType.transitionTo.material;
 		}
@@ -502,9 +513,6 @@ let PlaceStartLine = function(currentTranslation, currentRotation, materialBlack
 		let transitionPieceType = SelectSuitablePieceType(currentTranslation, currentRotation, transitionFromPieceMaterial, [ "transition" ], materialBlacklist, [], true);
 		if (!transitionPieceType)
 			return result;	//Abort - failed to find valid transition.
-		
-		if (!transitionPieceType.transitionTo || transitionPieceType.transitionTo.material != "waterDeepFlat")
-			console.log("what");
 
 		PlacePiece(currentTranslation, currentRotation, transitionPieceType);
 	

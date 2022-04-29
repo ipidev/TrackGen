@@ -687,7 +687,7 @@ let gBlockPieceTemplates =
 	},
 	holeStraight:
 	{
-		tags: [ "notAfterTurbo", "notAfterBoost" ],
+		tags: [ "hole", "notAfterTurbo", "notAfterBoost" ],
 		imageOffset: new Vector2D(640, 544),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
@@ -697,7 +697,7 @@ let gBlockPieceTemplates =
 	},
 	holeCornerRight:
 	{
-		tags: [ "notAfterTurbo", "notAfterBoost" ],
+		tags: [ "hole", "notAfterTurbo", "notAfterBoost" ],
 		imageOffset: new Vector2D(640, 544),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(1, 0, 0),
@@ -706,7 +706,7 @@ let gBlockPieceTemplates =
 	},
 	holeCornerLeft:
 	{
-		tags: [ "notAfterTurbo", "notAfterBoost" ],
+		tags: [ "hole", "notAfterTurbo", "notAfterBoost" ],
 		imageOffset: new Vector2D(640, 544),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(-1, 0, 0),
@@ -1018,7 +1018,7 @@ let gPieceTypes =
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -2, 0),
 			exitAngle: 0,
-			transitionTo: { material: "any", tag: "straight" },
+			transitionTo: { material: "#any", tag: "straight" },
 		},
 	},
 	dirtFlat:
@@ -1652,10 +1652,17 @@ let InitialisePieceTypes = function()
 	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "grassBlock", new Vector2D(0, 192));
 	CreatePieceTypesFromTemplate(gShoulderPieceTemplates, "grassShoulder", new Vector2D(0, 192));
 	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "rubberBlock", new Vector2D(64, -224));
+	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "waterShallowBlock", new Vector2D(256, -224), [ "ramp", "hole" ]);
 
 	//Special-case transitions.
 	ModifyPieceTypeProperty("roadFlat", "transitionTo", { material: "waterShallowFlat", probability: 0.025 }, [ "ramp" ]);
-	ModifyPieceTypeProperty("waterShallowFlat", "transitionTo", { material: "roadFlat", probability: 0.25 }, [ "ramp" ]);
+	ModifyPieceTypeProperty("roadBlock", "transitionTo", { material: "#waterShallowEntry", probability: 0.025 }, [ "ramp" ]);
+	ModifyPieceTypeProperty("dirtBlock", "transitionTo", { material: "#waterShallowEntry", probability: 0.025 }, [ "ramp" ]);
+	ModifyPieceTypeProperty("iceBlock", "transitionTo", { material: "#waterShallowEntry", probability: 0.025 }, [ "ramp" ]);
+	ModifyPieceTypeProperty("grassBlock", "transitionTo", { material: "#waterShallowEntry", probability: 0.025 }, [ "ramp" ]);
+	ModifyPieceTypeProperty("rubberBlock", "transitionTo", { material: "#waterShallowEntry", probability: 0.025 }, [ "ramp" ]);
+	ModifyPieceTypeProperty("waterShallowFlat", "transitionTo", { material: "#waterShallowFlatExit", probability: 0.25 });
+	ModifyPieceTypeProperty("waterShallowBlock", "transitionTo", { material: "#waterShallowBlockExit", probability: 0.25 });
 
 	//Shorten deep water sections and make them appear on more layers.
 	ModifyPieceTypeProperty("waterDeepFlat", "probability", 0.1, [ "transition "]);
@@ -1692,6 +1699,24 @@ let SelectPieceMaterialFromTag = function(tagToFind, materialBlacklist)
 			
 			suitablePieceMaterials.push(pieceMaterialKey);
 		});
+	});
+
+	return suitablePieceMaterials.length > 0 ? suitablePieceMaterials[Math.floor(gRandom() * suitablePieceMaterials.length)] : null;
+}
+
+let SelectPieceMaterialFromSubstrings = function(materialSubstringWhitelist, materialBlacklist)
+{
+	let suitablePieceMaterials = [];
+
+	Object.getOwnPropertyNames(gPieceTypes).forEach(pieceMaterialKey =>
+	{
+		if (materialBlacklist && materialBlacklist.includes(pieceMaterialKey))
+			return;
+		
+		if (materialSubstringWhitelist && !materialSubstringWhitelist.find(substr => pieceMaterialKey.includes(substr)))
+			return;
+		
+		suitablePieceMaterials.push(pieceMaterialKey);
 	});
 
 	return suitablePieceMaterials.length > 0 ? suitablePieceMaterials[Math.floor(gRandom() * suitablePieceMaterials.length)] : null;
