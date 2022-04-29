@@ -309,18 +309,26 @@ let OnGenerateButtonPressed = function()
 		trackSeedElement.value = trackSeed = Math.floor(Math.random() * 4294967296);
 	}
 
-	let trackMaterialWhitelist = [];
-	let trackMaterialsElement = document.getElementById("trackMaterials");
-
-	for (let i = 0; i < trackMaterialsElement.options.length; ++i)
+	let GetSelectedOptions = function(selectElement)
 	{
-		if (trackMaterialsElement.options[i].selected)
+		let array = [];
+
+		if (selectElement)
 		{
-			trackMaterialWhitelist.push(trackMaterialsElement.options[i].value);
+			for (let i = 0; i < selectElement.options.length; ++i)
+			{
+				if (selectElement.options[i].selected)
+					array.push(selectElement.options[i].value);
+			}
 		}
+
+		return array;
 	}
 
-	GenerateTrack(trackSeed, trackLength, trackDimensions, trackCheckpoints, trackMaterialWhitelist);
+	let trackMaterialWhitelist = GetSelectedOptions(document.getElementById("trackMaterials"));
+	let trackFeatureWhitelist = GetSelectedOptions(document.getElementById("trackFeatures"));
+
+	GenerateTrack(trackSeed, trackLength, trackDimensions, trackCheckpoints, trackMaterialWhitelist, trackFeatureWhitelist);
 
 	//Determine new view layer limits from generated track.
 	let newViewZ = 0;
@@ -447,6 +455,9 @@ let OnKeyDown = function(e)
 	{
 		case "z":
 			OnZoomButtonPressed(e);
+			break;
+		case "g":
+			OnGenerateButtonPressed(e);
 			break;
 	}
 }

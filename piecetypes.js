@@ -1108,7 +1108,7 @@ let gPieceTypes =
 			exitAngle: 0,
 		},
 	},
-	waterShallow:
+	waterShallowFlat:
 	{
 		toWaterDeep:
 		{
@@ -1119,10 +1119,10 @@ let gPieceTypes =
 			exitAngle: 0,
 			collisionOffset: new Vector3D(0, 0, -1),
 			collisionExtents: new Vector3D(0.5, 0.5, 1),
-			transitionTo: { material: "waterDeep" },
+			transitionTo: { material: "waterDeepFlat" },
 		},
 	},
-	waterDeep:
+	waterDeepFlat:
 	{
 		toWaterShallow:
 		{
@@ -1133,7 +1133,7 @@ let gPieceTypes =
 			exitAngle: 0,
 			collisionOffset: new Vector3D(0, 0, 1),
 			collisionExtents: new Vector3D(0.5, 0.5, 1),
-			transitionTo: { material: "waterShallow" },
+			transitionTo: { material: "waterShallowFlat" },
 		},
 	},
 	roadBankRight:
@@ -1503,6 +1503,8 @@ let gPieceTypes =
 	},
 };
 
+let gGenericPieceType = null;
+
 let SanitisePieceType = function(pieceType, pieceMaterial)
 {
 	pieceType.pieceMaterial = pieceMaterial;
@@ -1626,8 +1628,8 @@ let InitialisePieceTypes = function()
 	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "dirtFlat", new Vector2D(0, 128));
 	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "iceFlat", new Vector2D(0, 256), undefined, 1);
 	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "sausageFlat", new Vector2D(0, 384));
-	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "waterShallow", new Vector2D(0, 512), [ "ramp" ]);
-	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "waterDeep", new Vector2D(0, 640), [ "ramp", "progress" ], 1);
+	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "waterShallowFlat", new Vector2D(0, 512), [ "ramp" ]);
+	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "waterDeepFlat", new Vector2D(0, 640), [ "ramp", "progress" ], 1);
 
 	CreatePieceTypesFromTemplate(gBankTransitionPieceTemplates, "roadFlat", new Vector2D(0, 0), undefined, 0, "road");
 	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "roadBankRight", new Vector2D(0, 0), undefined, 0, "road");
@@ -1652,15 +1654,15 @@ let InitialisePieceTypes = function()
 	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "rubberBlock", new Vector2D(64, -224));
 
 	//Special-case transitions.
-	ModifyPieceTypeProperty("roadFlat", "transitionTo", { material: "waterShallow", probability: 0.025 }, [ "ramp" ]);
-	ModifyPieceTypeProperty("waterShallow", "transitionTo", { material: "roadFlat", probability: 0.25 }, [ "ramp" ]);
+	ModifyPieceTypeProperty("roadFlat", "transitionTo", { material: "waterShallowFlat", probability: 0.025 }, [ "ramp" ]);
+	ModifyPieceTypeProperty("waterShallowFlat", "transitionTo", { material: "roadFlat", probability: 0.25 }, [ "ramp" ]);
 
 	//Shorten deep water sections and make them appear on more layers.
-	ModifyPieceTypeProperty("waterDeep", "probability", 0.1, [ "transition "]);
-	ModifyPieceTypeProperty("waterDeep", "useCollisionForRender", true);
+	ModifyPieceTypeProperty("waterDeepFlat", "probability", 0.1, [ "transition "]);
+	ModifyPieceTypeProperty("waterDeepFlat", "useCollisionForRender", true);
 
 	//Useful for collision detection.
-	gPieceTypes.genericPiece = gPieceTypes.roadFlat.straight;
+	gGenericPieceType = gPieceTypes.roadFlat.straight;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1707,6 +1709,7 @@ let FindPieceTypeByPredicate = function(pieceMaterial, predicate)
 let FindAllSuitablePieceTypes = function(translation, rotation, pieceMaterial, tagWhitelist, tagBlacklist, pieceTypeBlacklist, alwaysUse)
 {
 	let suitablePieceTypes = [];
+	let unluckyPieceTypes = [];		//Placeable but discounted due to chance.
 	
 	Object.getOwnPropertyNames(gPieceTypes[pieceMaterial]).forEach(pieceTypeKey =>
 	{
@@ -1739,19 +1742,25 @@ let FindAllSuitablePieceTypes = function(translation, rotation, pieceMaterial, t
 
 		if (!alwaysUse)
 		{
-			//Exclude the piece with a random chance.
-			if (pieceType.probability !== undefined && gRandom() >= pieceType.probability)
-				return;
-			
 			//Check if the piece fits.
 			if (!CanPlacePiece(translation, rotation, pieceType))
 				return;
+
+			//Exclude the piece with a random chance.
+			if (pieceType.probability !== undefined && gRandom() >= pieceType.probability)
+			{
+				//Keep track of the fact this piece is technically placeable.
+				if (pieceType.probability > 0)
+					unluckyPieceTypes.push(pieceType);
+				
+				return;
+			}
 		}
 		
 		suitablePieceTypes.push(pieceType);
 	});
 	
-	return suitablePieceTypes;
+	return suitablePieceTypes.length > 0 ? suitablePieceTypes : unluckyPieceTypes;
 }
 
 let SelectSuitablePieceType = function(translation, rotation, pieceMaterial, tagWhitelist, tagBlacklist, pieceTypeBlacklist, forcePlacement)

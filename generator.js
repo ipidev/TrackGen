@@ -77,8 +77,8 @@ let GetTrackPieceAABB = function(translation, rotation, trackPieceType, scale)
 	{
 		let returnValue =
 		{
-			min: new Vector3D(translation.x - (0.5 * scale), translation.y - (0.5 * scale), translation.z - (0.5 * scale)),
-			max: new Vector3D(translation.x + (0.5 * scale), translation.y + (0.5 * scale), translation.z + (0.5 * scale)),
+			min: new Vector3D(translation.x - (0.5 * scale), translation.y - (0.5 * scale), translation.z - 0.5),
+			max: new Vector3D(translation.x + (0.5 * scale), translation.y + (0.5 * scale), translation.z + 0.5),
 		};
 		return returnValue;
 	}
@@ -93,12 +93,12 @@ let GetTrackPieceAABB = function(translation, rotation, trackPieceType, scale)
 	let extent1 = Vector3DStatic.CreateCopy(rotatedCollisionOffset);
 	extent1.x += trackPieceType.collisionExtents.x * scale;
 	extent1.y += trackPieceType.collisionExtents.y * scale;
-	extent1.z += trackPieceType.collisionExtents.z * scale;
+	extent1.z += trackPieceType.collisionExtents.z;
 	
 	let extent2 = Vector3DStatic.CreateCopy(rotatedCollisionOffset);
 	extent2.x -= trackPieceType.collisionExtents.x * scale;
 	extent2.y -= trackPieceType.collisionExtents.y * scale;
-	extent2.z -= trackPieceType.collisionExtents.z * scale;
+	extent2.z -= trackPieceType.collisionExtents.z;
 	
 	let returnValue =
 	{
@@ -149,7 +149,7 @@ let CanPlacePiece = function(translation, rotation, trackPieceType)
 {
 	let offsetPositions = ApplyPieceOffset(translation, rotation, trackPieceType);
 	return !DoesPieceCollide(translation, rotation, trackPieceType) && !IsOutOfBounds(translation) &&
-		(!DoesPieceCollide(offsetPositions.translation, offsetPositions.rotation, gPieceTypes.genericPiece) ||
+		(!DoesPieceCollide(offsetPositions.translation, offsetPositions.rotation, gGenericPieceType) ||
 		CanBeginCrossroadChain(offsetPositions.translation, offsetPositions.rotation, trackPieceType)) &&
 		!IsOutOfBounds(offsetPositions.translation);
 }
@@ -157,7 +157,7 @@ let CanPlacePiece = function(translation, rotation, trackPieceType)
 let CanBeginCrossroadChain = function(translation, rotation, trackPieceType)
 {
 	let currentTranslation = Vector3DStatic.CreateCopy(translation);
-	let displacement = Vector3DStatic.CreateCopy(gPieceTypes.genericPiece.exitOffset);
+	let displacement = Vector3DStatic.CreateCopy(gGenericPieceType.exitOffset);
 	displacement.RotateYaw(rotation);
 
 	for (let i = 0; i < 1000; ++i)
@@ -166,7 +166,7 @@ let CanBeginCrossroadChain = function(translation, rotation, trackPieceType)
 		if (IsOutOfBounds(currentTranslation))
 			return false;
 
-		let collidingPiece = FindCollidingPiece(currentTranslation, rotation, gPieceTypes.genericPiece);
+		let collidingPiece = FindCollidingPiece(currentTranslation, rotation, gGenericPieceType);
 		if (collidingPiece === null)
 		{
 			//End of crossroad chain has been found.
@@ -202,12 +202,12 @@ let CanBeginCrossroadChain = function(translation, rotation, trackPieceType)
 
 let ApplyCrossroadChain = function(translation, rotation)
 {
-	let displacement = Vector3DStatic.CreateCopy(gPieceTypes.genericPiece.exitOffset);
+	let displacement = Vector3DStatic.CreateCopy(gGenericPieceType.exitOffset);
 	displacement.RotateYaw(rotation);
 
 	for (let i = 0; i < 1000; ++i)
 	{
-		let collidingPiece = FindCollidingPiece(translation, rotation, gPieceTypes.genericPiece);
+		let collidingPiece = FindCollidingPiece(translation, rotation, gGenericPieceType);
 		if (collidingPiece === null)
 			return i;
 		
@@ -228,7 +228,7 @@ let ApplyCrossroadChain = function(translation, rotation)
 	return i;
 }
 
-let GenerateTrack = function(seed, length, dimensions, checkpointCount, materialWhitelist)
+let GenerateTrack = function(seed, length, dimensions, checkpointCount, materialWhitelist, featureWhitelist)
 {
 	gPlacedPieces.length = 0;
 	gRandom = mulberry32(seed);
@@ -244,34 +244,35 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 	let currentRotation = Math.floor(gRandom() * 4) * 0.5 * Math.PI;
 
 	//Setup the tags that will be used to place pieces.
-	let materialBlacklist = GetPieceMaterials().filter(material => !materialWhitelist.find(materialStart => material.startsWith(materialStart)));
+	let materialBlacklist = GetPieceMaterials().filter(material =>
+	{
+		return !materialWhitelist.find(materialStart => material.startsWith(materialStart)) ||
+				!featureWhitelist.find(featureSubstr => material.includes(featureSubstr));
+	});
 
 	let pieceTagAllowedFilter = new TimedFilterList();
 	let pieceTagUnallowedFilter = new TimedFilterList(materialBlacklist);
 
-	let pieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
-	if (!pieceMaterial)
-		return;
+	let pieceMaterial = null;
 	
 	//Place the start line.
 	{
-		let startLinePieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceMaterial, ["startLine"], materialBlacklist, [], true);
-		if (!startLinePieceType)
+		let result = PlaceStartLine(currentTranslation, currentRotation, materialBlacklist);
+		if (!result.success)
 			return;	//Oh dear.
-		
-		PlacePiece(currentTranslation, currentRotation, startLinePieceType);
 
-		let offsetPositions = ApplyPieceOffset(currentTranslation, currentRotation, startLinePieceType);
-		currentTranslation = offsetPositions.translation;
-		currentRotation = offsetPositions.rotation;
+		currentTranslation = result.translation;
+		currentRotation = result.rotation;
+		pieceMaterial = result.pieceMaterial;
 	}
 
 	let nextCheckpointIndex = checkpointCount > 0 ? length / (checkpointCount + 1) : -1;
 	
 	let deadEndsHit = 0;
+	let minimumTrackLength = gPlacedPieces.length;
 	let lastDeadEndPieceType = null;
 
-	for (let pieceIndex = 0; pieceIndex < length && deadEndsHit < 20; ++pieceIndex)
+	for (let pieceIndex = gPlacedPieces.length; pieceIndex < length && deadEndsHit < 20; ++pieceIndex)
 	{
 		let nextPieceType = null;
 		let pieceTagWhitelist = pieceTagAllowedFilter.GetFlatList();
@@ -279,11 +280,12 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 		
 		//Apply crossroads if we're overlapping a piece that supports them.
 		{
-			let collidingPiece = FindCollidingPiece(currentTranslation, currentRotation, gPieceTypes.genericPiece);
+			let collidingPiece = FindCollidingPiece(currentTranslation, currentRotation, gGenericPieceType);
 			if (collidingPiece && collidingPiece.trackPieceType.supportsCrossroad === true)
 			{
 				let crossroadLength = ApplyCrossroadChain(currentTranslation, currentRotation);
 				pieceIndex += crossroadLength;
+				minimumTrackLength = gPlacedPieces.length;
 			}
 		}
 
@@ -356,7 +358,7 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			++deadEndsHit;
 
 			let timesToBackUp = 1;//Math.max(1, Math.floor(Math.min(deadEndsHit * 0.5, gPlacedPieces.length * 0.25)));
-			for (let j = 0; j < timesToBackUp && gPlacedPieces.length > 1; ++j)
+			for (let j = 0; j < timesToBackUp && gPlacedPieces.length > minimumTrackLength; ++j)
 			{
 				//Don't select this piece again
 				let deadEndPiece = gPlacedPieces.pop();
@@ -383,6 +385,8 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			let recentredOffset = TryRecentreTrack();
 			currentTranslation.Subtract(recentredOffset);
 		}
+
+		RenderAll(gCtx);
 	}
 
 	//Use the longest track we ever encountered.
@@ -443,6 +447,78 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 	}
 	
 	TryRecentreTrack(true);
+}
+
+let PlaceStartLine = function(currentTranslation, currentRotation, materialBlacklist)
+{
+	let result = {};
+	result.success = false;
+
+	let startLinePieceType = null;
+	let transitionFromPieceMaterial = null;
+
+	let pieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
+	if (pieceMaterial !== null)
+	{
+		startLinePieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceMaterial, ["startLine"], materialBlacklist, [], true);
+	}
+	else
+	{
+		//No permitted material has a start line - find one in a material that also has a transition to a whitelisted material.
+		let pieceMaterials = GetPieceMaterials();
+		let materialWhitelist = pieceMaterials.filter(material => !materialBlacklist.includes(material));
+
+		for (let i = 0; i < pieceMaterials.length; ++i)
+		{
+			let possibleStartLinePieceType = SelectSuitablePieceType(currentTranslation, currentRotation, pieceMaterials[i], ["startLine"], [], [], true);
+			if (possibleStartLinePieceType != null)
+			{
+				let transitionPieceType = FindPieceTypeByPredicate(pieceMaterials[i], pieceType =>
+				{
+					return pieceType.transitionTo !== undefined && materialWhitelist.includes(pieceType.transitionTo.material);
+				});
+
+				if (transitionPieceType)
+				{
+					startLinePieceType = possibleStartLinePieceType;
+					transitionFromPieceMaterial = pieceMaterials[i];
+					break;
+				}
+			}
+		}
+	}
+
+	if (!startLinePieceType)
+		return result;	//Abort - failed to find valid start line.
+	
+	PlacePiece(currentTranslation, currentRotation, startLinePieceType);
+
+	let offsetPositions = ApplyPieceOffset(currentTranslation, currentRotation, startLinePieceType);
+	currentTranslation = offsetPositions.translation;
+	currentRotation = offsetPositions.rotation;
+
+	if (transitionFromPieceMaterial !== null)
+	{
+		let transitionPieceType = SelectSuitablePieceType(currentTranslation, currentRotation, transitionFromPieceMaterial, [ "transition" ], materialBlacklist, [], true);
+		if (!transitionPieceType)
+			return result;	//Abort - failed to find valid transition.
+		
+		if (!transitionPieceType.transitionTo || transitionPieceType.transitionTo.material != "waterDeepFlat")
+			console.log("what");
+
+		PlacePiece(currentTranslation, currentRotation, transitionPieceType);
+	
+		let offsetPositions = ApplyPieceOffset(currentTranslation, currentRotation, transitionPieceType);
+		currentTranslation = offsetPositions.translation;
+		currentRotation = offsetPositions.rotation;
+		pieceMaterial = transitionPieceType.transitionTo.material;
+	}
+
+	result.translation = currentTranslation;
+	result.rotation = currentRotation;
+	result.pieceMaterial = pieceMaterial;
+	result.success = true;
+	return result;
 }
 
 let TryRecentreTrack = function(setOnGround)

@@ -50,6 +50,17 @@
 					</div>
 				</div>
 				<div class="row">
+					<div class="label"><label for="trackFeatures">Features:</label></div>
+					<div class="option">
+						<select id="trackFeatures" multiple size="2">
+							<option value="Flat" selected>Flats</option>
+							<option value="Bank" selected>Banks</option>
+							<option value="Block" selected>Blocks</option>
+							<option value="Shoulder" selected>Shoulders</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
 					<div class="label"><label for="trackSeed" id="trackSeedLabel">Seed:</label></div>
 					<div class="option"><input id="trackSeed" type="text" value="" maxlength="10" size="10" /></div>
 				</div>
@@ -92,6 +103,7 @@
 					<p>-/+: Move down/up layer</p>
 					<p>&lt;/&gt;: Rotate left/right</p>
 					<p>Z: Zoom in/out</p>
+					<p>G: Generate</p>
 				</div>
 			</div>
 		</div>
