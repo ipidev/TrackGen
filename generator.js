@@ -331,24 +331,29 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 				{
 					if (nextPieceType.transitionTo.material && !materialBlacklist.includes(nextPieceType.transitionTo.material))
 					{
+						//Be wary that all materials but one may be blacklisted, so a transition might not occur.
+						let newPieceMaterial = null;
 						switch (nextPieceType.transitionTo.material)
 						{
 							case "#any":
-								pieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
+								newPieceMaterial = SelectPieceMaterialFromTag("startLine", materialBlacklist);
 								break;
 							case "#waterShallowFlatExit":
-								pieceMaterial = SelectPieceMaterialFromSubstrings([ "roadFlat", "Block", "Shoulder" ], materialBlacklist);
+								newPieceMaterial = SelectPieceMaterialFromSubstrings([ "roadFlat", "Block", "Shoulder" ], materialBlacklist);
 								break;
 							case "#waterShallowBlockExit":
-								pieceMaterial = SelectPieceMaterialFromSubstrings([ "waterShallowFlat", "Block", "Shoulder" ], materialBlacklist);
+								newPieceMaterial = SelectPieceMaterialFromSubstrings([ "waterShallowFlat", "Block", "Shoulder" ], materialBlacklist);
 								break;
 							case "#waterShallowEntry":
-								pieceMaterial = SelectPieceMaterialFromSubstrings([ "waterShallow" ], materialBlacklist);
+								newPieceMaterial = SelectPieceMaterialFromSubstrings([ "waterShallow" ], materialBlacklist);
 								break;
 							default:
-								pieceMaterial = nextPieceType.transitionTo.material;
+								newPieceMaterial = nextPieceType.transitionTo.material;
 								break;
 						}
+
+						if (newPieceMaterial != null)
+							pieceMaterial = newPieceMaterial;
 					}
 					
 					if (nextPieceType.transitionTo.tag)
@@ -395,8 +400,6 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			let recentredOffset = TryRecentreTrack();
 			currentTranslation.Subtract(recentredOffset);
 		}
-
-		RenderAll(gCtx);
 	}
 
 	//Use the longest track we ever encountered.
