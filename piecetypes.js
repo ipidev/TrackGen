@@ -798,7 +798,7 @@ let gShoulderPieceTemplates =
 	straight:
 	{
 		tags: [ "straight" ],
-		imageOffset: new Vector2D(736, 512),
+		imageOffset: new Vector2D(1760, 512),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
@@ -808,7 +808,7 @@ let gShoulderPieceTemplates =
 	cornerRight:
 	{
 		tags: [ "notAfterTurbo" ],
-		imageOffset: new Vector2D(768, 512),
+		imageOffset: new Vector2D(1792, 512),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(1, 0, 0),
 		exitAngle: Math.PI * 0.5,
@@ -816,7 +816,7 @@ let gShoulderPieceTemplates =
 	cornerLeft:
 	{
 		tags: [ "notAfterTurbo" ],
-		imageOffset: new Vector2D(800, 512),
+		imageOffset: new Vector2D(1824, 512),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(-1, 0, 0),
 		exitAngle: Math.PI * -0.5,
@@ -824,7 +824,7 @@ let gShoulderPieceTemplates =
 	checkpoint:
 	{
 		tags: [ "progress", "checkpoint" ],
-		imageOffset: new Vector2D(736, 544),
+		imageOffset: new Vector2D(1760, 544),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
@@ -833,7 +833,7 @@ let gShoulderPieceTemplates =
 	},
 	curveRight:
 	{
-		imageOffset: new Vector2D(832, 512),
+		imageOffset: new Vector2D(1856, 512),
 		imageDimensions: new Vector2D(64, 64),
 		exitOffset: new Vector3D(2, -1, 0),
 		exitAngle: Math.PI * 0.5,
@@ -842,7 +842,7 @@ let gShoulderPieceTemplates =
 	},
 	curveLeft:
 	{
-		imageOffset: new Vector2D(896, 512),
+		imageOffset: new Vector2D(1920, 512),
 		imageDimensions: new Vector2D(64, 64),
 		exitOffset: new Vector3D(-2, -1, 0),
 		exitAngle: Math.PI * -0.5,
@@ -852,7 +852,7 @@ let gShoulderPieceTemplates =
 	rampUpLevelGentle:
 	{
 		tags: [ "ramp", "notAfterTurbo" ],
-		imageOffset: new Vector2D(960, 512),
+		imageOffset: new Vector2D(1984, 512),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 1),
 		exitAngle: 0,
@@ -863,7 +863,7 @@ let gShoulderPieceTemplates =
 	rampUpLevelSteep:
 	{
 		tags: [ "ramp", "notAfterTurbo" ],
-		imageOffset: new Vector2D(992, 512),
+		imageOffset: new Vector2D(2016, 512),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 2),
 		exitAngle: 0,
@@ -874,7 +874,7 @@ let gShoulderPieceTemplates =
 	rampDownLevelGentle:
 	{
 		tags: [ "ramp", "notAfterTurbo" ],
-		imageOffset: new Vector2D(960, 544),
+		imageOffset: new Vector2D(1984, 544),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, -1),
 		exitAngle: 0,
@@ -885,7 +885,7 @@ let gShoulderPieceTemplates =
 	rampDownLevelSteep:
 	{
 		tags: [ "ramp", "notAfterTurbo" ],
-		imageOffset: new Vector2D(992, 544),
+		imageOffset: new Vector2D(2016, 544),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, -2),
 		exitAngle: 0,
@@ -896,7 +896,7 @@ let gShoulderPieceTemplates =
 	crossroad:
 	{
 		tags: [ "crossroad" ],
-		imageOffset: new Vector2D(800, 544),
+		imageOffset: new Vector2D(1824, 544),
 		imageDimensions: new Vector2D(32, 32),
 		exitOffset: new Vector3D(0, -1, 0),
 		exitAngle: 0,
@@ -1688,7 +1688,7 @@ let gPieceTypes =
 		toRoadBlock:
 		{
 			tags: [ "transition" ],
-			imageOffset: new Vector2D(1024, 512),
+			imageOffset: new Vector2D(736, 512),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(-1, -1, 0),
 			exitAngle: 0,
@@ -1700,7 +1700,7 @@ let gPieceTypes =
 		toDirtBlock:
 		{
 			tags: [ "transition" ],
-			imageOffset: new Vector2D(1024, 576),
+			imageOffset: new Vector2D(736, 576),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(-1, -1, 0),
 			exitAngle: 0,
@@ -1709,10 +1709,22 @@ let gPieceTypes =
 			transitionTo: { material: "dirtBlock" },
 			renderAsBlock: true,
 		},
+		toIceBlock:
+		{
+			tags: [ "transition" ],
+			imageOffset: new Vector2D(736, 640),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(-1, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "iceBlock" },
+			renderAsBlock: true,
+		},
 		toGrassBlock:
 		{
 			tags: [ "transition" ],
-			imageOffset: new Vector2D(1024, 704),
+			imageOffset: new Vector2D(736, 704),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(-1, -1, 0),
 			exitAngle: 0,
@@ -1724,7 +1736,7 @@ let gPieceTypes =
 		toRubberBlock:
 		{
 			tags: [ "transition" ],
-			imageOffset: new Vector2D(896, 288),
+			imageOffset: new Vector2D(800, 288),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(-1, -1, 0),
 			exitAngle: 0,
@@ -1771,7 +1783,7 @@ let gPieceTypes =
 		toRoadBlock:
 		{
 			tags: [ "transition" ],
-			imageOffset: new Vector2D(1024, 512),
+			imageOffset: new Vector2D(736, 512),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(1, -1, 0),
 			exitAngle: 0,
@@ -1783,7 +1795,7 @@ let gPieceTypes =
 		toDirtBlock:
 		{
 			tags: [ "transition" ],
-			imageOffset: new Vector2D(1024, 576),
+			imageOffset: new Vector2D(736, 576),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(1, -1, 0),
 			exitAngle: 0,
@@ -1795,7 +1807,7 @@ let gPieceTypes =
 		toGrassBlock:
 		{
 			tags: [ "transition" ],
-			imageOffset: new Vector2D(1024, 704),
+			imageOffset: new Vector2D(736, 704),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(1, -1, 0),
 			exitAngle: 0,
@@ -1807,7 +1819,7 @@ let gPieceTypes =
 		toRubberBlock:
 		{
 			tags: [ "transition" ],
-			imageOffset: new Vector2D(896, 288),
+			imageOffset: new Vector2D(800, 288),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(1, -1, 0),
 			exitAngle: 0,
@@ -1957,7 +1969,7 @@ let gPieceTypes =
 		toRoadDiagLeft:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(1024, 544),
+			imageOffset: new Vector2D(736, 544),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -1968,7 +1980,7 @@ let gPieceTypes =
 		toRoadDiagRight:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(1024, 544),
+			imageOffset: new Vector2D(736, 544),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -1982,7 +1994,7 @@ let gPieceTypes =
 		toRoadBlock:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(768, 544),
+			imageOffset: new Vector2D(1792, 544),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2013,7 +2025,7 @@ let gPieceTypes =
 		toRoadDiagLeft:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(1024, 608),
+			imageOffset: new Vector2D(736, 608),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2024,7 +2036,7 @@ let gPieceTypes =
 		toRoadDiagRight:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(1024, 608),
+			imageOffset: new Vector2D(736, 608),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2038,7 +2050,7 @@ let gPieceTypes =
 		toDirtBlock:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(768, 608),
+			imageOffset: new Vector2D(1792, 608),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2069,7 +2081,7 @@ let gPieceTypes =
 		toRoadDiagLeft:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(1024, 672),
+			imageOffset: new Vector2D(736, 672),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2080,7 +2092,7 @@ let gPieceTypes =
 		toRoadDiagRight:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(1024, 672),
+			imageOffset: new Vector2D(736, 672),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2094,7 +2106,7 @@ let gPieceTypes =
 		toIceBlock:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(768, 672),
+			imageOffset: new Vector2D(1792, 672),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2125,7 +2137,7 @@ let gPieceTypes =
 		toRoadDiagLeft:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(1024, 736),
+			imageOffset: new Vector2D(736, 736),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2136,7 +2148,7 @@ let gPieceTypes =
 		toRoadDiagRight:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(1024, 736),
+			imageOffset: new Vector2D(736, 736),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2150,7 +2162,7 @@ let gPieceTypes =
 		toGrassBlock:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(768, 736),
+			imageOffset: new Vector2D(1792, 736),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2172,7 +2184,7 @@ let gPieceTypes =
 		toRoadDiagLeft:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(896, 320),
+			imageOffset: new Vector2D(800, 320),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2183,7 +2195,7 @@ let gPieceTypes =
 		toRoadDiagRight:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(896, 320),
+			imageOffset: new Vector2D(800, 320),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2343,7 +2355,7 @@ let InitialisePieceTypes = function()
 	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "grassBlock", new Vector2D(0, 192));
 	CreatePieceTypesFromTemplate(gShoulderPieceTemplates, "grassShoulder", new Vector2D(0, 192));
 	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "rubberBlock", new Vector2D(64, -224));
-	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "waterShallowBlock", new Vector2D(256, -224), [ "ramp", "hole" ]);
+	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "waterShallowBlock", new Vector2D(800, 0), [ "ramp", "hole" ]);
 
 	CreatePieceTypesFromTemplate(gDiagonalTransitionPieceTemplates, "roadFlat", new Vector2D(0, 0), undefined, 0, "road");
 	CreatePieceTypesFromTemplate(gDiagonalPieceTemplates, "roadDiagLeft", new Vector2D(0, 0), undefined, 0, "road");
