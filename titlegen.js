@@ -37,6 +37,20 @@ let gAdjectives =
 		"suspicious", "bashful", "shy", "abrasive", "brash", "dying", "killed",
 		"murdered", "buried", "stiff", "strange", "odd", "peculiar", "uncanny",
 		"quaint", "outlandish", "boring", "dull", "humdrum", "dreary", "fun",
+		"relevant", "current", "appropriate", "apt", "suitable", "improper",
+		"unimportant", "inappropriate", "rude", "tasteless", "wrong", "unfit",
+		"majestic", "imperial", "grandiose", "sovereign", "stately", "regal",
+		"attractive", "handsome", "charming", "gorgeous", "fetching",
+		"pleasant", "sickening", "gruesome", "loathsome", "vulgar", "icky",
+		"mushy", "gelatinous", "pulpy", "rigid", "immalleable", "numbed",
+		"inquisitive", "analytical", "nosy", "peeping", "exotic", "bizzare",
+		"mysterious", "unorthodox", "relieved", "discharged", "pacified",
+		"hungry", "starving", "famished", "ravenous", "thirsty", "parched", 
+		"impatient", "yearning", "depressed", "morose", "pessimistic",
+		"negative", "sad", "dejected", "upset", "cheerful", "optimistic", 
+		"chipper", "enthusiastic", "effervescent", "jaunty", "merry", "rosy",
+		"positive", "anxious", "scared", "fearful", "confident", "bold",
+		"cocky", "paranoid", "helpless", "makeshift", "inconclusive", "vague",
 	],
 	emptyList:
 	[
@@ -73,6 +87,7 @@ let gAdjectives =
 		"tenacious", "resilient", "firm", "stalwart", "vigorous", "cruel",
 		"ambitious", "backbreaking", "confounding", "formidable", "brutal",
 		"relentless", "harsh", "callous", "inhumane", "curvy", "winding",
+		"dominant", "commanding", "powerful", "paramount", "resistant",
 	],
 	easySynonyms:
 	[
@@ -82,6 +97,7 @@ let gAdjectives =
 		"beginner's", "painless", "facile", "lucid", "apt", "easy-peasy",
 		"elementary", "mild", "transparent", "readable", "accessible",
 		"light", "uncomplicated", "peaceful", "calm", "tranquil", "gentle",
+		"humble", "beggarly", "polite", "docile", "submissive", "apprehensive",
 	],
 	longSynonyms:
 	[
@@ -164,6 +180,18 @@ let gAdjectives =
 		"flat", "horizontal", "low", "even", "flush", "planar", "deflated",
 		"prostrate", "level", "parallel", "smooth", "aligned", "uniform",
 	],
+	singleMaterialAdjectives:
+	[
+		"similar", "homogeneous", "identical", "unvarying", "comparable",
+		"compatible", "equal", "consistent", "one-trick", "solo", "samey",
+		"exclusive", "cliquish", "discriminative", "segregated", "priveleged",
+	],
+	manyMaterialsAdjectives:
+	[
+		"different", "discrete", "individual", "diverse", "varied", "assorted",
+		"contrasting", "dissonant", "manifold", "multicolour", "kaleidoscopic",
+		"inclusive", "broad", "encompassing", "all-embracing", "wall-to-wall", 
+	],
 };
 
 let gNouns = 
@@ -215,6 +243,22 @@ let gNouns =
 		"seahorse", "starfish", "elk", "turkey", "pig", "meerkat", "narwhal",
 		"flamingo", "skunk", "hippo", "emu", "zebra", "orangutan", "chameleon",
 		"factory", "cola", "vodka", "cider", "wine", "champagne", "rum", "gin",
+		"president", "security", "politician", "teacher", "student", "disease",
+		"bacteria", "virus", "economics", "finance", "market", "stock exchange",
+		"manager", "assistant", "shopkeeper", "clerk", "song", "hymn", "poem",
+		"rhyme", "airport", "train station", "bus stop", "taxi rank", "helipad",
+		"army", "navy", "militia", "air force", "independence", "passenger",
+		"driver", "chaffeur", "memory", "dream", "thought", "idea", "singer",
+		"guitarist", "bassist", "drummer", "percussionist", "singer-songwriter",
+		"producer", "performer", "musician", "loss", "story", "tale", "fable",
+		"bonus", "gift", "prize", "commission", "job", "career", "equipment",
+		"tool", "soup", "broth", "stew", "coleslaw", "art", "painting",
+		"portrait", "craft", "trash", "junk", "litter", "offal", "dross",
+		"nonsense", "drivel", "tripe", "rubbish", "shower", "potato", "spud",
+		"honey", "darling", "heart", "lung", "liver", "spleen", "brain",
+		"pancreas", "appendix", "prostate", "cervix", "revolution", "revolt",
+		"uprising", "coup", "strike", "presentation", "slideshow", "debut",
+		"entry", "exit", "drama", "gossip", "hearsay", "juice", "squash",
 	],
 	emptyList:
 	[
@@ -256,6 +300,7 @@ let gNouns =
 	rubberList:
 	[
 		"rubber", "plastic", "toy brick", "building block", "slot car", "model",
+		"latex", "spring", "acrylic", "enamel", "wax", "veneer", "gloss",
 	],
 	fastNouns:
 	[
@@ -275,11 +320,13 @@ let gNouns =
 		"challenge", "puzzle", "test", "exam", "experiment", "essay", "trick",
 		"obstruction", "blockage", "hindrance", "trouble", "wall", "punishment",
 		"bull", "tiger", "shark", "dragon", "killer", "murder", "death",
+		"disaster", "calamity", "catastrophe", "cataclysm", "tragedy",
 	],
 	easyNouns:
 	[
 		"training", "warm-up", "practice", "excercise", "basics", "foundation",
 		"advantage", "help", "support", "luxury", "rest", "relaxation", "life",
+		"victory", "success", "acheivement", "blessing", "triumph", "fortune",
 	],
 	longNouns:
 	[
@@ -293,6 +340,14 @@ let gNouns =
 		"youngster", "toy", "ant", "mouse", "hamster", "fly", "waterbear",
 		"bacteria", "microbe", "chode", "stub", "dwarf", "pixie", "sprite",
 		"insect", "mite", "bacterium", "beetle", "particle", "plankton",
+	],
+	singleMaterialNouns:
+	[
+		"club", "faction", "union", "bloc", "clique", "schism", "confederacy",
+	],
+	manyMaterialsAdjectives:
+	[
+		"society", "team", "network", "partnership", "affiliation", "pride",
 	],
 };
 
@@ -317,6 +372,18 @@ let gPostpositionsList =
 	"competition", "endurance", "playground", "assault course", "test", "pass",
 	"cut", "gorge", "path", "ravine", "court", "throughfare", "drive", "row",
 	"way", "turf", "byway", "superhighway", "parking lot", "subway", "artery",
+	"adventure", "journey", "trip", "campaign", "crossing", "expedition",
+	"pilgrimage", "trek", "trip", "odyssey", "quest", "voyage", "transit",
+	"excursion", "cruise", "trek", "stint", "outing", "pathway", "pavement",
+	"causeway", "channel", "strait", "furrow", "groove", "runway", "strip",
+	"alleyway", "ingress", "crosscut", "rut", "motorplex", "dragway",
+	"autodrome", "motorsports park", "speedrome", "superspeedway", "grand prix",
+	"championship", "tournament", "sport", "contest",
+];
+
+let gBaseMaterials =
+[
+	"road", "dirt", "ice", "sausage", "water", "grass", "rubber"
 ];
 
 let DetermineTrackCharacteristics = function()
@@ -375,13 +442,14 @@ let DetermineTrackCharacteristics = function()
 			++heightChangeCount;
 		}
 
-		if (trackMaterialCounts[placedPieceType.pieceMaterial] !== undefined)
+		let baseMaterial = gBaseMaterials.find(material => placedPieceType.pieceMaterial.startsWith(material));
+		if (trackMaterialCounts[baseMaterial] !== undefined)
 		{
-			++trackMaterialCounts[placedPieceType.pieceMaterial];
+			++trackMaterialCounts[baseMaterial];
 		}
 		else
 		{
-			trackMaterialCounts[placedPieceType.pieceMaterial] = 1;
+			trackMaterialCounts[baseMaterial] = 1;
 		}
 	});
 
@@ -432,7 +500,8 @@ let DetermineTrackCharacteristics = function()
 	let highestTrackMaterial = null;
 	let highestTrackMaterialCount = 0;
 
-	Object.getOwnPropertyNames(trackMaterialCounts).forEach(trackMaterialKey =>
+	let trackMaterialCountKeys = Object.getOwnPropertyNames(trackMaterialCounts);
+	trackMaterialCountKeys.forEach(trackMaterialKey =>
 	{
 		if (trackMaterialCounts[trackMaterialKey] > highestTrackMaterialCount)
 		{
@@ -440,19 +509,18 @@ let DetermineTrackCharacteristics = function()
 			highestTrackMaterialCount = trackMaterialCounts[trackMaterialKey];
 		}
 	});
-
 	if (highestTrackMaterialCount > gPlacedPieces.length * 0.5)
 	{
-		let materialCharacteristics = [ "road", "dirt", "ice", "sausage", "water", "grass", "rubber" ];
-		let materialCharacteristic = materialCharacteristics.find(materialKey =>
-		{
-			return highestTrackMaterial.startsWith(materialKey);
-		});
+		characteristics.push(highestTrackMaterial);
 
-		if (materialCharacteristic)
+		if (trackMaterialCountKeys.length == 1)
 		{
-			characteristics.push(materialCharacteristic);
+			characteristics.push("singleMaterial");
 		}
+	}
+	else if (trackMaterialCountKeys.length >= 4)
+	{
+		characteristics.push("manyMaterials");
 	}
 
 	return characteristics;
