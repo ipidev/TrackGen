@@ -941,6 +941,39 @@ let gDiagonalTransitionPieceTemplates =
 		collisionExtents: new Vector3D(0.5, 1, 0.5),
 		transitionTo: { material: "DiagLeft" },
 	},
+	toDiagRight:
+	{
+		tags: [ "transition" ],
+		imageOffset: new Vector2D(2528, 0),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(0, -2, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0.5, -0.5, 0.5),
+		collisionExtents: new Vector3D(1, 1, 0.5),
+		transitionTo: { material: "DiagRight" },
+	},
+	toDiagRightBendIn:
+	{
+		tags: [ "transition" ],
+		imageOffset: new Vector2D(2592, 0),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(2, -1, 0),
+		exitAngle: Math.PI * 0.5,
+		collisionOffset: new Vector3D(0.5, -0.5, 0.5),
+		collisionExtents: new Vector3D(1, 1, 0.5),
+		transitionTo: { material: "DiagRight" },
+	},
+	toDiagRightBendOut:
+	{
+		tags: [ "transition" ],
+		imageOffset: new Vector2D(2656, 0),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(-1, 0, 0),
+		exitAngle: Math.PI * -0.5,
+		collisionOffset: new Vector3D(0, -0.5, 0.5),
+		collisionExtents: new Vector3D(0.5, 1, 0.5),
+		transitionTo: { material: "DiagRight" },
+	},
 };
 
 //Templates for left diagonal pieces (can be flipped for right diagonal pieces)
@@ -1083,7 +1116,7 @@ let gDiagonalLeftToRightPieceTemplates =
 		imageDimensions: new Vector2D(64, 32),
 		exitOffset: new Vector3D(-1, -1, 0),
 		exitAngle: 0,
-		collisionOffset: new Vector3D(-0.5, 0, 0.5),
+		collisionOffset: new Vector3D(-0.5, 0.5, 0.5),
 		collisionExtents: new Vector3D(1, 0.5, 0.5),
 		transitionTo: { material: "DiagRight" },
 	},
@@ -1119,6 +1152,55 @@ let gDiagonalLeftToRightPieceTemplates =
 		collisionOffset: new Vector3D(-0.5, -0.5, 0.5),
 		collisionExtents: new Vector3D(1, 1, 0.5),
 		transitionTo: { material: "DiagRight" },
+	},
+};
+
+//Templates for right-to-left diagonal transitions.
+let gDiagonalRightToLeftPieceTemplates =
+{
+	toDiagLeft:
+	{
+		tags: [ "transition" ],
+		imageOffset: new Vector2D(2528, 96),
+		imageDimensions: new Vector2D(64, 32),
+		exitOffset: new Vector3D(1, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0.5, 0, 0.5),
+		collisionExtents: new Vector3D(1, 0.5, 0.5),
+		transitionTo: { material: "DiagLeft" },
+	},
+	toDiagLeftLong:
+	{
+		tags: [ "transition" ],
+		imageOffset: new Vector2D(2592, 64),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(1, -2, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0.5, -0.5, 0.5),
+		collisionExtents: new Vector3D(1, 1, 0.5),
+		transitionTo: { material: "DiagLeft" },
+	},
+	toDiagLeftBendIn:
+	{
+		tags: [ "transition" ],
+		imageOffset: new Vector2D(2656, 64),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(2, 0, 0),
+		exitAngle: Math.PI * 0.5,
+		collisionOffset: new Vector3D(0.5, -0.5, 0.5),
+		collisionExtents: new Vector3D(1, 1, 0.5),
+		transitionTo: { material: "DiagLeft" },
+	},
+	toDiagLeftBendOut:
+	{
+		tags: [ "transition" ],
+		imageOffset: new Vector2D(2720, 64),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(-1, -1, 0),
+		exitAngle: Math.PI * -0.5,
+		collisionOffset: new Vector3D(0.5, -0.5, 0.5),
+		collisionExtents: new Vector3D(1, 1, 0.5),
+		transitionTo: { material: "DiagLeft" },
 	},
 };
 
@@ -1875,7 +1957,25 @@ let InitialisePieceTypes = function()
 	CreatePieceTypesFromTemplate(gDiagonalPieceTemplates, "roadDiagLeft", new Vector2D(0, 0), undefined, 0, "road");
 	CreatePieceTypesFromTemplate(gDiagonalPieceTemplates, "roadDiagRight", new Vector2D(672, 0), undefined, 0, "road", true);
 	CreatePieceTypesFromTemplate(gDiagonalLeftToRightPieceTemplates, "roadDiagLeft", new Vector2D(0, 0), undefined, 0, "road");
-	//CreatePieceTypesFromTemplate(gDiagonalRightToLeftPieceTemplates, "roadDiagRight", new Vector2D(0, 0), undefined, 0, "road");
+	CreatePieceTypesFromTemplate(gDiagonalRightToLeftPieceTemplates, "roadDiagRight", new Vector2D(0, 0), undefined, 0, "road");
+
+	CreatePieceTypesFromTemplate(gDiagonalTransitionPieceTemplates, "dirtFlat", new Vector2D(0, 128), undefined, 0, "dirt");
+	CreatePieceTypesFromTemplate(gDiagonalPieceTemplates, "dirtDiagLeft", new Vector2D(0, 128), undefined, 0, "dirt");
+	CreatePieceTypesFromTemplate(gDiagonalPieceTemplates, "dirtDiagRight", new Vector2D(672, 128), undefined, 0, "dirt", true);
+	CreatePieceTypesFromTemplate(gDiagonalLeftToRightPieceTemplates, "dirtDiagLeft", new Vector2D(0, 128), undefined, 0, "dirt");
+	CreatePieceTypesFromTemplate(gDiagonalRightToLeftPieceTemplates, "dirtDiagRight", new Vector2D(0, 128), undefined, 0, "dirt");
+
+	CreatePieceTypesFromTemplate(gDiagonalTransitionPieceTemplates, "iceFlat", new Vector2D(0, 256), undefined, 0, "ice");
+	CreatePieceTypesFromTemplate(gDiagonalPieceTemplates, "iceDiagLeft", new Vector2D(0, 256), undefined, 0, "ice");
+	CreatePieceTypesFromTemplate(gDiagonalPieceTemplates, "iceDiagRight", new Vector2D(672, 256), undefined, 0, "ice", true);
+	CreatePieceTypesFromTemplate(gDiagonalLeftToRightPieceTemplates, "iceDiagLeft", new Vector2D(0, 256), undefined, 0, "ice");
+	CreatePieceTypesFromTemplate(gDiagonalRightToLeftPieceTemplates, "iceDiagRight", new Vector2D(0, 256), undefined, 0, "ice");
+
+	CreatePieceTypesFromTemplate(gDiagonalTransitionPieceTemplates, "sausageFlat", new Vector2D(0, 384), undefined, 0, "sausage");
+	CreatePieceTypesFromTemplate(gDiagonalPieceTemplates, "sausageDiagLeft", new Vector2D(0, 384), undefined, 0, "sausage");
+	CreatePieceTypesFromTemplate(gDiagonalPieceTemplates, "sausageDiagRight", new Vector2D(672, 384), undefined, 0, "sausage", true);
+	CreatePieceTypesFromTemplate(gDiagonalLeftToRightPieceTemplates, "sausageDiagLeft", new Vector2D(0, 384), undefined, 0, "sausage");
+	CreatePieceTypesFromTemplate(gDiagonalRightToLeftPieceTemplates, "sausageDiagRight", new Vector2D(0, 384), undefined, 0, "sausage");
 
 	//Special-case transitions.
 	ModifyPieceTypeProperty("roadFlat", "transitionTo", { material: "waterShallowFlat", probability: 0.025 }, [ "ramp" ]);
