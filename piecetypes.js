@@ -1651,6 +1651,288 @@ let gPieceTypes =
 			transitionTo: { material: "roadBankRight" },
 		},
 	},
+	roadDiagLeft:
+	{
+		toDirtDiagLeft:
+		{
+			tags: [ "diagonal", "transition" ],
+			imageOffset: new Vector2D(2048, 512),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(-1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+			transitionTo: { material: "dirtDiagLeft" },
+		},
+		toSausageDiagLeft:
+		{
+			tags: [ "diagonal", "transition" ],
+			imageOffset: new Vector2D(2144, 512),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(-1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+			transitionTo: { material: "sausageDiagLeft" },
+		},
+		jump:
+		{
+			tags: [ "jump", "notAfterTurbo" ],
+			imageOffset: new Vector2D(2048, 576),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(-1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+		},
+		toRoadBlock:
+		{
+			tags: [ "transition" ],
+			imageOffset: new Vector2D(1024, 512),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(-1, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadBlock" },
+			renderAsBlock: true,
+		},
+		toDirtBlock:
+		{
+			tags: [ "transition" ],
+			imageOffset: new Vector2D(1024, 576),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(-1, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "dirtBlock" },
+			renderAsBlock: true,
+		},
+		toGrassBlock:
+		{
+			tags: [ "transition" ],
+			imageOffset: new Vector2D(1024, 704),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(-1, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "grassBlock" },
+			renderAsBlock: true,
+		},
+		toRubberBlock:
+		{
+			tags: [ "transition" ],
+			imageOffset: new Vector2D(896, 288),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(-1, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "rubberBlock" },
+			renderAsBlock: true,
+		},
+	},
+	roadDiagRight:
+	{
+		toDirtDiagRight:
+		{
+			tags: [ "diagonal", "transition" ],
+			imageOffset: new Vector2D(2432, 512),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+			transitionTo: { material: "dirtDiagRight" },
+		},
+		toSausageDiagRight:
+		{
+			tags: [ "diagonal", "transition" ],
+			imageOffset: new Vector2D(2528, 512),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+			transitionTo: { material: "sausageDiagRight" },
+		},
+		jump:
+		{
+			tags: [ "jump", "notAfterTurbo" ],
+			imageOffset: new Vector2D(2432, 576),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+		},
+		toRoadBlock:
+		{
+			tags: [ "transition" ],
+			imageOffset: new Vector2D(1024, 512),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(1, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadBlock" },
+			renderAsBlock: true,
+		},
+		toDirtBlock:
+		{
+			tags: [ "transition" ],
+			imageOffset: new Vector2D(1024, 576),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(1, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "dirtBlock" },
+			renderAsBlock: true,
+		},
+		toGrassBlock:
+		{
+			tags: [ "transition" ],
+			imageOffset: new Vector2D(1024, 704),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(1, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "grassBlock" },
+			renderAsBlock: true,
+		},
+		toRubberBlock:
+		{
+			tags: [ "transition" ],
+			imageOffset: new Vector2D(896, 288),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(1, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "rubberBlock" },
+			renderAsBlock: true,
+		},
+	},
+	dirtDiagLeft:
+	{
+		toRoadDiagLeft:
+		{
+			tags: [ "diagonal", "transition" ],
+			imageOffset: new Vector2D(2240, 512),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(-1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+			transitionTo: { material: "roadDiagLeft" },
+		},
+		largeBump:
+		{
+			tags: [ "diagonal" ],
+			imageOffset: new Vector2D(2144, 576),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(-1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+		},
+		smallBumps:
+		{
+			tags: [ "diagonal" ],
+			imageOffset: new Vector2D(2240, 576),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(-1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+		},
+	},
+	dirtDiagRight:
+	{
+		toRoadDiagRight:
+		{
+			tags: [ "diagonal", "transition" ],
+			imageOffset: new Vector2D(2624, 512),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+			transitionTo: { material: "roadDiagRight" },
+		},
+		largeBump:
+		{
+			tags: [ "diagonal" ],
+			imageOffset: new Vector2D(2528, 576),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+		},
+		smallBumps:
+		{
+			tags: [ "diagonal" ],
+			imageOffset: new Vector2D(2624, 576),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+		},
+	},
+	sausageDiagLeft:
+	{
+		toRoadDiagLeft:
+		{
+			tags: [ "diagonal", "transition" ],
+			imageOffset: new Vector2D(2336, 512),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(-1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+			transitionTo: { material: "roadDiagLeft" },
+		},
+		narrowCentre:
+		{
+			tags: [ "diagonal" ],
+			imageOffset: new Vector2D(2336, 576),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(-1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+		},
+	},
+	sausageDiagRight:
+	{
+		toRoadDiagRight:
+		{
+			tags: [ "diagonal", "transition" ],
+			imageOffset: new Vector2D(2720, 512),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+			transitionTo: { material: "roadDiagRight" },
+		},
+		narrowCentre:
+		{
+			tags: [ "diagonal" ],
+			imageOffset: new Vector2D(2720, 576),
+			imageDimensions: new Vector2D(96, 64),
+			exitOffset: new Vector3D(1, -2, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(1, -0.5, 0.5),
+			collisionExtents: new Vector3D(1.5, 1, 0.5),
+		},
+	},
 	roadBlock:
 	{
 		toRoadFlat:
@@ -1671,6 +1953,28 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "roadShoulder" },
+		},
+		toRoadDiagLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1024, 544),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadDiagLeft" },
+		},
+		toRoadDiagRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1024, 544),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadDiagRight" },
 		},
 	},
 	roadShoulder:
@@ -1706,6 +2010,28 @@ let gPieceTypes =
 			exitAngle: 0,
 			transitionTo: { material: "dirtShoulder" },
 		},
+		toRoadDiagLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1024, 608),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadDiagLeft" },
+		},
+		toRoadDiagRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1024, 608),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadDiagRight" },
+		},
 	},
 	dirtShoulder:
 	{
@@ -1739,6 +2065,28 @@ let gPieceTypes =
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
 			transitionTo: { material: "iceShoulder" },
+		},
+		toRoadDiagLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1024, 672),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadDiagLeft" },
+		},
+		toRoadDiagRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1024, 672),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadDiagRight" },
 		},
 	},
 	iceShoulder:
@@ -1774,6 +2122,28 @@ let gPieceTypes =
 			exitAngle: 0,
 			transitionTo: { material: "grassShoulder" },
 		},
+		toRoadDiagLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1024, 736),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadDiagLeft" },
+		},
+		toRoadDiagRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(1024, 736),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadDiagRight" },
+		},
 	},
 	grassShoulder:
 	{
@@ -1798,6 +2168,28 @@ let gPieceTypes =
 			exitAngle: 0,
 			transitionTo: { material: "roadFlat" },
 			supportsCrossroad: true,
+		},
+		toRoadDiagLeft:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(896, 320),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(-0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadDiagLeft" },
+		},
+		toRoadDiagRight:
+		{
+			tags: [ "straight", "transition" ],
+			imageOffset: new Vector2D(896, 320),
+			imageDimensions: new Vector2D(64, 32),
+			exitOffset: new Vector3D(0, -1, 0),
+			exitAngle: 0,
+			collisionOffset: new Vector3D(0.5, 0, 0.5),
+			collisionExtents: new Vector3D(1, 0.5, 0.5),
+			transitionTo: { material: "roadDiagRight" },
 		},
 	},
 };
