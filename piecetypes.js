@@ -1987,8 +1987,11 @@ let InitialisePieceTypes = function()
 	ModifyPieceTypeProperty("waterShallowFlat", "transitionTo", { material: "#waterShallowFlatExit", probability: 0.25 });
 	ModifyPieceTypeProperty("waterShallowBlock", "transitionTo", { material: "#waterShallowBlockExit", probability: 0.25 });
 
+	//Shorten ice sections.
+	ModifyPieceTypeProperty("waterDeepFlat", "probability", 0.2, [ "transition "]);
+
 	//Shorten deep water sections and make them appear on more layers.
-	ModifyPieceTypeProperty("waterDeepFlat", "probability", 0.1, [ "transition "]);
+	ModifyPieceTypeProperty("waterDeepFlat", "probability", 0.025, [ "transition "]);
 	ModifyPieceTypeProperty("waterDeepFlat", "useCollisionForRender", true);
 
 	//Useful for collision detection.
