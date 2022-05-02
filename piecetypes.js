@@ -608,6 +608,24 @@ let gBlockPieceTemplates =
 		exitOffset: new Vector3D(-1, 0, 0),
 		exitAngle: Math.PI * -0.5,
 	},
+	triangleRight:
+	{
+		tags: [ "notAfterTurbo" ],
+		imageOffset: new Vector2D(800, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(1, 0, 0),
+		exitAngle: Math.PI * 0.5,
+		blockRenderType: "triangleRight",
+	},
+	triangleLeft:
+	{
+		tags: [ "notAfterTurbo" ],
+		imageOffset: new Vector2D(800, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(-1, 0, 0),
+		exitAngle: Math.PI * -0.5,
+		blockRenderType: "triangleLeft",
+	},
 	startLine:
 	{
 		tags: [ "progress", "startLine" ],
@@ -1204,6 +1222,288 @@ let gDiagonalRightToLeftPieceTemplates =
 	},
 };
 
+//Templates for block materials that transition to block banked pieces.
+let gBlockBankTransitionPieceTemplates =
+{
+	toBlockBankRightLevelShort:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(832, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		transitionTo: { material: "BlockBankRight" },
+	},
+	toBlockBankRightDownShort:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(832, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, -2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, -0.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		transitionTo: { material: "BlockBankRight" },
+	},
+	toBlockBankRightLevelLong:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(864, 512),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 1.5),
+		collisionExtents: new Vector3D(0.5, 1, 1.5),
+		transitionTo: { material: "BlockBankRight" },
+	},
+	toBlockBankRightDownLong:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(896, 512),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, -2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, -0.5),
+		collisionExtents: new Vector3D(0.5, 1, 1.5),
+		transitionTo: { material: "BlockBankRight" },
+	},
+	toBlockBankLeftLevelShort:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(1216, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		transitionTo: { material: "BlockBankLeft" },
+	},
+	toBlockBankLeftDownShort:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(1216, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, -2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, -0.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		transitionTo: { material: "BlockBankLeft" },
+	},
+	toBlockBankLeftLevelLong:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(1248, 512),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 1.5),
+		collisionExtents: new Vector3D(0.5, 1, 1.5),
+		transitionTo: { material: "BlockBankLeft" },
+	},
+	toBlockBankLeftDownLong:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(1280, 512),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, -2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, -0.5),
+		collisionExtents: new Vector3D(0.5, 1, 1.5),
+		transitionTo: { material: "BlockBankLeft" },
+	},
+};
+
+//Templates for right-block bank pieces (can be flipped for left-banking pieces)
+let gBlockBankedPieceTemplates =
+{
+	straight:
+	{
+		tags: [ "straight" ],
+		imageOffset: new Vector2D(928, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+	},
+	checkpoint:
+	{
+		tags: [ "progress", "checkpoint" ],
+		imageOffset: new Vector2D(928, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+	},
+	cornerIn:
+	{
+		tags: [ "notAfterTurbo" ],
+		imageOffset: new Vector2D(960, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(1, 0, 0),
+		exitAngle: Math.PI * 0.5,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		blockRenderType: "curveRight",
+	},
+	cornerOut:
+	{
+		tags: [ "notAfterTurbo" ],
+		imageOffset: new Vector2D(960, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(-1, 0, 0),
+		exitAngle: Math.PI * -0.5,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		blockRenderType: "curveLeft",
+	},
+	curveIn:
+	{
+		imageOffset: new Vector2D(992, 512),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(2, -1, 0),
+		exitAngle: Math.PI * 0.5,
+		collisionOffset: new Vector3D(0.5, -0.5, 1.5),
+		collisionExtents: new Vector3D(1, 1, 1.5),
+		blockRenderType: "curveRight",
+	},
+	curveOut:
+	{
+		imageOffset: new Vector2D(1056, 512),
+		imageDimensions: new Vector2D(64, 64),
+		exitOffset: new Vector3D(-2, -1, 0),
+		exitAngle: Math.PI * -0.5,
+		collisionOffset: new Vector3D(-0.5, -0.5, 1.5),
+		collisionExtents: new Vector3D(1, 1, 1.5),
+		blockRenderType: "curveLeft",
+	},
+	turbo:
+	{
+		tags: [ "straight", "engineBlock" ],
+		imageOffset: new Vector2D(608, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		absoluteImageOffset: true,
+		probability: 0.666,
+		transitionTo: { tag: "!notAfterTurbo" },
+	},
+	superTurbo:
+	{
+		tags: [ "straight", "engineBlock" ],
+		imageOffset: new Vector2D(640, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		absoluteImageOffset: true,
+		probability: 0.5,
+		transitionTo: { tag: "!notAfterTurbo" },
+	},
+	boostUp:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(672, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		absoluteImageOffset: true,
+		probability: 0.666,
+		transitionTo: { tag: "!notAfterBoost" },
+	},
+	superBoostUp:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(704, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		absoluteImageOffset: true,
+		probability: 0.333,
+		transitionTo: { tag: "!notAfterBoost" },
+	},
+	boostDown:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(736, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		absoluteImageOffset: true,
+		probability: 0.666,
+		transitionTo: { tag: "!notAfterBoost" },
+	},
+	superBoostDown:
+	{
+		tags: [ "straight", "engineBlock", "notAfterBoost" ],
+		imageOffset: new Vector2D(768, 256),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		absoluteImageOffset: true,
+		probability: 0.5,
+		transitionTo: { tag: "!notAfterBoost" },
+	},
+	toBlockLevelShort:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(1120, 512),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		transitionTo: { material: "Block" },
+	},
+	toBlockUpShort:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(1120, 544),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, 0, 1.5),
+		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
+		transitionTo: { material: "Block" },
+	},
+	toBlockLevelLong:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(1152, 512),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 1.5),
+		collisionExtents: new Vector3D(0.5, 1, 1.5),
+		transitionTo: { material: "Block" },
+	},
+	toBlockUpLong:
+	{
+		tags: [ "straight", "transition" ],
+		imageOffset: new Vector2D(1184, 512),
+		imageDimensions: new Vector2D(32, 64),
+		exitOffset: new Vector3D(0, -2, 2),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 1.5),
+		collisionExtents: new Vector3D(0.5, 1, 1.5),
+		transitionTo: { material: "Block" },
+	},
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 // Piece types (non-templated)
 ////////////////////////////////////////////////////////////////////////////////
@@ -1301,7 +1601,7 @@ let gPieceTypes =
 		toRubberBlock:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(608, 288),
+			imageOffset: new Vector2D(544, 768),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -1736,7 +2036,7 @@ let gPieceTypes =
 		toRubberBlock:
 		{
 			tags: [ "transition" ],
-			imageOffset: new Vector2D(800, 288),
+			imageOffset: new Vector2D(736, 768),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(-1, -1, 0),
 			exitAngle: 0,
@@ -1819,7 +2119,7 @@ let gPieceTypes =
 		toRubberBlock:
 		{
 			tags: [ "transition" ],
-			imageOffset: new Vector2D(800, 288),
+			imageOffset: new Vector2D(736, 768),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(1, -1, 0),
 			exitAngle: 0,
@@ -2174,7 +2474,7 @@ let gPieceTypes =
 		toRoadFlat:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(736, 320),
+			imageOffset: new Vector2D(672, 800),
 			imageDimensions: new Vector2D(32, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2184,7 +2484,7 @@ let gPieceTypes =
 		toRoadDiagLeft:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(800, 320),
+			imageOffset: new Vector2D(736, 800),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2195,7 +2495,7 @@ let gPieceTypes =
 		toRoadDiagRight:
 		{
 			tags: [ "straight", "transition" ],
-			imageOffset: new Vector2D(800, 320),
+			imageOffset: new Vector2D(736, 800),
 			imageDimensions: new Vector2D(64, 32),
 			exitOffset: new Vector3D(0, -1, 0),
 			exitAngle: 0,
@@ -2274,7 +2574,8 @@ let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extra
 			newPieceType.collisionExtents.z = ((newPieceType.collisionExtents.z * 2) + extraHeight) * 0.5;
 		}
 
-		if (transitionPreposition !== undefined && newPieceType.transitionTo && newPieceType.transitionTo.material)
+		if (transitionPreposition !== undefined && newPieceType.transitionTo && newPieceType.transitionTo.material &&
+			!newPieceType.transitionTo.material.startsWith('#'))
 		{
 			newPieceType.transitionTo.material = transitionPreposition.concat(newPieceType.transitionTo.material);
 		}
@@ -2287,6 +2588,18 @@ let CreatePieceTypesFromTemplate = function(templateObject, pieceMaterial, extra
 			if (newPieceType.collisionOffset !== undefined)
 			{
 				newPieceType.collisionOffset.x *= -1;
+			}
+
+			//Flip block render type.
+			if (newPieceType.blockRenderType !== undefined)
+			{
+				switch (newPieceType.blockRenderType)
+				{
+				case "curveRight":		newPieceType.blockRenderType = "curveLeft";		break;
+				case "curveLeft":		newPieceType.blockRenderType = "curveRight";	break;
+				case "triangleRight":	newPieceType.blockRenderType = "triangleLeft";	break;
+				case "triangleLeft":	newPieceType.blockRenderType = "triangleRight";	break;
+				}
 			}
 		}
 
@@ -2354,8 +2667,12 @@ let InitialisePieceTypes = function()
 	CreatePieceTypesFromTemplate(gShoulderPieceTemplates, "iceShoulder", new Vector2D(0, 128));
 	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "grassBlock", new Vector2D(0, 192));
 	CreatePieceTypesFromTemplate(gShoulderPieceTemplates, "grassShoulder", new Vector2D(0, 192));
-	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "rubberBlock", new Vector2D(64, -224));
-	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "waterShallowBlock", new Vector2D(800, 0), [ "ramp", "hole" ]);
+	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "rubberBlock", new Vector2D(0, 256));
+	CreatePieceTypesFromTemplate(gBlockPieceTemplates, "waterShallowBlock", new Vector2D(64, -224), [ "ramp", "hole" ]);
+
+	CreatePieceTypesFromTemplate(gBlockBankTransitionPieceTemplates, "roadBlock", new Vector2D(0, 0), undefined, 0, "road");
+	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "roadBlockBankRight", new Vector2D(0, 0), undefined, 0, "road");
+	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "roadBlockBankLeft", new Vector2D(384, 0), undefined, 0, "road", true);
 
 	CreatePieceTypesFromTemplate(gDiagonalTransitionPieceTemplates, "roadFlat", new Vector2D(0, 0), undefined, 0, "road");
 	CreatePieceTypesFromTemplate(gDiagonalPieceTemplates, "roadDiagLeft", new Vector2D(0, 0), undefined, 0, "road");

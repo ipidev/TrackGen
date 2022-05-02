@@ -189,35 +189,72 @@ let DrawTrackPieceOutline = function(ctx, placedPiece, viewZ, layerViewType)
 	{
 		ctx.globalAlpha = setupObject.alphaPasses[j];
 		ctx.globalCompositeOperation = setupObject.compositionPasses[j];
-
+		
 		ctx.strokeStyle = "black";
 		ctx.lineWidth = 2;
 
-		//Only draw side lines for pieces that change height, avoids black line breaking track flow
-		if (placedPieceType.exitOffset.z == 0)
-		{
-			ctx.strokeRect((placedPieceType.imageDimensions.x * -0.5) + setupObject.renderOffset.x - 1,
-				(placedPieceType.imageDimensions.y * -0.5) + setupObject.renderOffset.y - 1,
-				placedPieceType.imageDimensions.x + 2,
-				placedPieceType.imageDimensions.y + 2);
-		}
-		else
-		{
-			let leftSideX = (placedPieceType.imageDimensions.x * -0.5) + setupObject.renderOffset.x - 1;
-			let rightSideX = (placedPieceType.imageDimensions.x * 0.5) + setupObject.renderOffset.x + 1;
-			let topSideY = (placedPieceType.imageDimensions.y * -0.5) + setupObject.renderOffset.y - 1;
-			let bottomSideY = (placedPieceType.imageDimensions.y * 0.5) + setupObject.renderOffset.y + 1;
+		let leftSideX = (placedPieceType.imageDimensions.x * -0.5) + setupObject.renderOffset.x - 1;
+		let rightSideX = (placedPieceType.imageDimensions.x * 0.5) + setupObject.renderOffset.x + 1;
+		let topSideY = (placedPieceType.imageDimensions.y * -0.5) + setupObject.renderOffset.y - 1;
+		let bottomSideY = (placedPieceType.imageDimensions.y * 0.5) + setupObject.renderOffset.y + 1;
 
+		switch (placedPieceType.blockRenderType)
+		{
+		case "curveRight":
 			ctx.beginPath();
-			ctx.moveTo(leftSideX, topSideY);
-			ctx.lineTo(leftSideX, bottomSideY);
+			ctx.moveTo(leftSideX + 32, bottomSideY);
+			ctx.arc(rightSideX, bottomSideY, placedPieceType.imageDimensions.x + 2, Math.PI, Math.PI * 1.5);
+			ctx.arc(rightSideX, bottomSideY, placedPieceType.imageDimensions.x - 32, Math.PI * 1.5, Math.PI, true);
 			ctx.stroke();
+			break;
 
+		case "curveLeft":
 			ctx.beginPath();
-			ctx.moveTo(rightSideX, topSideY);
+			ctx.moveTo(rightSideX - 32, bottomSideY);
+			ctx.arc(leftSideX, bottomSideY, placedPieceType.imageDimensions.x + 2, Math.PI * 2, Math.PI * 1.5, true);
+			ctx.arc(leftSideX, bottomSideY, placedPieceType.imageDimensions.x - 32, Math.PI * 1.5, Math.PI * 2);
+			ctx.stroke();
+			break;
+
+		case "triangleRight":
+			ctx.beginPath();
+			ctx.moveTo(rightSideX, bottomSideY);
+			ctx.lineTo(leftSideX, bottomSideY);
+			ctx.lineTo(rightSideX, topSideY);
 			ctx.lineTo(rightSideX, bottomSideY);
 			ctx.stroke();
+			break;
+
+		case "triangleLeft":
+			ctx.beginPath();
+			ctx.moveTo(leftSideX, bottomSideY);
+			ctx.lineTo(rightSideX, bottomSideY);
+			ctx.lineTo(leftSideX, topSideY);
+			ctx.lineTo(leftSideX, bottomSideY);
+			ctx.stroke();
+			break;
+
+		default:
+			//Only draw side lines for pieces that change height, avoids black line breaking track flow
+			if (placedPieceType.exitOffset.z == 0)
+			{
+				ctx.strokeRect(leftSideX, topSideY, placedPieceType.imageDimensions.x + 2, placedPieceType.imageDimensions.y + 2);
+			}
+			else
+			{
+				ctx.beginPath();
+				ctx.moveTo(leftSideX, topSideY);
+				ctx.lineTo(leftSideX, bottomSideY);
+				ctx.stroke();
+
+				ctx.beginPath();
+				ctx.moveTo(rightSideX, topSideY);
+				ctx.lineTo(rightSideX, bottomSideY);
+				ctx.stroke();
+			}
+			break;
 		}
+		
 	}
 }
 
