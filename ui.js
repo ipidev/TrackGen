@@ -107,8 +107,9 @@ let DetermineDeltaZForDraw = function(placedPiece, viewZ, layerViewType)
 		let nearestZWithinCollision = placedPiece.translation.z;
 		if (placedPieceType.useCollisionForRender && placedPieceType.collisionOffset && placedPieceType.collisionExtents)
 		{
-			let minimumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z - placedPieceType.collisionExtents.z;
-			let maximumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z + placedPieceType.collisionExtents.z;
+			let renderCollisionOffset = placedPieceType.renderCollisionOffset ? placedPieceType.renderCollisionOffset : 0;	//Fudge!
+			let minimumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z - placedPieceType.collisionExtents.z + renderCollisionOffset;
+			let maximumZCollision = nearestZWithinCollision + placedPieceType.collisionOffset.z + placedPieceType.collisionExtents.z + renderCollisionOffset;
 
 			if (placedPieceType.collisionOffset.z > 0)
 				maximumZCollision -= 1;

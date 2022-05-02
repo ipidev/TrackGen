@@ -1246,6 +1246,8 @@ let gBlockBankTransitionPieceTemplates =
 		collisionOffset: new Vector3D(0, 0, -0.5),
 		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
 		transitionTo: { material: "BlockBankRight" },
+		useCollisionForRender: true,
+		renderCollisionOffset: -1,
 	},
 	toBlockBankRightLevelLong:
 	{
@@ -1268,6 +1270,8 @@ let gBlockBankTransitionPieceTemplates =
 		collisionOffset: new Vector3D(0, -0.5, -0.5),
 		collisionExtents: new Vector3D(0.5, 1, 1.5),
 		transitionTo: { material: "BlockBankRight" },
+		useCollisionForRender: true,
+		renderCollisionOffset: -1,
 	},
 	toBlockBankLeftLevelShort:
 	{
@@ -1290,6 +1294,8 @@ let gBlockBankTransitionPieceTemplates =
 		collisionOffset: new Vector3D(0, 0, -0.5),
 		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
 		transitionTo: { material: "BlockBankLeft" },
+		useCollisionForRender: true,
+		renderCollisionOffset: -1,
 	},
 	toBlockBankLeftLevelLong:
 	{
@@ -1312,6 +1318,8 @@ let gBlockBankTransitionPieceTemplates =
 		collisionOffset: new Vector3D(0, -0.5, -0.5),
 		collisionExtents: new Vector3D(0.5, 1, 1.5),
 		transitionTo: { material: "BlockBankLeft" },
+		useCollisionForRender: true,
+		renderCollisionOffset: -1,
 	},
 };
 
@@ -1479,6 +1487,7 @@ let gBlockBankedPieceTemplates =
 		collisionOffset: new Vector3D(0, 0, 1.5),
 		collisionExtents: new Vector3D(0.5, 0.5, 1.5),
 		transitionTo: { material: "Block" },
+		useCollisionForRender: true,
 	},
 	toBlockLevelLong:
 	{
@@ -1501,6 +1510,7 @@ let gBlockBankedPieceTemplates =
 		collisionOffset: new Vector3D(0, -0.5, 1.5),
 		collisionExtents: new Vector3D(0.5, 1, 1.5),
 		transitionTo: { material: "Block" },
+		useCollisionForRender: true,
 	},
 };
 
@@ -2673,6 +2683,22 @@ let InitialisePieceTypes = function()
 	CreatePieceTypesFromTemplate(gBlockBankTransitionPieceTemplates, "roadBlock", new Vector2D(0, 0), undefined, 0, "road");
 	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "roadBlockBankRight", new Vector2D(0, 0), undefined, 0, "road");
 	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "roadBlockBankLeft", new Vector2D(384, 0), undefined, 0, "road", true);
+
+	CreatePieceTypesFromTemplate(gBlockBankTransitionPieceTemplates, "dirtBlock", new Vector2D(0, 64), undefined, 0, "dirt");
+	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "dirtBlockBankRight", new Vector2D(0, 64), undefined, 0, "dirt");
+	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "dirtBlockBankLeft", new Vector2D(384, 64), undefined, 0, "dirt", true);
+
+	CreatePieceTypesFromTemplate(gBlockBankTransitionPieceTemplates, "iceBlock", new Vector2D(0, 128), undefined, 0, "ice");
+	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "iceBlockBankRight", new Vector2D(0, 128), undefined, 0, "ice");
+	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "iceBlockBankLeft", new Vector2D(384, 128), undefined, 0, "ice", true);
+
+	CreatePieceTypesFromTemplate(gBlockBankTransitionPieceTemplates, "grassBlock", new Vector2D(0, 192), undefined, 0, "grass");
+	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "grassBlockBankRight", new Vector2D(0, 192), undefined, 0, "grass");
+	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "grassBlockBankLeft", new Vector2D(384, 192), undefined, 0, "grass", true);
+
+	CreatePieceTypesFromTemplate(gBlockBankTransitionPieceTemplates, "rubberBlock", new Vector2D(0, 256), undefined, 0, "rubber");
+	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "rubberBlockBankRight", new Vector2D(0, 256), undefined, 0, "rubber");
+	CreatePieceTypesFromTemplate(gBlockBankedPieceTemplates, "rubberBlockBankLeft", new Vector2D(384, 256), undefined, 0, "rubber", true);
 
 	CreatePieceTypesFromTemplate(gDiagonalTransitionPieceTemplates, "roadFlat", new Vector2D(0, 0), undefined, 0, "road");
 	CreatePieceTypesFromTemplate(gDiagonalPieceTemplates, "roadDiagLeft", new Vector2D(0, 0), undefined, 0, "road");
