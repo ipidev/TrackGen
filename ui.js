@@ -8,6 +8,7 @@ let gUI =
 	hasUserProvidedSeed: false,
 	isOnMobile: false,
 	trackPiecesImage: new Image(),
+	selectedPieceIndex: -1,
 };
 gUI.trackPiecesImage.src = "images/trackmaniaPieces.png";
 gUI.isOnMobile = navigator.maxTouchPoints ||
@@ -28,6 +29,7 @@ let RenderAll = function(ctx, viewZ, layerViewType)
 
 	RenderGrass(ctx, viewZ);
 	RenderTrack(ctx, viewZ, layerViewType);
+	RenderSelectedPiece(ctx, viewZ, layerViewType);
 }
 
 let RenderGrass = function(ctx, viewZ)
@@ -261,6 +263,8 @@ let DrawTrackPieceOutline = function(ctx, placedPiece, viewZ, layerViewType)
 
 let DrawTrackPiece = function(ctx, placedPiece, viewZ, layerViewType)
 {
+	
+	
 	let placedPieceType = placedPiece.trackPieceType;
 
 	let setupObject = SetupCanvasForDraw(ctx, placedPiece, viewZ, layerViewType);
@@ -278,6 +282,53 @@ let DrawTrackPiece = function(ctx, placedPiece, viewZ, layerViewType)
 			(placedPieceType.imageDimensions.x * -0.5) + setupObject.renderOffset.x, (placedPieceType.imageDimensions.y * -0.5) + setupObject.renderOffset.y,
 			placedPieceType.imageDimensions.x, placedPieceType.imageDimensions.y);
 	}
+}
+
+let RenderSelectedPiece = function(ctx, viewZ, layerViewType)
+{
+	if (gUI.selectedPieceIndex < 0 || gUI.selectedPieceIndex >= gPlacedPieces.length)
+		return;
+	
+	let placedPiece = gPlacedPieces[gUI.selectedPieceIndex];
+
+	//Force layer view type to avoid confusing users with selections on other layers.
+	let forcedLayerViewType = layerViewType == "all" ? "all" : "none";
+
+	let priorCtxTransform = ctx.getTransform();
+	let setupObject = SetupCanvasForDraw(ctx, placedPiece, viewZ, forcedLayerViewType);
+	if (setupObject === null)
+		return;
+
+	//Draw surrounding box and arrows annotating entry/exit direction.
+	ctx.strokeStyle = ctx.fillStyle = "#FF00FF";
+	ctx.lineWidth = 3;
+
+	let placedPieceType = placedPiece.trackPieceType;
+	let leftSideX = (placedPieceType.imageDimensions.x * -0.5) + setupObject.renderOffset.x - (ctx.lineWidth * 0.5);
+	let topSideY = (placedPieceType.imageDimensions.y * -0.5) + setupObject.renderOffset.y - (ctx.lineWidth * 0.5);
+	let boxWidth = placedPieceType.imageDimensions.x + ctx.lineWidth;
+	let boxHeight = placedPieceType.imageDimensions.y + ctx.lineWidth;
+
+	ctx.strokeRect(leftSideX, topSideY, boxWidth, boxHeight);
+
+	//Draw entry arrow.
+	let DrawArrow = function(ctx, yOffset)
+	{
+		ctx.beginPath();
+		ctx.moveTo(-8, 16 + yOffset);
+		ctx.lineTo(0, 8 + yOffset);
+		ctx.lineTo(8, 16 + yOffset);
+		ctx.fill();
+	}
+
+	//Draw entry arrow at the root position of the piece, then transform according to the exit and draw again.
+	DrawArrow(ctx, 0);
+
+	ctx.translate(placedPieceType.exitOffset.x * 32, placedPieceType.exitOffset.y * 32);
+	ctx.rotate(placedPieceType.exitAngle);
+	DrawArrow(ctx, -3);
+	
+	ctx.setTransform(priorCtxTransform);
 }
 
 let UpdateCanvasTransform = function(canvas, ctx)
@@ -391,6 +442,7 @@ let OnGenerateButtonPressed = function()
 		trackViewLayerElement.value = Math.round(newViewZ);
 	}
 
+	gUI.selectedPieceIndex = -1;
 	RenderAll(gCtx, newViewZ);
 	
 	GenerateNewTitle();
@@ -471,6 +523,77 @@ let OnTrackSeedChanged = function(e)
 	document.getElementById("trackSeedLabel").innerHTML = gUI.hasUserProvidedSeed ? "Seed*:" : "Seed:";
 }
 
+let OnPreviousPieceButtonPressed = function(e)
+{
+	if (gUI.selectedPieceIndex <= 0)
+		gUI.selectedPieceIndex = gPlacedPieces.length - 1;
+	else
+		--gUI.selectedPieceIndex;
+	
+	if (gPlacedPieces.length > 0)
+	{
+		let newViewZ = gPlacedPieces[gUI.selectedPieceIndex].translation.z;
+		document.getElementById("trackViewLayer").value = newViewZ;
+	}
+
+	RenderAll(gCtx);
+}
+
+let OnNextPieceButtonPressed = function(e)
+{
+	if (gUI.selectedPieceIndex >= gPlacedPieces.length - 1)
+		gUI.selectedPieceIndex = 0;
+	else
+		++gUI.selectedPieceIndex;
+	
+	if (gPlacedPieces.length > 0)
+	{
+		let newViewZ = gPlacedPieces[gUI.selectedPieceIndex].translation.z;
+		document.getElementById("trackViewLayer").value = newViewZ;
+	}
+
+	RenderAll(gCtx);
+}
+
+let OnCanvasClicked = function(e)
+{
+	//Skip programmatic changes
+	if (!e.isTrusted)
+		return;
+
+	//Convert from canvas space to world space.
+	let worldScale = 32 * gUI.zoomScale;
+	let clickX = (e.offsetX / worldScale) - 23.5;
+	let clickY = (e.offsetY / worldScale) - 23.5;
+
+	//Find the piece we've clicked on (if any).
+	let clickedPieceIndex = -1;
+	let viewZ = document.getElementById("trackViewLayer").valueAsNumber;
+	let layerViewType = document.getElementById("trackViewType").value;
+	
+	for (let i = 0; i < gPlacedPieces.length; ++i)
+	{
+		let placedPiece = gPlacedPieces[i];
+		let placedPieceType = placedPiece.trackPieceType;
+
+		let currentPieceAABB = GetTrackPieceAABB(placedPiece.translation,
+			placedPiece.rotation, placedPieceType);
+		
+		if (currentPieceAABB.min.x <= clickX && clickX <= currentPieceAABB.max.x &&
+			currentPieceAABB.min.y <= clickY && clickY <= currentPieceAABB.max.y)
+		{
+			if (DetermineDeltaZForDraw(placedPiece, viewZ, layerViewType) == 0)
+			{
+				clickedPieceIndex = i;
+				break;
+			}
+		}
+	}
+
+	gUI.selectedPieceIndex = clickedPieceIndex;
+	RenderAll(gCtx, viewZ, layerViewType);
+}
+
 let OnKeyDown = function(e)
 {
 	switch (e.code)
@@ -486,6 +609,12 @@ let OnKeyDown = function(e)
 			break;
 		case "Period":
 			OnRotateLeftButtonPressed(e);
+			break;
+		case "BracketLeft":
+			OnPreviousPieceButtonPressed(e);
+			break;
+		case "BracketRight":
+			OnNextPieceButtonPressed(e);
 			break;
 	}
 
@@ -536,6 +665,7 @@ let OnPageLoaded = function(e)
 	document.getElementById("trackViewLayerUp").addEventListener("click", OnViewLayerUpPressed);
 	document.getElementById("trackViewType").addEventListener("input", OnViewTypeChanged);
 	document.getElementById("trackSeed").addEventListener("input", OnTrackSeedChanged);
+	gCanvas.addEventListener("click", OnCanvasClicked);
 
 	if (gUI.isOnMobile)
 	{
