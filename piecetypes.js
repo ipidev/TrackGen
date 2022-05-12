@@ -288,6 +288,93 @@ let gGenericPieceTemplates =
 		probability: 0,	//Don't allow normal placement
 		supportsCrossroad: true,
 	},
+	forkTRight:
+	{
+		tags: [ "fork" ],
+		imageOffset: new Vector2D(2816, 64),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		probability: 0.1,
+		forkExitOffset: new Vector3D(1, 0, 0),
+		forkExitAngle: Math.PI * 0.5,
+	},
+	forkTLeft:
+	{
+		tags: [ "fork" ],
+		imageOffset: new Vector2D(2816, 96),
+		imageDimensions: new Vector2D(32, 32),
+		exitOffset: new Vector3D(0, -1, 0),
+		exitAngle: 0,
+		probability: 0.1,
+		forkExitOffset: new Vector3D(-1, 0, 0),
+		forkExitAngle: Math.PI * -0.5,
+	},
+	forkY:
+	{
+		tags: [ "fork" ],
+		imageOffset: new Vector2D(2848, 64),
+		imageDimensions: new Vector2D(96, 64),
+		exitOffset: new Vector3D(-1, -2, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0, -0.5, 0.5),
+		collisionExtents: new Vector3D(1.5, 1, 0.5),
+		probability: 0.1,
+		forkExitOffset: new Vector3D(1, -2, 0),
+		forkExitAngle: 0,
+	},
+	forkLongRight:
+	{
+		tags: [ "fork" ],
+		imageOffset: new Vector2D(3008, 0),
+		imageDimensions: new Vector2D(64, 128),
+		exitOffset: new Vector3D(0, -4, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(0.5, -1.5, 0.5),
+		collisionExtents: new Vector3D(1, 2, 0.5),
+		probability: 0.1,
+		forkExitOffset: new Vector3D(1, -4, 0),
+		forkExitAngle: 0,
+	},
+	forkLongLeft:
+	{
+		tags: [ "fork" ],
+		imageOffset: new Vector2D(2944, 0),
+		imageDimensions: new Vector2D(64, 128),
+		exitOffset: new Vector3D(0, -4, 0),
+		exitAngle: 0,
+		collisionOffset: new Vector3D(-0.5, -1.5, 0.5),
+		collisionExtents: new Vector3D(1, 2, 0.5),
+		probability: 0.1,
+		forkExitOffset: new Vector3D(-1, -4, 0),
+		forkExitAngle: 0,
+	},
+	forkCurveRight:
+	{
+		tags: [ "fork" ],
+		imageOffset: new Vector2D(3072, 0),
+		imageDimensions: new Vector2D(96, 96),
+		exitOffset: new Vector3D(3, -2, 0),
+		exitAngle: Math.PI * 0.5,
+		collisionOffset: new Vector3D(1, -1, 0.5),
+		collisionExtents: new Vector3D(1.5, 1.5, 0.5),
+		probability: 0.1,
+		forkExitOffset: new Vector3D(3, -1, 0),
+		forkExitAngle: Math.PI * 0.5,
+	},
+	forkCurveLeft:
+	{
+		tags: [ "fork" ],
+		imageOffset: new Vector2D(3168, 0),
+		imageDimensions: new Vector2D(96, 96),
+		exitOffset: new Vector3D(-3, -2, 0),
+		exitAngle: Math.PI * -0.5,
+		collisionOffset: new Vector3D(-1, -1, 0.5),
+		collisionExtents: new Vector3D(1.5, 1.5, 0.5),
+		probability: 0.1,
+		forkExitOffset: new Vector3D(-3, -1, 0),
+		forkExitAngle: Math.PI * -0.5,
+	},
 };
 
 //Templates for materials that transition to banked pieces.

@@ -28,6 +28,20 @@ class TimedFilterList
 		}
 	}
 
+	Contains(value)
+	{
+		return this.list.find(item => item.value === value) !== undefined;
+	}
+
+	Remove(value)
+	{
+		let foundIndex = this.list.findIndex(item => item.value === value);
+		if (foundIndex >= 0)
+		{
+			this.list.splice(foundIndex, 1);
+		}
+	}
+
 	GetFlatList()
 	{
 		let returnedList = [];
@@ -43,6 +57,13 @@ class TimedFilterList
 				this.list.splice(i, 1);
 		}
 	}
+
+	Clone()
+	{
+		let newList = new TimedFilterList();
+		this.list.forEach(item => newList.Add(item.value, item.lifetime));
+		return newList;
+	}
 }
 
 let PlacePiece = function(translation, rotation, trackPieceType)
@@ -57,14 +78,24 @@ let PlacePiece = function(translation, rotation, trackPieceType)
 
 let ApplyPieceOffset = function(translation, rotation, trackPieceType)
 {
-	let rotatedOffset = Vector3DStatic.CreateCopy(trackPieceType.exitOffset);
+	return ApplyGivenPieceOffset(translation, rotation, trackPieceType.exitOffset, trackPieceType.exitAngle);
+}
+
+let ApplyPieceForkOffset = function(translation, rotation, trackPieceType)
+{
+	return ApplyGivenPieceOffset(translation, rotation, trackPieceType.forkExitOffset, trackPieceType.forkExitAngle);
+}
+
+let ApplyGivenPieceOffset = function(translation, rotation, exitOffset, exitAngle)
+{
+	let rotatedOffset = Vector3DStatic.CreateCopy(exitOffset);
 	rotatedOffset.RotateYaw(rotation);
 
 	let newTranslation = Vector3DStatic.CreateCopy(translation);
 	newTranslation.x += rotatedOffset.x;
 	newTranslation.y += rotatedOffset.y;
 	newTranslation.z += rotatedOffset.z;
-	rotation += trackPieceType.exitAngle;
+	rotation += exitAngle;
 	
 	return { translation: newTranslation, rotation: rotation };
 }
@@ -148,10 +179,28 @@ let IsOutOfBounds = function(translation)
 let CanPlacePiece = function(translation, rotation, trackPieceType)
 {
 	let offsetPositions = ApplyPieceOffset(translation, rotation, trackPieceType);
-	return !DoesPieceCollide(translation, rotation, trackPieceType) && !IsOutOfBounds(translation) &&
-		(!DoesPieceCollide(offsetPositions.translation, offsetPositions.rotation, gGenericPieceType) ||
-		CanBeginCrossroadChain(offsetPositions.translation, offsetPositions.rotation, trackPieceType)) &&
-		!IsOutOfBounds(offsetPositions.translation);
+
+	//Can we place our current piece?
+	if (DoesPieceCollide(translation, rotation, trackPieceType) || IsOutOfBounds(translation))
+		return false;
+
+	//Can we place a piece after this one?
+	if ((DoesPieceCollide(offsetPositions.translation, offsetPositions.rotation, gGenericPieceType) &&
+		!CanBeginCrossroadChain(offsetPositions.translation, offsetPositions.rotation, trackPieceType)) ||
+		IsOutOfBounds(offsetPositions.translation))
+		return false;
+
+	//Can we place a piece at the fork (if present)?
+	if (trackPieceType.forkExitOffset !== undefined && trackPieceType.forkExitAngle !== undefined)
+	{
+		let forkOffsetPositions = ApplyPieceForkOffset(translation, rotation, trackPieceType);
+		if ((DoesPieceCollide(forkOffsetPositions.translation, forkOffsetPositions.rotation, gGenericPieceType) &&
+			!CanBeginCrossroadChain(forkOffsetPositions.translation, forkOffsetPositions.rotation, trackPieceType)) ||
+			IsOutOfBounds(forkOffsetPositions.translation))
+			return false;
+	}
+
+	return true;
 }
 
 let CanBeginCrossroadChain = function(translation, rotation, trackPieceType)
@@ -234,8 +283,6 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 	gRandom = mulberry32(seed);
 	gTrackDimensions = dimensions;
 
-	let longestDeadEndTrack = [];
-
 	//Set starting position and create the start line.
 	let GetRandomStartCoordinate = function(dimension) { return Math.round((gRandom() - 0.5) * Math.floor(dimension * 0.5)); };
 	let currentTranslation = new Vector3D(GetRandomStartCoordinate(dimensions.x),
@@ -252,6 +299,7 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 
 	let pieceTagAllowedFilter = new TimedFilterList();
 	let pieceTagUnallowedFilter = new TimedFilterList(materialBlacklist);
+	pieceTagUnallowedFilter.Add("fork");	//Disallow forks until all checkpoints are placed.
 
 	let pieceMaterial = null;
 	
@@ -266,13 +314,44 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 		pieceMaterial = result.pieceMaterial;
 	}
 
+	//Begin main branch.
+	let allForks =
+	[
+		{
+			translation: currentTranslation,
+			rotation: currentRotation,
+			pieceIndex: gPlacedPieces.length,
+			pieceMaterial: pieceMaterial,
+			pieceTagAllowedFilter: pieceTagAllowedFilter,
+			pieceTagUnallowedFilter: pieceTagUnallowedFilter,
+		}
+	];
+
+	for (let i = 0; i < allForks.length; ++i)
+	{
+		let fork = allForks[i];
+		let forkLength = length - fork.pieceIndex;
+		let forkCheckpoints = i == 0 ? checkpointCount : 0;
+
+		GenerateTrackFork(fork.pieceIndex, length, forkCheckpoints,
+			fork.translation, fork.rotation, fork.pieceMaterial, materialBlacklist,
+			fork.pieceTagAllowedFilter, fork.pieceTagUnallowedFilter, allForks);
+	}
+
+	TryRecentreTrack(true);
+}
+
+let GenerateTrackFork = function(pieceIndex, length, checkpointCount, currentTranslation, currentRotation, 
+	pieceMaterial, materialBlacklist, pieceTagAllowedFilter, pieceTagUnallowedFilter, allForks)
+{
 	let nextCheckpointIndex = checkpointCount > 0 ? length / (checkpointCount + 1) : -1;
 	
+	let longestDeadEndTrack = [];	//TODO: Make this work when accounting for forks.
 	let deadEndsHit = 0;
 	let minimumTrackLength = gPlacedPieces.length;
 	let lastDeadEndPieceType = null;
 
-	for (let pieceIndex = gPlacedPieces.length; pieceIndex < length && deadEndsHit < 20; ++pieceIndex)
+	for (/* empty */; pieceIndex < length && deadEndsHit < 20; ++pieceIndex)
 	{
 		let nextPieceType = null;
 		let pieceTagWhitelist = pieceTagAllowedFilter.GetFlatList();
@@ -313,6 +392,9 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 		{
 			PlacePiece(currentTranslation, currentRotation, nextPieceType);
 			
+			let preOffsetTranslation = currentTranslation;
+			let preOffsetRotation = currentRotation;
+
 			let offsetPositions = ApplyPieceOffset(currentTranslation, currentRotation, nextPieceType);
 			currentTranslation = offsetPositions.translation;
 			currentRotation = offsetPositions.rotation;
@@ -365,6 +447,22 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 					}
 				}
 			}
+
+			//Add a fork if we've placed such a piece.
+			if (nextPieceType.forkExitOffset !== undefined && nextPieceType.forkExitAngle !== undefined)
+			{
+				let forkOffsetPositions = ApplyPieceForkOffset(preOffsetTranslation, preOffsetRotation, nextPieceType);
+
+				allForks.push(
+				{
+					translation: forkOffsetPositions.translation,
+					rotation: forkOffsetPositions.rotation,
+					pieceIndex: pieceIndex,
+					pieceMaterial: pieceMaterial,
+					pieceTagAllowedFilter: pieceTagAllowedFilter.Clone(),
+					pieceTagUnallowedFilter: pieceTagUnallowedFilter.Clone(),
+				});
+			}
 		}
 		//Can't place the piece - back up
 		else
@@ -385,7 +483,7 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 				pieceMaterial = lastDeadEndPieceType.pieceMaterial;
 			}
 
-			pieceIndex = gPlacedPieces.length - 1;
+			--pieceIndex;
 
 			if (gPlacedPieces.length > longestDeadEndTrack.length)
 			{
@@ -394,16 +492,31 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 		}
 
 		//Centre the track if we get too close to the boundary to give us more space.
-		if ((dimensions.x >= 10 || dimensions.y >= 10) &&
-			(Math.abs(dimensions.x - currentTranslation.x) < 5 || Math.abs(dimensions.y - currentTranslation.y) < 5))
+		if ((gTrackDimensions.x >= 10 || gTrackDimensions.y >= 10) &&
+			(Math.abs(gTrackDimensions.x - currentTranslation.x) < 5 || Math.abs(gTrackDimensions.y - currentTranslation.y) < 5))
 		{
 			let recentredOffset = TryRecentreTrack();
 			currentTranslation.Subtract(recentredOffset);
 		}
+
+		//Check if we can now allow forks to be placed.
+		if (pieceTagUnallowedFilter.Contains("fork"))
+		{
+			let placedCheckpoints = gPlacedPieces.reduce((count, placedPiece) =>
+			{
+				return placedPiece.trackPieceType.tags.includes("checkpoint") ? count + 1 : count;
+			}, 0);
+
+			if (placedCheckpoints >= checkpointCount)
+			{
+				pieceTagUnallowedFilter.Remove("fork");
+			}
+		}
 	}
 
 	//Use the longest track we ever encountered.
-	if (longestDeadEndTrack.length > gPlacedPieces.length)
+	//TODO: Temporarily disabled, needs rewriting to consider forks.
+	if (false)//(longestDeadEndTrack.length > gPlacedPieces.length)
 	{
 		gPlacedPieces = longestDeadEndTrack;
 
@@ -459,8 +572,6 @@ let GenerateTrack = function(seed, length, dimensions, checkpointCount, material
 			}
 		}
 	}
-	
-	TryRecentreTrack(true);
 }
 
 let PlaceStartLine = function(currentTranslation, currentRotation, materialBlacklist)
