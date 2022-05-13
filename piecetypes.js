@@ -2741,8 +2741,8 @@ let InitialisePieceTypes = function()
 	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "dirtFlat", new Vector2D(0, 128));
 	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "iceFlat", new Vector2D(0, 256), undefined, 1);
 	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "sausageFlat", new Vector2D(0, 384));
-	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "waterShallowFlat", new Vector2D(0, 512), [ "ramp" ]);
-	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "waterDeepFlat", new Vector2D(0, 640), [ "ramp", "progress" ], 1);
+	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "waterShallowFlat", new Vector2D(0, 512), [ "ramp", "fork" ]);
+	CreatePieceTypesFromTemplate(gGenericPieceTemplates, "waterDeepFlat", new Vector2D(0, 640), [ "ramp", "progress", "fork" ], 1);
 
 	CreatePieceTypesFromTemplate(gBankTransitionPieceTemplates, "roadFlat", new Vector2D(0, 0), undefined, 0, "road");
 	CreatePieceTypesFromTemplate(gBankedPieceTemplates, "roadBankRight", new Vector2D(0, 0), undefined, 0, "road");
