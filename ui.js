@@ -644,6 +644,16 @@ let OnHotkeysButtonPressed = function(e)
 	}
 }
 
+let OnHelpButtonPressed = function(e)
+{
+	document.getElementById("helpWrapper").classList.remove("hidden");
+}
+
+let OnHelpCloseButtonPressed = function(e)
+{
+	document.getElementById("helpWrapper").classList.add("hidden");
+}
+
 let OnPageLoaded = function(e)
 {
 	UpdateCanvasTransform(gCanvas, gCtx);
@@ -666,6 +676,8 @@ let OnPageLoaded = function(e)
 	document.getElementById("trackViewType").addEventListener("input", OnViewTypeChanged);
 	document.getElementById("trackSeed").addEventListener("input", OnTrackSeedChanged);
 	gCanvas.addEventListener("click", OnCanvasClicked);
+	document.getElementById("helpButton").addEventListener("click", OnHelpButtonPressed);
+	document.getElementById("helpCloseButton").addEventListener("click", OnHelpCloseButtonPressed);
 
 	if (gUI.isOnMobile)
 	{

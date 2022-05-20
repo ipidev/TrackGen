@@ -112,6 +112,14 @@ body
 	font-weight: bold;
 }
 
+#helpButton
+{
+	display: block;
+	font-size: 0.6em;
+	font-weight: normal;
+	margin: 2px auto 0px auto;
+}
+
 #navigationContainer
 {
 	right: 2em;
@@ -162,4 +170,37 @@ body
 #hotkeysWindow p
 {
 	margin: 4px;
+}
+
+#helpWrapper
+{
+	position: absolute;
+	left: 2em;
+	right: 2em;
+	top: 2em;
+	bottom: 2em;
+}
+
+#helpContainer
+{
+	position: relative;
+	max-width: 30em;
+	margin: 2em auto;
+	opacity: 100%;
+	z-index: 1;
+}
+
+#helpContainer h1
+{
+	text-align: center;
+}
+
+#helpContainer #helpCloseButton
+{
+	display: block;
+	padding: 0.5em;
+	margin: 2px auto;
+
+	font-size: 1.5em;
+	font-weight: bold;
 }
